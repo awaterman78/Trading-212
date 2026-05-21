@@ -1,0 +1,333 @@
+Trading 212 Manual God Mode v44, Confirmation Timer Fix
+A short term US stock trading cockpit for Trading 212 manual execution. v43 is US-only, manual execution, with pre-market watch mode, better owned-position controls, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.
+
+Idle
+Last scan:
+never
+Market:
+unknown
+History:
+not primed
+Mode:
+US manual v44
+1. Data
+
+Market data only. No Trading 212 password, no order API key, no auto buying.
+Finnhub API key, US live quotes and earnings
+Massive API key, cached US daily history
+FMP API key, optional backup history
+Alpha Vantage API key, emergency fallback
+Save keys
+Test live
+Polling seconds
+Finnhub stream
+YesNo
+Start watch
+Stop
+Alerts
+Sound
+2. History
+
+Prime once daily. Cached history is reused, live scans then use Finnhub prices.
+History provider
+Massive, mainFMP backupAlpha fallbackAuto, Massive then FMP then Alpha
+Daily history budget
+Max prime symbols
+Fetch delay, seconds
+Reuse cache, days
+Market indicators
+SPY, QQQ
+Earnings block
+Auto-prime once daily when opened
+Prime missing
+Force
+Test
+Reset budget/cache
+
+History not loaded yet.
+3. Risk
+
+Trading 212 account
+Stocks and Shares ISAInvestDemo or practice
+Execution
+Manual only
+Current pot, £
+Cash held, £
+Risk per trade, %
+Max allocation, %
+GBP to USD
+FX fee, %
+Target, R
+Max positions
+Daily lock, %
+Exposure cap, %
+Save risk
+4. Filters
+
+Minimum buyable signal
+APEX onlyA+ or betterBUY or better
+Entry sensitivity
+Sniper earlyBalancedStrict
+Opportunity mode
+Balanced edgeGrowthMax opportunity
+No chase, %
+Buy zone, %
+Min confidence, %
+Min expected R
+Min BT trades
+Min BT win, %
+Mini backtest role
+Advisory, does not block clean live setupsEvidence, needs support for A+ onlyStrict, old behaviour
+v43 change: thin mini backtests now warn instead of killing every green signal. A genuinely bad sample still lowers the score.
+RSI low
+RSI high
+ATR low, %
+ATR high, %
+Pre-market watch only, keep new buys locked before regular US open
+Buy zone confirmation, seconds
+Confirmed alert hold, seconds
+A green buy must hold through this confirmation window. Quick flickers become CONFIRMING, not a trade.
+Save filters
+5. Watchlist
+
+SPY
+QQQ
+NVDA
+MSFT
+AAPL
+AMZN
+META
+GOOGL
+AVGO
+AMD
+TSLA
+NFLX
+PLTR
+MU
+ORCL
+COST
+JPM
+LLY
+XOM
+Save list
+Scan now
+US only. Prime history once daily, then live scans use Finnhub.
+God mode rule board
+Tap to hide or show the setup checks
+6. What do I do now?
+Run daily routine
+Show command layer first
+No scan yet
+Prime history, run a scan, then use this box first. Tables are detail, this is the command layer.
+TRADES TODAY
+0
+OPEN P/L
+£0.00
+CLOSED P/L
+£0.00
+RISK OPEN
+£0.00
+LOSS LOCK ROOM
+n/a
+7. Current edge verdict
+No scan yet. Prime history, then run the scan.
+Buy candidates
+0
+A+ or APEX
+Open risk
+£0.00
+Estimated active stop risk
+Sell alerts
+0
+Stops, targets, stale exits
+Decision Engine, buy and sell map
+Best action now
+No scan yet
+Prime history and run the scan.
+Best buy zone
+n/a
+Ideal entry window.
+Chase cap
+n/a
+Above this, do not buy.
+Sell ladder
+n/a
+Stop, protect, target.
+Action cockpit, clear buy and sell board
+This is the simple command layer. Red sell commands come first. Green means the price is in the buy zone. Yellow means armed, wait for the level. Grey means no trade.
+MAIN COMMAND
+No scan yet
+Prime history and run the scan.
+BUY NOW
+0
+No buy zones yet.
+SELL NOW
+0
+No tracked positions shouting sell.
+ARMED WATCH
+0
+No near triggers yet.
+Scanner results
+APEX means highest quality. A+ means high quality. CONFIRMING means the price touched the zone but has not held long enough. BUY ZONE means the entry has been confirmed. CHASE BLOCKED means the stock may be good, but the price is not. Why not green explains the blocker in plain English.
+SYMBOL
+PRICE
+DAY %
+SCORE
+SIGNAL
+PROB
+EXP R
+SETUP
+BUY ZONE
+SELL LADDER
+STOP
+TARGET
+QTY
+BUY £
+BACKTEST
+CHART
+REASONS
+ACTION
+No scan yet.
+Open positions
+SYMBOL
+ENTRY
+LAST
+STOP
+TARGET
+QTY
+P/L
+%
+R
+SIGNAL
+ACTION
+No tracked positions yet.
+Manual trade ticket
+Click Ticket on a scanner row, or use the button below to add a position you already bought.
+Add owned position manually
+Execution is manual in Trading 212. If Trading 212’s live price, spread or available quantity differs from this ticket, recalc before buying. Prefer a limit order at or better than the buy zone, not a panic market order.
+Trade journal
+Export journal CSV
+Clear journal
+DATE
+SYMBOL
+SIDE
+ENTRY
+EXIT
+QTY
+P/L £
+R
+GRADE
+NOTES
+No journal entries yet.
+Trading 212 execution checklist
+
+Buy only inside the zone
+Use the ticket buy zone and do not chase level. If the price has run, wait.
+
+Track every manual order
+After buying in Trading 212, click Track after buying or I already own this.
+
+Sell alerts are instructions to review immediately
+The dashboard cannot place the sell. Sell manually first, then close it here with the real price.
+
+Scale only when the journal says so
+Use the feedback panel, expectancy and drawdown. Bigger stake only after evidence.
+Feedback and scale readiness
+This is the loop that makes the system better. Close trades from the Open positions table, then use this panel to measure whether the rules are working. Copy the review pack into ChatGPT for tuning.
+Logged trades
+0
+Minimum 30 before £500, 60 before £1,000.
+Win rate
+n/a
+Useful only with enough trades.
+Expectancy
+n/a
+Average R per trade after logged outcomes.
+Profit factor
+n/a
+Gross wins divided by gross losses.
+Total P/L
+£0.00
+From closed journal entries.
+Max drawdown
+£0.00
+Worst logged dip from equity peak.
+Average win / loss
+n/a
+Shows whether winners pay for losers.
+Scale status
+Not ready
+Log trades first.
+Refresh feedback
+Copy review pack
+Export journal JSON
+Import journal JSON
+Best feedback rhythm: after every closed trade, log the real Trading 212 exit price. After every 10 trades, copy the review pack here and we tighten the rules. This is how the system earns a bigger pot.
+Learning Lab, missed signals and behaviour coach
+This stores compact scan evidence, follows what happened later, compares it with trades you actually took, and flags behaviour leaks. It does not change filters by itself. You approve rule changes.
+Scan snapshots
+0
+Compact evidence saved locally.
+Confirmed greens
+0
+Valid buy zones logged.
+Missed greens
+0
+Confirmed signals not taken after 30 mins.
+Flickers filtered
+0
+Confirming signals that did not instantly become buys.
+Behaviour flags
+0
+Chased, early, spread or stop discipline issues.
+Best session
+n/a
+Where the signals are behaving best.
+Watchlist health
+n/a
+Keep, test or trim evidence.
+Learning verdict
+Collecting
+Run scans and close trades first.
+Copy learning pack
+Export learning JSON
+Clear learning memory
+No learning evidence yet. Run scans and close trades, then this panel will start calling out patterns.
+No behaviour read yet.
+Signal outcome tracker
+SIGNAL
+SAMPLES
+CONFIRMED
+MISSED
+TAKEN
+GREEN TIERS
+30M R
+2H R
+EOD R
+3D R
+CLOSED TRADES
+JOURNAL AVG R
+SUGGESTION
+No learning rows yet.
+Market session edge
+SESSION
+SAMPLES
+CONFIRMED
+MISSED
+30M R
+2H R
+READ
+No session evidence yet.
+Watchlist quality
+SYMBOL
+SAMPLES
+CONFIRMED
+MISSED
+TAKEN
+2H R
+JOURNAL R
+QUALITY
+ACTION
+No watchlist evidence yet.
+Local browser memory only. It learns from evidence created here, not from Trading 212 directly. It follows ignored greens as well as taken trades, because missed winners and avoided losers both matter.
+Not financial advice. This is a US-only decision support tool for manual investing through Trading 212. It can alert fast, track decisions and calculate feedback, but it cannot guarantee profit. Markets can gap through stops, data can be delayed or wrong, and accounts can be hit hard by spreads, FX and overtrading.
