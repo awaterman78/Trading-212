@@ -624,7 +624,7 @@
 <body>
 <header>
 <h1>Trading 212 Manual God Mode v67.1, Opportunity Engine</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v67 is US-only, manual execution, with faster 10 second scan polling, 30 second buy confirmation, blocker diagnostics, opportunity tiers, watchlist rotation, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v67.2 is US-only, manual execution, with safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, 30 second buy confirmation, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -736,36 +736,90 @@
 <div class="setupBody">
 <textarea id="watchlist">SPY
 QQQ
+IWM
+DIA
 NVDA
+AMD
+AVGO
+MU
+MRVL
+ARM
+TSM
+ASML
+LRCX
+KLAC
+AMAT
+QCOM
+INTC
+TXN
+SMCI
+ALAB
+CRDO
+WDC
+STX
 MSFT
 AAPL
 META
 AMZN
 GOOGL
+GOOG
 TSLA
-AMD
-PLTR
-MU
-ORCL
-AVGO
 NFLX
-JPM
-UBER
 CRM
-BA
+ORCL
+NOW
+SNOW
+PLTR
 CRWD
 PANW
-NKE
-AIR
-LLY</textarea>
+DDOG
+NET
+MDB
+SHOP
+APP
+UBER
+ABNB
+JPM
+BAC
+GS
+MS
+COIN
+HOOD
+MSTR
+SQ
+PYPL
+SOFI
+AFRM
+V
+MA
+LLY
+NVO
+UNH
+MRK
+ABBV
+TMO
+ISRG
+BA
+CAT
+GE
+GEV
+DE
+XOM
+CVX
+SLB
+COST
+WMT
+HD
+MCD
+NKE</textarea>
 <label>Momentum scan list, paste movers here during the day</label><textarea id="momentumList" placeholder="Optional extra tickers, one per line. Example:
 SMCI
 HOOD
 COIN"></textarea>
 <label><input checked="" id="includeLearningSymbols" style="width:auto;margin-right:6px" type="checkbox"/> Add Strong symbols from Learning Lab</label>
 <label><input checked="" id="avoidWeakSymbols" style="width:auto;margin-right:6px" type="checkbox"/> De-prioritise Weak and Low signal symbols</label>
-<div class="row tight" style="margin-top:10px"><button id="saveWatchlist">Save list</button><button class="good" id="scanNow">Scan now</button></div>
-<p class="tiny">US only. Core list plus optional momentum names plus Strong learned names. Weak learned names are pushed lower unless you untick the penalty box.</p>
+<div class="row tight" style="margin-top:10px"><button id="saveWatchlist">Save list</button><button class="secondary" data-restore-watchlist="1" type="button">Restore expanded list</button><button class="good" id="scanNow">Scan now</button></div>
+<p class="tiny">US only. Core list plus optional momentum names plus Strong learned names. Rotation is now non-destructive, Weak learned names are pushed lower, not deleted.</p>
 </div>
 </details>
 </div>
@@ -786,6 +840,7 @@ COIN"></textarea>
 <button class="secondary" id="unstickDay" type="button">Unstick day, controlled</button>
 <button class="secondary" id="normalMode" type="button">Normal rules</button>
 <button class="secondary" id="rotateWatchlist" type="button">Rotate watchlist from learning</button>
+<button class="secondary" data-restore-watchlist="1" type="button">Restore expanded list</button>
 <button class="secondary" id="showBlockers" type="button">Why no trades?</button>
 </div>
 <div class="sessionGrid" id="sessionPanel">
@@ -936,6 +991,7 @@ COIN"></textarea>
 const $=id=>document.getElementById(id);
 const LS={keys:'t212gm36_us_keys',settings:'t212gm36_us_settings',watchlist:'t212gm36_us_watchlist',history:'t212gm36_us_history',budget:'t212gm36_us_budget',earnings:'t212gm36_us_earnings',positions:'t212gm36_us_positions',journal:'t212gm36_us_journal',learning:'t212gm41_us_learning',learningLast:'t212gm41_us_learning_last',autoPrime:'t212gm36_us_auto_prime',momentum:'t212gm67_us_momentum_watchlist'};
 const state={quotes:{},ticks:{},history:{},earnings:{},positions:[],journal:[],learning:[],learningLastLog:{},lastRows:[],scannerFilter:'action',scannerShowAll:false,timer:null,ws:null,priming:false,live:false,lastMarket:null,alerts:{},buyConfirmations:{},unstickMode:false,lastBlockers:null};
+const EXPANDED_STARTER_WATCHLIST=["SPY", "QQQ", "IWM", "DIA", "NVDA", "AMD", "AVGO", "MU", "MRVL", "ARM", "TSM", "ASML", "LRCX", "KLAC", "AMAT", "QCOM", "INTC", "TXN", "SMCI", "ALAB", "CRDO", "WDC", "STX", "MSFT", "AAPL", "META", "AMZN", "GOOGL", "GOOG", "TSLA", "NFLX", "CRM", "ORCL", "NOW", "SNOW", "PLTR", "CRWD", "PANW", "DDOG", "NET", "MDB", "SHOP", "APP", "UBER", "ABNB", "JPM", "BAC", "GS", "MS", "COIN", "HOOD", "MSTR", "SQ", "PYPL", "SOFI", "AFRM", "V", "MA", "LLY", "NVO", "UNH", "MRK", "ABBV", "TMO", "ISRG", "BA", "CAT", "GE", "GEV", "DE", "XOM", "CVX", "SLB", "COST", "WMT", "HD", "MCD", "NKE"];
 function todayISO(){return new Date().toISOString().slice(0,10)}
 function futureISO(days){const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().slice(0,10)}
 function loadJSON(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
@@ -972,9 +1028,9 @@ if(!localStorage.getItem(v66SpeedKey)){
   if($('confirmAlertHoldSeconds') && (+$('confirmAlertHoldSeconds').value>=180 || !$('confirmAlertHoldSeconds').value))$('confirmAlertHoldSeconds').value='120';
   localStorage.setItem(v66SpeedKey,'yes');
 }
-const wl=localStorage.getItem(LS.watchlist);if(wl)$('watchlist').value=wl;const ml=localStorage.getItem(LS.momentum);if(ml&&$('momentumList'))$('momentumList').value=ml;const inc=localStorage.getItem('t212gm67_include_learning');if(inc!==null&&$('includeLearningSymbols'))$('includeLearningSymbols').checked=inc==='yes';const avoid=localStorage.getItem('t212gm67_avoid_weak');if(avoid!==null&&$('avoidWeakSymbols'))$('avoidWeakSymbols').checked=avoid==='yes';state.unstickMode=localStorage.getItem('t212gm67_unstick_mode')==='on';state.history=loadJSON(LS.history,{});state.earnings=loadJSON(LS.earnings,{});state.positions=loadJSON(LS.positions,[]);state.journal=loadJSON(LS.journal,[]);state.learning=loadJSON(LS.learning,[]);if(!Array.isArray(state.learning))state.learning=[];state.learningLastLog=loadJSON(LS.learningLast,{})||{}}
+const wl=localStorage.getItem(LS.watchlist);if(wl){$('watchlist').value=wl;if(parseSymbols(wl).length<20){const merged=[...new Set([...parseSymbols(wl),...EXPANDED_STARTER_WATCHLIST])].slice(0,90);$('watchlist').value=merged.join('\n');localStorage.setItem(LS.watchlist,$('watchlist').value);localStorage.setItem('t212gm67_2_watchlist_rescued','yes')}}const ml=localStorage.getItem(LS.momentum);if(ml&&$('momentumList'))$('momentumList').value=ml;const inc=localStorage.getItem('t212gm67_include_learning');if(inc!==null&&$('includeLearningSymbols'))$('includeLearningSymbols').checked=inc==='yes';const avoid=localStorage.getItem('t212gm67_avoid_weak');if(avoid!==null&&$('avoidWeakSymbols'))$('avoidWeakSymbols').checked=avoid==='yes';state.unstickMode=localStorage.getItem('t212gm67_unstick_mode')==='on';state.history=loadJSON(LS.history,{});state.earnings=loadJSON(LS.earnings,{});state.positions=loadJSON(LS.positions,[]);state.journal=loadJSON(LS.journal,[]);state.learning=loadJSON(LS.learning,[]);if(!Array.isArray(state.learning))state.learning=[];state.learningLastLog=loadJSON(LS.learningLast,{})||{}}
 function parseSymbols(text){return [...new Set(String(text||'').toUpperCase().split(/[\s,]+/).map(s=>s.trim()).filter(Boolean))]}
-function coreWatchlist(){return parseSymbols($('watchlist').value).slice(0,70)}
+function coreWatchlist(){return parseSymbols($('watchlist').value).slice(0,90)}
 function momentumWatchlist(){return $('momentumList')?parseSymbols($('momentumList').value).slice(0,35):[]}
 function learningStrongSymbols(){try{if($('includeLearningSymbols')&&!$('includeLearningSymbols').checked)return [];return (watchlistQuality?watchlistQuality():[]).filter(w=>w.quality==='Strong').map(w=>w.symbol).slice(0,20)}catch(e){return []}}
 function learningPenaltySymbols(){try{if($('avoidWeakSymbols')&&!$('avoidWeakSymbols').checked)return [];return (watchlistQuality?watchlistQuality():[]).filter(w=>w.quality==='Weak'||w.quality==='Low signal').map(w=>w.symbol)}catch(e){return []}}
@@ -1351,7 +1407,8 @@ function renderBlockerBoard(rows){if(!$('blockerBoard'))return;const c=blockerSu
 const tiles=[['Buy',c.buy,'good'],['Confirm',c.confirming,'warn'],['Scout',c.scout,'warn'],['Paper',c.paper,'warn'],['Owned',c.owned,'warn'],['Movement',c.movement,'bad'],['Trend',c.trend,'bad'],['Chase',c.chase,'bad'],['Cash',c.cash,'bad'],['Backtest',c.backtest,'warn'],['Earnings',c.earnings,'bad'],['History',c.history,'bad']];
 $('blockerBoard').innerHTML='<div class="blockerMain"><b class="'+cls+'">'+escapeHTML(main)+'</b><span>'+escapeHTML(sub)+'</span><div class="blockerList">'+tiles.filter(x=>x[1]>0).slice(0,8).map(x=>'<span class="blockerPill"><b>'+escapeHTML(x[0])+'</b>'+x[1]+'</span>').join('')+'</div></div>'+tiles.slice(0,4).map(x=>'<div class="blockerTile '+x[2]+'"><span>'+escapeHTML(x[0])+'</span><b>'+x[1]+'</b></div>').join('')
 }
-function rotateWatchlistFromLearning(){const q=watchlistQuality?watchlistQuality():[];const strong=q.filter(x=>x.quality==='Strong').map(x=>x.symbol);const weak=q.filter(x=>x.quality==='Weak'||x.quality==='Low signal').map(x=>x.symbol);if(!strong.length&&!weak.length)return toast('Learning rotation','Not enough symbol evidence yet. Keep scanning and closing trades first.','warn');const base=coreWatchlist();const kept=base.filter(s=>!weak.includes(s));const merged=[...new Set([...kept,...strong])].slice(0,70);$('watchlist').value=merged.join('\n');localStorage.setItem(LS.watchlist,$('watchlist').value);toast('Watchlist rotated','Added '+strong.length+' Strong learned symbol(s), pushed out '+(base.length-kept.length)+' weak non-core name(s). Prime history if new names were added.','good');renderLearningLab();renderHistoryState();}
+function restoreExpandedStarterWatchlist(){const current=parseSymbols($('watchlist').value);const merged=[...new Set([...EXPANDED_STARTER_WATCHLIST,...current])].slice(0,90);$('watchlist').value=merged.join('\n');localStorage.setItem(LS.watchlist,$('watchlist').value);toast('Expanded watchlist restored','Loaded '+merged.length+' liquid US names. Prime missing history before relying on new symbols.','good');renderHistoryState();}
+function rotateWatchlistFromLearning(){const q=watchlistQuality?watchlistQuality():[];const strong=q.filter(x=>x.quality==='Strong').map(x=>x.symbol);const weak=q.filter(x=>x.quality==='Weak'||x.quality==='Low signal').map(x=>x.symbol);if(!strong.length&&!weak.length)return toast('Learning rotation','Not enough symbol evidence yet. No changes made. Use Restore expanded list if your list is too small.','warn');const base=coreWatchlist();const weakSet=new Set(weak);const keptFirst=base.filter(s=>!weakSet.has(s));const weakLater=base.filter(s=>weakSet.has(s));const added=strong.filter(s=>!base.includes(s));const merged=[...new Set([...keptFirst,...added,...weakLater])].slice(0,90);$('watchlist').value=merged.join('\n');localStorage.setItem(LS.watchlist,$('watchlist').value);toast('Watchlist rotated safely','Added '+added.length+' Strong learned symbol(s). Removed 0. Weak names were moved lower, not deleted.','good');renderLearningLab();renderHistoryState();}
 
 function scannerBucket(r,s){if(!r||r.error)return 'blocked';s=s||activeSettings();if(isOwnedSymbol(r.symbol))return 'owned';if(isConfirmedBuy(r,s))return 'buy';if(r.buyTrigger==='CONFIRMING')return 'confirming';if(r.buyTrigger==='ARMED'||r.signal==='WATCH'||r.buyTrigger==='WATCH ONLY')return 'armed';const tier=opportunityTier(r);if(tier.code==='T2')return 'scout';if(tier.code==='T3')return 'paper';if(['NO CASH','NO ROOM','EXPOSURE CAP','ORDER TOO SMALL','RED LOCK','TARGET LOCK','CHASE BLOCKED'].includes(r.buyTrigger)||r.signal==='BLOCK')return 'blocked';return 'all'}
 function scannerFilteredRows(rows){const s=activeSettings(),f=state.scannerFilter||'action';const clean=(rows||[]).filter(Boolean);let out;if(f==='all')out=clean;else if(f==='action'){out=clean.filter(r=>['buy','confirming','armed','scout'].includes(scannerBucket(r,s)));if(!out.length){const nonOwned=clean.filter(r=>scannerBucket(r,s)!=='owned');out=(nonOwned.length?nonOwned:clean).slice(0,5)}}else out=clean.filter(r=>scannerBucket(r,s)===f);return out}
@@ -1679,7 +1736,7 @@ function notify(title,msg){if(!tradeAlertsEnabled())return;try{beep(880,0.10);se
 function startWS(){const s=settings();if(s.useWebSocket!=='yes'||!s.finnhubKey)return;try{if(state.ws)state.ws.close();const ws=new WebSocket('wss://ws.finnhub.io?token='+encodeURIComponent(s.finnhubKey));state.ws=ws;ws.onopen=()=>{watchlist().concat(marketSymbols()).forEach(sym=>ws.send(JSON.stringify({type:'subscribe',symbol:sym})));toast('Finnhub stream connected','Using streaming ticks where available.','good')};ws.onmessage=ev=>{try{const msg=JSON.parse(ev.data);if(msg.type==='trade'&&Array.isArray(msg.data)){msg.data.forEach(t=>{if(t.s&&isFinite(t.p)){appendTick(t.s.toUpperCase(),+t.p);if(state.quotes[t.s])state.quotes[t.s].price=+t.p}})}}catch(e){}};ws.onerror=()=>toast('Stream unavailable','Falling back to polling.','warn');ws.onclose=()=>{state.ws=null}}catch(e){toast('Stream unavailable','Falling back to polling.','warn')}}
 async function startLive(){if(state.live)return;state.live=true;$('liveDot').className='dot on';$('liveStatus').textContent='Watching';$('startLive').disabled=true;$('stopLive').disabled=false;startWS();await scan();state.timer=setInterval(scan,settings().pollSeconds*1000)}
 function stopLive(){state.live=false;if(state.timer)clearInterval(state.timer);state.timer=null;if(state.ws)state.ws.close();state.ws=null;$('liveDot').className='dot off';$('liveStatus').textContent='Stopped';$('startLive').disabled=false;$('stopLive').disabled=true}
-function exportCSV(){const rows=[['Date','Symbol','Side','Entry','Exit','Qty','PL GBP','R','Grade','Notes'],...state.journal.map(j=>[j.date,j.symbol,j.side,j.entry,j.exit,j.qty,j.pl,j.r,j.grade||'',j.notes])];const csv=rows.map(r=>r.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='trading212_god_mode_v67_1_journal.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function exportCSV(){const rows=[['Date','Symbol','Side','Entry','Exit','Qty','PL GBP','R','Grade','Notes'],...state.journal.map(j=>[j.date,j.symbol,j.side,j.entry,j.exit,j.qty,j.pl,j.r,j.grade||'',j.notes])];const csv=rows.map(r=>r.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='trading212_god_mode_v67_2_journal.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 
 async function runDailyRoutine(){saveSettings();localStorage.setItem(LS.watchlist,$('watchlist').value);const s=settings();if(!s.finnhubKey)return toast('Finnhub key needed','Add your Finnhub key before the daily routine.','warn');if($('dailyRoutine'))$('dailyRoutine').disabled=true;if($('liveStatus'))$('liveStatus').textContent='Loading';if(!tradeAlertsEnabled())toast('Alerts are off','Tap Buy/Sell alerts once if you want phone alerts for confirmed buys and sell alerts only.','warn');toast('Daily routine','Loading missing history first, then starting live watch. Manual execution only.','info');try{if(s.massiveKey||s.fmpKey||s.avKey){await primeHistory(false)}else{toast('History key missing','No history provider key found. Starting live quote watch with whatever cached history is available.','warn')}}catch(e){toast('History step had an issue',sanitizeError(e.message),'warn')}try{if(!state.live){await startLive();toast('Daily routine live','History checked and live watch is now running.','good')}else{await scan();toast('Daily routine refreshed','History checked and live scanner refreshed. Already live.','good')}}catch(e){toast('Live start or scan failed',sanitizeError(e.message),'bad')}finally{if($('dailyRoutine'))$('dailyRoutine').disabled=false}}
 
@@ -1700,7 +1757,7 @@ function commandShortcut(kind){
 function wireCommandShortcuts(){document.querySelectorAll('[data-command-shortcut]').forEach(b=>b.onclick=()=>commandShortcut(b.dataset.commandShortcut));}
 function focusCommandLayer(){const el=$('sessionPanel')||$('actionCockpit');if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'});}
 function maybeAutoPrimeDaily(){const s=settings();if(!s.autoPrimeDaily)return;if(!s.massiveKey&&!s.fmpKey&&!s.avKey)return;const last=localStorage.getItem(LS.autoPrime);if(last===todayISO())return;const missing=allSymbols().filter(x=>!historyFresh(x));if(!missing.length){localStorage.setItem(LS.autoPrime,todayISO());return}localStorage.setItem(LS.autoPrime,todayISO());setTimeout(()=>{toast('Daily history prime','Auto-priming '+missing.length+' missing symbol(s). This only runs when the page is open.','info');primeHistory(false)},900)}
-function bind(){ $('saveKeys').onclick=()=>{saveJSON(LS.keys,{finnhubKey:$('finnhubKey').value.trim(),massiveKey:$('massiveKey')?$('massiveKey').value.trim():'',fmpKey:$('fmpKey')?$('fmpKey').value.trim():'',avKey:$('avKey').value.trim()});toast('Keys saved','Stored locally in this browser only.','good')};$('saveRisk').onclick=()=>{saveSettings();const s=settings();$('riskPct').value=s.riskPct;$('maxAllocPct').value=s.maxAllocPct;$('dailyLossPct').value=s.dailyLossPct;if($('dailyTargetPct'))$('dailyTargetPct').value=s.dailyTargetPct;if($('dailyStretchPct'))$('dailyStretchPct').value=s.dailyStretchPct;$('maxExposurePct').value=s.maxExposurePct;if($('minOrderGBP'))$('minOrderGBP').value=s.minOrderGBP;if($('cashMode'))$('cashMode').value=s.cashMode;syncCashDisplay();toast('Risk saved','Settings updated and percent inputs normalised.','good')};$('saveFilters').onclick=()=>{saveSettings();toast('Filters saved','God mode filters updated, including v67 opportunity engine, cash and movement filters.','good')};$('saveWatchlist').onclick=()=>{localStorage.setItem(LS.watchlist,$('watchlist').value);if($('momentumList'))localStorage.setItem(LS.momentum,$('momentumList').value);if($('includeLearningSymbols'))localStorage.setItem('t212gm67_include_learning',$('includeLearningSymbols').checked?'yes':'no');if($('avoidWeakSymbols'))localStorage.setItem('t212gm67_avoid_weak',$('avoidWeakSymbols').checked?'yes':'no');toast('Watchlist saved','Core, momentum and learning rotation settings saved.','good')};if($('reconcileCash'))$('reconcileCash').onclick=reconcileCash;$('testData').onclick=async()=>{try{await fetchQuote('AAPL',settings().finnhubKey);toast('Live data OK','Finnhub quote returned for AAPL.','good')}catch(e){toast('Live data failed',sanitizeError(e.message),'bad')}};$('primeHistory').onclick=()=>primeHistory(false);$('refreshHistory').onclick=()=>primeHistory(true);if($('testHistory'))$('testHistory').onclick=testHistoryData;if($('resetAlphaBudget'))$('resetAlphaBudget').onclick=resetAlphaBudget;$('scanNow').onclick=scan;if($('dailyRoutine'))$('dailyRoutine').onclick=runDailyRoutine;if($('showTopOnly'))$('showTopOnly').onclick=focusCommandLayer;$('startLive').onclick=startLive;$('stopLive').onclick=stopLive;$('requestNotify').onclick=enableTradeAlerts;updateAlertButton();$('soundTest').onclick=()=>{beep(880,.08);setTimeout(()=>beep(1040,.08),120)};$('exportJournal').onclick=exportCSV;$('clearJournal').onclick=()=>{if(confirm('Clear journal in this browser?')){state.journal=[];saveJSON(LS.journal,state.journal);renderJournal()}};if($('refreshFeedback'))$('refreshFeedback').onclick=()=>{renderFeedback();renderLearningLab()};if($('copyReviewPack'))$('copyReviewPack').onclick=copyReviewPack;if($('exportJournalJSON'))$('exportJournalJSON').onclick=exportJSON;if($('importJournalJSON'))$('importJournalJSON').onchange=e=>importJSONFile(e.target.files[0]);if($('copyLearningPack'))$('copyLearningPack').onclick=copyLearningPack;if($('exportLearningJSON'))$('exportLearningJSON').onclick=exportLearningJSON;if($('clearLearning'))$('clearLearning').onclick=clearLearningMemory;if($('unstickDay'))$('unstickDay').onclick=()=>setUnstickMode(true);if($('normalMode'))$('normalMode').onclick=()=>setUnstickMode(false);if($('rotateWatchlist'))$('rotateWatchlist').onclick=rotateWatchlistFromLearning;if($('showBlockers'))$('showBlockers').onclick=()=>{if($('blockerSection'))$('blockerSection').scrollIntoView({behavior:'smooth',block:'start'});renderBlockerBoard(state.lastRows||[])};updateUnstickButtons()}
+function bind(){ $('saveKeys').onclick=()=>{saveJSON(LS.keys,{finnhubKey:$('finnhubKey').value.trim(),massiveKey:$('massiveKey')?$('massiveKey').value.trim():'',fmpKey:$('fmpKey')?$('fmpKey').value.trim():'',avKey:$('avKey').value.trim()});toast('Keys saved','Stored locally in this browser only.','good')};$('saveRisk').onclick=()=>{saveSettings();const s=settings();$('riskPct').value=s.riskPct;$('maxAllocPct').value=s.maxAllocPct;$('dailyLossPct').value=s.dailyLossPct;if($('dailyTargetPct'))$('dailyTargetPct').value=s.dailyTargetPct;if($('dailyStretchPct'))$('dailyStretchPct').value=s.dailyStretchPct;$('maxExposurePct').value=s.maxExposurePct;if($('minOrderGBP'))$('minOrderGBP').value=s.minOrderGBP;if($('cashMode'))$('cashMode').value=s.cashMode;syncCashDisplay();toast('Risk saved','Settings updated and percent inputs normalised.','good')};$('saveFilters').onclick=()=>{saveSettings();toast('Filters saved','God mode filters updated, including v67 opportunity engine, cash and movement filters.','good')};$('saveWatchlist').onclick=()=>{localStorage.setItem(LS.watchlist,$('watchlist').value);if($('momentumList'))localStorage.setItem(LS.momentum,$('momentumList').value);if($('includeLearningSymbols'))localStorage.setItem('t212gm67_include_learning',$('includeLearningSymbols').checked?'yes':'no');if($('avoidWeakSymbols'))localStorage.setItem('t212gm67_avoid_weak',$('avoidWeakSymbols').checked?'yes':'no');toast('Watchlist saved','Core, momentum and learning rotation settings saved.','good')};if($('reconcileCash'))$('reconcileCash').onclick=reconcileCash;$('testData').onclick=async()=>{try{await fetchQuote('AAPL',settings().finnhubKey);toast('Live data OK','Finnhub quote returned for AAPL.','good')}catch(e){toast('Live data failed',sanitizeError(e.message),'bad')}};$('primeHistory').onclick=()=>primeHistory(false);$('refreshHistory').onclick=()=>primeHistory(true);if($('testHistory'))$('testHistory').onclick=testHistoryData;if($('resetAlphaBudget'))$('resetAlphaBudget').onclick=resetAlphaBudget;$('scanNow').onclick=scan;if($('dailyRoutine'))$('dailyRoutine').onclick=runDailyRoutine;if($('showTopOnly'))$('showTopOnly').onclick=focusCommandLayer;$('startLive').onclick=startLive;$('stopLive').onclick=stopLive;$('requestNotify').onclick=enableTradeAlerts;updateAlertButton();$('soundTest').onclick=()=>{beep(880,.08);setTimeout(()=>beep(1040,.08),120)};$('exportJournal').onclick=exportCSV;$('clearJournal').onclick=()=>{if(confirm('Clear journal in this browser?')){state.journal=[];saveJSON(LS.journal,state.journal);renderJournal()}};if($('refreshFeedback'))$('refreshFeedback').onclick=()=>{renderFeedback();renderLearningLab()};if($('copyReviewPack'))$('copyReviewPack').onclick=copyReviewPack;if($('exportJournalJSON'))$('exportJournalJSON').onclick=exportJSON;if($('importJournalJSON'))$('importJournalJSON').onchange=e=>importJSONFile(e.target.files[0]);if($('copyLearningPack'))$('copyLearningPack').onclick=copyLearningPack;if($('exportLearningJSON'))$('exportLearningJSON').onclick=exportLearningJSON;if($('clearLearning'))$('clearLearning').onclick=clearLearningMemory;if($('unstickDay'))$('unstickDay').onclick=()=>setUnstickMode(true);if($('normalMode'))$('normalMode').onclick=()=>setUnstickMode(false);if($('rotateWatchlist'))$('rotateWatchlist').onclick=rotateWatchlistFromLearning;document.querySelectorAll('[data-restore-watchlist]').forEach(b=>b.onclick=restoreExpandedStarterWatchlist);if($('showBlockers'))$('showBlockers').onclick=()=>{if($('blockerSection'))$('blockerSection').scrollIntoView({behavior:'smooth',block:'start'});renderBlockerBoard(state.lastRows||[])};updateUnstickButtons()}
 loadSettings();bind();syncCashDisplay();renderHistoryState();renderPositions();renderFeedback();renderLearningLab();renderSessionPanel([]);setTimeout(maybeAutoPrimeDaily,1200);setInterval(()=>{if(state.positions.length)renderPositions()},15000);
 })();
 </script>
