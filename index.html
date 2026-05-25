@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v85, Growth Weighted Long Term</title>
+<title>Trading 212 Manual God Mode v87, Evidence Gated Allocator</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -621,7 +621,7 @@
     }
 
 
-/* v86 Best Portfolio Long Term, risk-adjusted allocator, single buy list */
+/* v87 Evidence Gated Long Term, real-data-aware allocator, single buy list */
 .longSimpleSection{border-color:rgba(46,229,137,.34);background:linear-gradient(180deg,rgba(46,229,137,.06),rgba(9,20,36,.98))}
 .ltSimpleTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ltSimpleTop h2{margin:0}.ltSimpleBadge{border:1px solid rgba(46,229,137,.35);background:rgba(46,229,137,.10);color:#ceffe3;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:950}
 .ltSimpleGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0}.ltSimpleGrid .mini{background:#07111f;border:1px solid rgba(141,162,187,.18);border-radius:13px;padding:9px}.ltSimpleGrid .mini span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.ltSimpleGrid .mini b{display:block;font-size:16px;margin-top:4px}
@@ -635,11 +635,19 @@
 /* v83 visible long term safeguard, use a div so old mobile section rules cannot hide it */
 .grid>#longSimpleSection.longSimpleSection{display:block!important;visibility:visible!important;max-height:none!important;opacity:1!important;grid-column:span 12!important;}
 @media(max-width:780px){.grid>#longSimpleSection.longSimpleSection{order:5!important;display:block!important;margin-top:8px!important;padding:10px!important;}.grid>#longSimpleSection.longSimpleSection::after{content:none!important;display:none!important;}.ltButtons{grid-template-columns:1fr!important}.ltPlanBox{margin-top:10px!important}}
+
+
+/* v87 evidence gate additions */
+.ltEvidenceGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}.ltEvidenceMini{background:#07111f;border:1px solid rgba(141,162,187,.18);border-radius:13px;padding:9px}.ltEvidenceMini span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.ltEvidenceMini b{display:block;font-size:15px;margin-top:4px}.ltEvidenceMini.pass{border-color:rgba(46,229,137,.38);background:rgba(46,229,137,.07)}.ltEvidenceMini.check{border-color:rgba(255,209,102,.38);background:rgba(255,209,102,.07)}.ltEvidenceMini.block{border-color:rgba(255,97,113,.38);background:rgba(255,97,113,.07)}
+.ltEvidencePills{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.ltEPill{display:inline-flex;border:1px solid rgba(141,162,187,.22);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;color:var(--muted);background:rgba(16,35,60,.52)}.ltEPill.pass{color:var(--good);border-color:rgba(46,229,137,.38);background:rgba(46,229,137,.10)}.ltEPill.check{color:var(--warn);border-color:rgba(255,209,102,.38);background:rgba(255,209,102,.10)}.ltEPill.block{color:var(--bad);border-color:rgba(255,97,113,.38);background:rgba(255,97,113,.10)}
+.ltPlanRow.pass{border-left:4px solid var(--good);padding-left:8px}.ltPlanRow.check{border-left:4px solid var(--warn);padding-left:8px}.ltPlanRow.block{border-left:4px solid var(--bad);padding-left:8px}.ltPlanRow .evidenceLine{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.35}.ltEvidenceReport{margin-top:12px}.ltEvidenceReport summary{cursor:pointer;list-style:none;border:1px solid rgba(141,162,187,.2);background:#07111f;border-radius:14px;padding:12px;font-weight:950;display:flex;justify-content:space-between;gap:10px}.ltEvidenceReport summary::-webkit-details-marker{display:none}.ltEvidenceBody{margin-top:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ltEvidenceCard{border:1px solid rgba(141,162,187,.16);background:rgba(7,17,31,.72);border-radius:14px;padding:10px}.ltEvidenceCard b{font-size:16px}.ltEvidenceCard .tiny{margin-top:5px}.ltSourceTag{display:inline-flex;border-radius:999px;border:1px solid rgba(94,231,255,.32);background:rgba(94,231,255,.08);color:var(--cyan);padding:3px 7px;font-size:10px;font-weight:900;margin-left:5px}
+@media(max-width:780px){.ltEvidenceGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.ltEvidenceBody{grid-template-columns:1fr}.ltPlanRow .evidenceLine{grid-column:1/4}.ltPlanRow .meta{font-size:11px}}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v85, Growth Weighted Long Term</h1>
+<h1>Trading 212 Manual God Mode v87, Evidence Gated Allocator</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v84 is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -651,7 +659,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v85</span>
+<span class="mobileTitleText">Manual God Mode v87</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -940,13 +948,13 @@ COIN"></textarea>
 <div class="scroll resultsScroll"><table id="resultsTable"><thead><tr><th>Symbol</th><th>Price</th><th>Day %</th><th>Score</th><th>Signal</th><th>Prob</th><th>Exp R</th><th>Setup</th><th>Buy zone</th><th>Sell ladder</th><th>Stop</th><th>Target</th><th>Qty</th><th>Buy £</th><th>Backtest</th><th>Chart</th><th>Reasons</th><th>Action</th></tr></thead><tbody id="resultsBody"><tr><td class="muted" colspan="18">No scan yet.</td></tr></tbody></table></div>
 </section>
 
-<div class="card span12 longSimpleSection" id="longSimpleSection" role="region" aria-label="Long term simple plan">
+<div class="card span12 longSimpleSection" id="longSimpleSection" role="region" aria-label="Long term evidence gated plan">
   <div class="ltSimpleTop">
-    <div><h2>Long term, best portfolio plan</h2><p class="tiny">One buy list only. The allocator now uses growth potential, quality, trend, evidence, valuation sanity, sector balance and concentration caps. Best means risk-adjusted, not just highest excitement.</p></div>
-    <span class="ltSimpleBadge">v86 best portfolio</span>
+    <div><h2>Long term, evidence gated portfolio plan</h2><p class="tiny">One buy list only. The app now separates evidence from guesswork. A stock only enters the finance plan if it passes the evidence gate, or it is a core ETF ballast row. Missing fundamentals become CHECK, not a buy.</p></div>
+    <span class="ltSimpleBadge">v87 evidence gate</span>
   </div>
   <div class="ltSimpleGrid" id="ltsOverview">
-    <div class="mini"><span>Plan</span><b>Not built</b></div><div class="mini"><span>Deploy</span><b>£0.00</b></div><div class="mini"><span>Hold cash</span><b>£0.00</b></div><div class="mini"><span>Tracker</span><b>0</b></div><div class="mini"><span>Journal</span><b>0</b></div>
+    <div class="mini"><span>Plan</span><b>Not built</b></div><div class="mini"><span>Evidence</span><b>Not checked</b></div><div class="mini"><span>Deploy</span><b>£0.00</b></div><div class="mini"><span>Hold cash</span><b>£0.00</b></div><div class="mini"><span>Journal</span><b>0</b></div>
   </div>
   <div class="ltControls">
     <label>Fund amount, £<input id="ltsFund" min="1" step="1" type="number" value="100"></label>
@@ -954,23 +962,26 @@ COIN"></textarea>
     <label>Max buys now<input id="ltsMaxBuys" min="1" max="8" step="1" type="number" value="5"></label>
     <label>Minimum buy, £<input id="ltsMinBuy" min="1" step="1" type="number" value="5"></label>
     <label>Style<select id="ltsStyle"><option value="best" selected>Best portfolio</option><option value="balanced">Balanced growth</option><option value="growth">Maximum growth</option><option value="etf">ETF safety first</option></select></label>
+    <label>Evidence strictness<select id="ltsStrictness"><option value="balanced" selected>Balanced evidence</option><option value="strict">Strict, fundamentals required</option><option value="explore">Explore, allow model candidates</option></select></label>
   </div>
   <div class="ltButtons">
-    <button class="good" id="ltsBuildPlan" type="button">Build finance plan</button>
+    <button class="good" id="ltsBuildPlan" type="button">Build evidence plan</button>
     <button class="secondary" id="ltsGoTracker" type="button">Go to tracker</button>
     <button class="secondary" id="ltsClearPlan" type="button">Clear today plan</button>
   </div>
   <div class="ltPlanBox">
-    <h2>Today’s finance plan, best portfolio weighted</h2>
-    <div id="ltsPlanSummary" class="ltPlanSummary">Tap Build finance plan. Amounts are weighted by growth potential, quality, trend, evidence and portfolio balance. Only rows shown here are buys today.</div>
+    <h2>Today’s finance plan, evidence gated</h2>
+    <div id="ltsPlanSummary" class="ltPlanSummary">Tap Build evidence plan. Only PASS rows can become buys. CHECK rows are watch or review only.</div>
+    <div id="ltsEvidenceGrid" class="ltEvidenceGrid"></div>
     <div class="ltPlanList" id="ltsPlanList"><div class="ltEmpty">No finance plan yet.</div></div>
-    <div class="ltWhat"><b>What you do</b><br/>Buy only these rows manually in Trading 212. Then tap Log bought on the same row. Ignore discovery names unless they appear in this plan.</div>
+    <div class="ltWhat"><b>What you do</b><br/>Buy only PASS rows shown in this finance plan manually in Trading 212. Then tap Log bought on the same row. If a name is CHECK, it needs better evidence before cash gets involved.</div>
+    <details class="ltEvidenceReport" id="ltsEvidenceReport"><summary><span>Evidence report</span><span class="muted">Shows passes, checks and blocks</span></summary><div class="ltEvidenceBody" id="ltsEvidenceBody"><div class="ltEmpty">No evidence report yet.</div></div></details>
   </div>
   <div class="ltAdvanced">
-    <details id="ltsRadarDetails"><summary><span>Growth radar, discovery only</span><span class="muted">Hidden unless you need ideas</span></summary><div class="ltAdvancedBody">
+    <details id="ltsRadarDetails"><summary><span>Growth radar, discovery only</span><span class="muted">Finds ideas, does not decide buys</span></summary><div class="ltAdvancedBody">
       <div class="row"><label>Universe<select id="ltsUniverse"><option value="broad">Broad radar</option><option value="growth">Growth, AI and semis</option><option value="quality">Quality compounders</option><option value="etf">ETF and sector core</option></select></label><label>Results<input id="ltsRadarCount" type="number" min="3" max="20" value="8"></label></div>
       <div class="row tight" style="margin-top:10px"><button class="secondary" id="ltsRunRadar" type="button">Find ideas</button></div>
-      <div id="ltsRadarList" class="ltRadarList"><div class="ltEmpty">Discovery only. Finance plan decides buys.</div></div>
+      <div id="ltsRadarList" class="ltRadarList"><div class="ltEmpty">Discovery only. Evidence plan decides buys.</div></div>
     </div></details>
   </div>
   <div class="ltTrackerBox" id="ltsTrackerBox">
@@ -1718,10 +1729,10 @@ function renderResults(rows){const s=activeSettings();rows=rows||[];const buyabl
 function setupText(r){if(r.signal==='BLOCK')return 'Blocked';if(r.signal==='APEX')return 'APEX setup';if(r.signal==='A_PLUS')return 'A+ high probability';if(r.signal==='BUY')return 'Buy candidate';if(r.signal==='WATCH')return 'Watch only';return 'No trade'}
 function showTicket(sym){const r=state.lastRows.find(x=>x.symbol===sym);if(!r||!r.quote)return;const owned=ownedPositionFor(sym);if(owned){const ev=evaluatePosition(owned);const advice=positionManagementAdvice(owned,ev);$('ticketBox').className=ev.signal==='SELL'?'dangerBox':'warnBox';$('ticketBox').innerHTML='<div class="big warnText">'+escapeHTML(sym)+' OWNED</div><p><b>This is already tracked.</b> Do not add another ticket for the same stock. Manage it from Open positions above.</p><div class="mono">Last: $'+n(owned.last,2)+'<br>Entry: $'+n(owned.entry,2)+'<br>Stop: $'+n(owned.stop,2)+'<br>Target: $'+n(owned.target,2)+'<br>Qty: '+qtyText(owned.qty)+'<br>Coach: '+escapeHTML(advice)+'<br>Reason: '+escapeHTML(ev.reason)+'</div>'+levelMapForPosition(owned,ev)+'<div class="actions" style="margin-top:12px"><button class="secondary" data-copy-qty="'+qtyText(owned.qty)+'">Copy qty</button><button class="secondary" data-breakeven="'+owned.id+'">B/E stop</button><button class="secondary" data-stop="'+owned.id+'">Stop</button><button class="bad" data-close="'+owned.id+'">Sold, close here</button></div>';bindActionButtons();return}const s=settings();const buyable=isConfirmedBuy(r,s);const trackButton=buyable?'<button class="good" data-ticket-track="'+r.symbol+'">Track system buy</button>':'<button class="secondary" disabled>Track locked, use I already own</button>';$('ticketBox').className=buyable?'okBox':'warnBox';$('ticketBox').innerHTML='<div class="big '+signalClass(r.signal)+'">'+r.symbol+' '+r.signal+'</div>'+orderCallout(r,buyable)+'<p><b>Manual Trading 212 action:</b> '+(buyable?'BUY ZONE, consider a manual buy only if Trading 212 live price is still inside the zone. Prefer a limit price no higher than the do not chase level.':'Do not treat this as a fresh buy signal. If you already bought manually, use I already own this so the dashboard can monitor the sell ladder.')+'</p><div class="mono">Live price: $'+n(r.quote.price,2)+'<br>Action: '+escapeHTML(r.buyTrigger||'')+'<br>Best buy zone: $'+n(r.buyZoneLow,2)+' to $'+n(r.buyZoneHigh,2)+'<br>Do not chase above: $'+n(r.maxChase,2)+'<br>Pullback reassess: $'+n(r.pullbackBuy,2)+'<br>Breakout trigger: $'+n(r.breakoutBuy,2)+'<br>Hard stop: $'+n(r.stop,2)+'<br>Profit protect: if price reaches $'+n(r.protect1,2)+', protect near $'+n(r.protectStop,2)+'<br>Trim/decision: $'+n(r.trimTarget,2)+'<br>Target: $'+n(r.target,2)+'<br><b>Buy amount: '+moneyGBP(r.valueGBP)+'</b><br><b>Buy quantity: '+qtyText(r.qty)+' shares</b><br>Estimated risk: '+moneyGBP(r.riskGBP)+'<br>Confidence: '+n(r.prob,0)+'%<br>Expected R: '+n(r.expR,2)+'</div>'+levelMapForRow(r)+'<div class="actions" style="margin-top:12px"><button class="secondary" data-copy-ticket="'+r.symbol+'">Copy ticket</button><button class="secondary" data-copy-qty="'+qtyText(r.qty)+'">Copy qty</button>'+trackButton+'<button class="warn" data-ticket-own="'+r.symbol+'">I already own this</button></div><p class="tiny">Reasons: '+escapeHTML([...r.reasons,...r.veto.map(v=>'VETO '+v)].join(', '))+'</p>';document.querySelectorAll('[data-copy-ticket]').forEach(b=>b.onclick=()=>copyTicket(b.dataset.copyTicket));document.querySelectorAll('[data-copy-qty]').forEach(b=>b.onclick=()=>copyQty(b.dataset.copyQty));document.querySelectorAll('[data-ticket-track]').forEach(b=>b.onclick=()=>trackPosition(b.dataset.ticketTrack));document.querySelectorAll('[data-ticket-own]').forEach(b=>b.onclick=()=>ownPosition(b.dataset.ticketOwn));}
 function copyTicket(sym){const r=state.lastRows.find(x=>x.symbol===sym);if(!r)return;const txt=[r.symbol+' '+r.signal,'Action '+(r.buyTrigger||''),'Suggested buy amount '+moneyGBP(r.valueGBP),'Suggested quantity '+qtyText(r.qty)+' shares','Estimated max risk '+moneyGBP(r.riskGBP),'Live price $'+n(r.quote.price,2),'Best buy zone $'+n(r.buyZoneLow,2)+' to $'+n(r.buyZoneHigh,2),'Do not chase above $'+n(r.maxChase,2),'Pullback reassess $'+n(r.pullbackBuy,2),'Breakout trigger $'+n(r.breakoutBuy,2),'Hard stop $'+n(r.stop,2),'Protect stop $'+n(r.protectStop,2)+' after $'+n(r.protect1,2),'Target $'+n(r.target,2),'Prob '+n(r.prob,0)+'%','Expected R '+n(r.expR,2)].join('\n');navigator.clipboard&&navigator.clipboard.writeText(txt);toast('Ticket copied',sym+' order size and ticket copied to clipboard.','good')}
-function trackPosition(sym){const existing=ownedPositionFor(sym);if(existing){toast('Already tracked',sym+' is already in Open positions. Manage or close that position before adding another.','warn');showTicket(sym);return}const r=state.lastRows.find(x=>x.symbol===sym);if(!r||!r.quote)return;const s=activeSettings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');if(!isConfirmedBuy(r,s))return toast('Not buyable','This row is '+r.signal+' with action '+(r.buyTrigger||'n/a')+'. Wait for CONFIRMED BUY, or use Own only if you already bought it.','warn');const tier=greenQualityTier(r);let entry=parseFloat(prompt('Actual Trading 212 buy price in USD for '+sym+'. Suggested live price was $'+n(r.quote.price,2), n(r.quote.price,2)));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Actual quantity bought in Trading 212 for '+sym+'. Suggested quantity was '+qtyText(r.qty), qtyText(r.qty)));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');const spreadOk=confirm('Did the Trading 212 spread and available quantity look acceptable? OK = yes, Cancel = questionable.');const warnings=[];let entryVsZone='inside zone';if(entry>r.maxChase){warnings.push('bought above chase cap');entryVsZone='above chase cap';if(!confirm('That buy price is above the chase cap $'+n(r.maxChase,2)+'. Track it anyway as a behaviour warning?'))return}else if(entry>r.buyZoneHigh){warnings.push('bought above buy zone');entryVsZone='above buy zone'}else if(entry<r.buyZoneLow){entryVsZone='below buy zone'}if(!spreadOk)warnings.push('spread or liquidity not confirmed');if(entry<=r.stop){warnings.push('entry too close to or below stop');if(!confirm('Entry is at or below the planned stop. Track anyway?'))return}const riskGBP=Math.max(0,(entry-r.stop)*qty/s.gbpUsd);const valueGBP=qty*entry/s.gbpUsd*(1+s.fxFeePct/100);const pos={id:Date.now()+sym,symbol:sym,entry,last:r.quote.price,stop:r.stop,initialStop:r.stop,target:r.target,qty,valueGBP,riskGBP,openedAt:new Date().toISOString(),peak:Math.max(entry,r.quote.price),signal:r.signal,score:r.score,prob:r.prob,expR:r.expR,buyTrigger:r.buyTrigger,exitMode:state.cashVelocityMode?'SCALP':'STANDARD',greenTier:tier.tier,entryVsZone,behaviourWarnings:warnings,reasons:[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '),notes:'Opened from Manual God Mode v85'+(state.cashVelocityMode?' SCALP':'')+', '+r.signal+', '+tier.tier+', score '+n(r.score,0)+', confidence '+n(r.prob,0)+'%, expected R '+n(r.expR,2)+(warnings.length?', WARNINGS '+warnings.join('; '):'')};state.positions.push(pos);markLatestLearningTaken(sym,{actualEntry:entry,actualQty:qty,spreadOk,warnings,entryVsZone});saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderLearningLab();renderResults(state.lastRows||[]);toast(warnings.length?'Position tracked with warning':'Position tracked',sym+' added to open positions. '+(warnings.length?'Behaviour warning saved: '+warnings.join(', '):'Now manage it from the sell ladder.'),warnings.length?'warn':'good')}
-function ownPosition(sym){const existing=ownedPositionFor(sym);if(existing){toast('Already tracked',sym+' is already in Open positions. Manage it above instead of adding a duplicate.','warn');showTicket(sym);return}const r=state.lastRows.find(x=>x.symbol===sym);if(!r||!r.quote)return;const s=settings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');const entry=parseFloat(prompt('Entry price in USD for '+sym, n(r.quote.price,2)));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Quantity owned for '+sym, qtyText(r.qty||0)));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');let stop=parseFloat(prompt('Stop price in USD', n(Math.min(r.stop,entry-(r.riskUSD||entry*.025)),2)));if(!isFinite(stop)||stop<=0||stop>=entry)stop=entry-Math.max(entry*.018,r.riskUSD||entry*.025);const target=parseFloat(prompt('Target price in USD', n(entry+(entry-stop)*s.targetR,2)))||entry+(entry-stop)*s.targetR;const pos={id:Date.now()+sym,symbol:sym,entry,last:r.quote.price,stop,initialStop:stop,target,qty,valueGBP:qty*entry/s.gbpUsd,riskGBP:Math.max(0,(entry-stop)*qty/s.gbpUsd),openedAt:new Date().toISOString(),peak:Math.max(entry,r.quote.price),signal:'OWNED',score:r.score,prob:r.prob,expR:r.expR,buyTrigger:'OWNED',exitMode:'MANUAL',reasons:[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '),notes:'Manually marked owned in Manual God Mode v85, scan score '+n(r.score,0)};state.positions.push(pos);saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderResults(state.lastRows||[]);toast('Owned position tracked',sym+' is now monitored for SELL alerts.','good')}
+function trackPosition(sym){const existing=ownedPositionFor(sym);if(existing){toast('Already tracked',sym+' is already in Open positions. Manage or close that position before adding another.','warn');showTicket(sym);return}const r=state.lastRows.find(x=>x.symbol===sym);if(!r||!r.quote)return;const s=activeSettings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');if(!isConfirmedBuy(r,s))return toast('Not buyable','This row is '+r.signal+' with action '+(r.buyTrigger||'n/a')+'. Wait for CONFIRMED BUY, or use Own only if you already bought it.','warn');const tier=greenQualityTier(r);let entry=parseFloat(prompt('Actual Trading 212 buy price in USD for '+sym+'. Suggested live price was $'+n(r.quote.price,2), n(r.quote.price,2)));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Actual quantity bought in Trading 212 for '+sym+'. Suggested quantity was '+qtyText(r.qty), qtyText(r.qty)));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');const spreadOk=confirm('Did the Trading 212 spread and available quantity look acceptable? OK = yes, Cancel = questionable.');const warnings=[];let entryVsZone='inside zone';if(entry>r.maxChase){warnings.push('bought above chase cap');entryVsZone='above chase cap';if(!confirm('That buy price is above the chase cap $'+n(r.maxChase,2)+'. Track it anyway as a behaviour warning?'))return}else if(entry>r.buyZoneHigh){warnings.push('bought above buy zone');entryVsZone='above buy zone'}else if(entry<r.buyZoneLow){entryVsZone='below buy zone'}if(!spreadOk)warnings.push('spread or liquidity not confirmed');if(entry<=r.stop){warnings.push('entry too close to or below stop');if(!confirm('Entry is at or below the planned stop. Track anyway?'))return}const riskGBP=Math.max(0,(entry-r.stop)*qty/s.gbpUsd);const valueGBP=qty*entry/s.gbpUsd*(1+s.fxFeePct/100);const pos={id:Date.now()+sym,symbol:sym,entry,last:r.quote.price,stop:r.stop,initialStop:r.stop,target:r.target,qty,valueGBP,riskGBP,openedAt:new Date().toISOString(),peak:Math.max(entry,r.quote.price),signal:r.signal,score:r.score,prob:r.prob,expR:r.expR,buyTrigger:r.buyTrigger,exitMode:state.cashVelocityMode?'SCALP':'STANDARD',greenTier:tier.tier,entryVsZone,behaviourWarnings:warnings,reasons:[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '),notes:'Opened from Manual God Mode v87'+(state.cashVelocityMode?' SCALP':'')+', '+r.signal+', '+tier.tier+', score '+n(r.score,0)+', confidence '+n(r.prob,0)+'%, expected R '+n(r.expR,2)+(warnings.length?', WARNINGS '+warnings.join('; '):'')};state.positions.push(pos);markLatestLearningTaken(sym,{actualEntry:entry,actualQty:qty,spreadOk,warnings,entryVsZone});saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderLearningLab();renderResults(state.lastRows||[]);toast(warnings.length?'Position tracked with warning':'Position tracked',sym+' added to open positions. '+(warnings.length?'Behaviour warning saved: '+warnings.join(', '):'Now manage it from the sell ladder.'),warnings.length?'warn':'good')}
+function ownPosition(sym){const existing=ownedPositionFor(sym);if(existing){toast('Already tracked',sym+' is already in Open positions. Manage it above instead of adding a duplicate.','warn');showTicket(sym);return}const r=state.lastRows.find(x=>x.symbol===sym);if(!r||!r.quote)return;const s=settings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');const entry=parseFloat(prompt('Entry price in USD for '+sym, n(r.quote.price,2)));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Quantity owned for '+sym, qtyText(r.qty||0)));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');let stop=parseFloat(prompt('Stop price in USD', n(Math.min(r.stop,entry-(r.riskUSD||entry*.025)),2)));if(!isFinite(stop)||stop<=0||stop>=entry)stop=entry-Math.max(entry*.018,r.riskUSD||entry*.025);const target=parseFloat(prompt('Target price in USD', n(entry+(entry-stop)*s.targetR,2)))||entry+(entry-stop)*s.targetR;const pos={id:Date.now()+sym,symbol:sym,entry,last:r.quote.price,stop,initialStop:stop,target,qty,valueGBP:qty*entry/s.gbpUsd,riskGBP:Math.max(0,(entry-stop)*qty/s.gbpUsd),openedAt:new Date().toISOString(),peak:Math.max(entry,r.quote.price),signal:'OWNED',score:r.score,prob:r.prob,expR:r.expR,buyTrigger:'OWNED',exitMode:'MANUAL',reasons:[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '),notes:'Manually marked owned in Manual God Mode v87, scan score '+n(r.score,0)};state.positions.push(pos);saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderResults(state.lastRows||[]);toast('Owned position tracked',sym+' is now monitored for SELL alerts.','good')}
 
-function addManualPosition(){const s=settings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');const syms=watchlist();let sym=prompt('Ticker you bought, for example XOM, NVDA, AAPL', syms[0]||'');if(!sym)return;sym=String(sym).trim().toUpperCase();if(ownedPositionFor(sym))return toast('Already tracked',sym+' is already in Open positions. Manage or close it before adding another.','warn');let r=state.lastRows.find(x=>x.symbol===sym);let q=r&&r.quote?state.quotes[sym]||r.quote:state.quotes[sym];const last=isFinite(q&&q.price)?q.price:null;const entry=parseFloat(prompt('Your actual Trading 212 entry price in USD for '+sym, last?n(last,2):''));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Quantity owned for '+sym, r&&r.qty?qtyText(r.qty):''));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');let defaultStop=r&&isFinite(r.stop)?Math.min(r.stop,entry*0.985):entry*0.975;let stop=parseFloat(prompt('Stop price in USD. Use a real level, not hope.', n(defaultStop,2)));if(!isFinite(stop)||stop<=0||stop>=entry)stop=entry*0.975;let defaultTarget=r&&isFinite(r.target)?Math.max(r.target,entry+(entry-stop)*s.targetR):entry+(entry-stop)*s.targetR;const target=parseFloat(prompt('Target price in USD', n(defaultTarget,2)))||defaultTarget;const lastPrice=last||entry;const pos={id:Date.now()+sym,symbol:sym,entry,last:lastPrice,stop,initialStop:stop,target,qty,valueGBP:qty*entry/s.gbpUsd,riskGBP:Math.max(0,(entry-stop)*qty/s.gbpUsd),openedAt:new Date().toISOString(),peak:Math.max(entry,lastPrice),signal:'MANUAL OWNED',score:r&&isFinite(r.score)?r.score:null,prob:r&&isFinite(r.prob)?r.prob:null,expR:r&&isFinite(r.expR)?r.expR:null,buyTrigger:'MANUAL OWNED',exitMode:'MANUAL',reasons:r?[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '):'Manual position added without scan row',notes:'Manually added owned position in Manual God Mode v85. This does not mean the system approved the entry.'};state.positions.push(pos);saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderResults(state.lastRows||[]);toast('Manual position added',sym+' is now monitored for sell alerts. This did not place any order in Trading 212.','good')}
+function addManualPosition(){const s=settings();if(state.positions.length>=s.maxOpenPositions)return toast('Max positions reached','God mode is set to '+s.maxOpenPositions+' open position(s). Close or remove one first.','warn');const syms=watchlist();let sym=prompt('Ticker you bought, for example XOM, NVDA, AAPL', syms[0]||'');if(!sym)return;sym=String(sym).trim().toUpperCase();if(ownedPositionFor(sym))return toast('Already tracked',sym+' is already in Open positions. Manage or close it before adding another.','warn');let r=state.lastRows.find(x=>x.symbol===sym);let q=r&&r.quote?state.quotes[sym]||r.quote:state.quotes[sym];const last=isFinite(q&&q.price)?q.price:null;const entry=parseFloat(prompt('Your actual Trading 212 entry price in USD for '+sym, last?n(last,2):''));if(!isFinite(entry)||entry<=0)return;let qty=parseFloat(prompt('Quantity owned for '+sym, r&&r.qty?qtyText(r.qty):''));if(!isFinite(qty)||qty<=0)return;qty=t212Qty(qty);if(qty<=0)return toast('Quantity too small','Trading 212 accepts 3 decimals, so this would round to 0.000.','warn');let defaultStop=r&&isFinite(r.stop)?Math.min(r.stop,entry*0.985):entry*0.975;let stop=parseFloat(prompt('Stop price in USD. Use a real level, not hope.', n(defaultStop,2)));if(!isFinite(stop)||stop<=0||stop>=entry)stop=entry*0.975;let defaultTarget=r&&isFinite(r.target)?Math.max(r.target,entry+(entry-stop)*s.targetR):entry+(entry-stop)*s.targetR;const target=parseFloat(prompt('Target price in USD', n(defaultTarget,2)))||defaultTarget;const lastPrice=last||entry;const pos={id:Date.now()+sym,symbol:sym,entry,last:lastPrice,stop,initialStop:stop,target,qty,valueGBP:qty*entry/s.gbpUsd,riskGBP:Math.max(0,(entry-stop)*qty/s.gbpUsd),openedAt:new Date().toISOString(),peak:Math.max(entry,lastPrice),signal:'MANUAL OWNED',score:r&&isFinite(r.score)?r.score:null,prob:r&&isFinite(r.prob)?r.prob:null,expR:r&&isFinite(r.expR)?r.expR:null,buyTrigger:'MANUAL OWNED',exitMode:'MANUAL',reasons:r?[...r.reasons,...(r.veto||[]).map(v=>'VETO '+v)].join(', '):'Manual position added without scan row',notes:'Manually added owned position in Manual God Mode v87. This does not mean the system approved the entry.'};state.positions.push(pos);saveJSON(LS.positions,state.positions);syncCashDisplay();renderPositions();renderResults(state.lastRows||[]);toast('Manual position added',sym+' is now monitored for sell alerts. This did not place any order in Trading 212.','good')}
 
 function positionAgeMinutes(p){
   const t=Date.parse(p&&p.openedAt?p.openedAt:'');
@@ -1911,12 +1922,12 @@ function behaviourStats(){const flags=[];let count=0;const warn=(txt)=>{count++;
 function suggestionForGroup(g,j){const avg2=avgNums(g.r2h),avg30=avgNums(g.r30),avgR=j&&j.trades?j.r/j.trades:null;if(j&&j.trades>=5&&avgR<0)return 'Tighten or pause this signal until it earns its keep.';if(j&&j.trades>=5&&avgR>=0.25)return 'This signal is earning, keep it and study the common setup.';if(g.confirmed>=8&&g.missed/g.confirmed>0.6&&avg2!==null&&avg2>0.20)return 'You are missing useful greens. Reduce hesitation, not filters.';if(g.confirmed>=8&&g.missed/g.confirmed>0.6&&avg2!==null&&avg2<0)return 'Good misses. The system offered greens, but patience saved you.';if(g.samples>=25&&g.confirmed===0&&g.confirming>8)return 'Lots of almost signals. Confirmation is protecting you from flickers.';if(g.chase>=10&&avg2!==null&&avg2<0)return 'Chase block looks useful. Do not loosen it yet.';if(g.chase>=15&&avg2!==null&&avg2>0.25)return 'Possible over strict chase cap. Review before changing.';if(avg30!==null&&avg30>0.25&&avg2!==null&&avg2<0)return 'Fast pop then fade. Consider quicker profit protection.';if(g.samples<10)return 'Too little evidence. Keep collecting.';return 'No rule change yet. Evidence is mixed or still young.'}
 function learningStats(){const rows=state.learning||[],groups=learningGroups(),jSig=journalBySignal(),closed=(state.journal||[]).length;const confirmed=rows.filter(x=>x.confirmed).length,confirming=rows.filter(x=>x.confirming||x.buyTrigger==='CONFIRMING').length,missed=rows.filter(x=>x.missed).length,taken=rows.filter(x=>wasSignalTaken(x)).length;const behaviour=behaviourStats(),sessions=sessionGroups(),watch=watchlistQuality();const suggestions=[];const st=journalStats();if(rows.length<50)suggestions.push('Collect at least 50 scan snapshots before changing filters.');if(closed<10)suggestions.push('Get 10 closed trades before judging expectancy. Early samples lie like a dodgy estate agent.');if(st.total>=10&&st.expectancyR!==null&&st.expectancyR<0)suggestions.push('Journal expectancy is negative. Tighten entry quality before increasing stake.');if(st.total>=10&&st.expectancyR!==null&&st.expectancyR>0)suggestions.push('Journal expectancy is positive. Keep size steady and collect more proof before scaling.');const sniperGroups=groups.filter(g=>g.hit10Samples>=10);if(sniperGroups.length){const bestHit=sniperGroups.slice().sort((a,b)=>(b.hit10/b.hit10Samples)-(a.hit10/a.hit10Samples))[0];const hr=bestHit.hit10/bestHit.hit10Samples*100;suggestions.push('Best 10m ignition hit rate is '+bestHit.signal+' at '+n(hr,0)+'% from '+bestHit.hit10Samples+' measured signals. Use that as supervised evidence, not a promise.')}const flickerRatio=confirming?confirmed/confirming:0;if(confirming>=12&&flickerRatio<0.35)suggestions.push('Confirmation timer is filtering many flickers. Keep it, or raise it by 15 seconds if fake greens still appear.');const missedGreens=rows.filter(x=>x.missed&&x.outcomes&&x.outcomes.h2&&isFinite(x.outcomes.h2.r)).map(x=>+x.outcomes.h2.r);const missedAvg=avgNums(missedGreens);if(missedGreens.length>=5&&missedAvg>0.25)suggestions.push('Missed greens are averaging '+n(missedAvg,2)+'R after 2h. Hesitation may be costing you. Use Green A/B sizing rules.');if(missedGreens.length>=5&&missedAvg<0)suggestions.push('Missed greens are averaging '+n(missedAvg,2)+'R after 2h. Skipping them has not hurt yet.');groups.forEach(g=>{const j=jSig[g.signal];const avgR=j&&j.trades?j.r/j.trades:null;if(j&&j.trades>=5&&avgR<0)suggestions.push(g.signal+' has '+j.trades+' closed trades at '+n(avgR,2)+'R average. Consider raising thresholds for this signal.');if(j&&j.trades>=5&&avgR>0.25)suggestions.push(g.signal+' has '+j.trades+' closed trades at '+n(avgR,2)+'R average. Keep it, but do not over size yet.');});const bestSession=sessions.find(s=>s.r2h.length>=5);if(bestSession)suggestions.push('Best session so far is '+bestSession.session+' at '+n(avgNums(bestSession.r2h),2)+'R average after 2h. Treat other sessions with more caution.');const weak=watch.filter(w=>w.quality==='Weak').slice(0,3);if(weak.length)suggestions.push('Watchlist trim candidates: '+weak.map(w=>w.symbol).join(', ')+'. Do not bin them blindly, but demote them.');if(behaviour.count>=3)suggestions.push('Behaviour flags are building. Fix execution habits before loosening filters.');if(!suggestions.length)suggestions.push('No obvious tweak yet. Cash and patience remain unbeaten.');let verdict='Collecting',reason='Need more scan snapshots and closed trades.';if(behaviour.count>=5){verdict='Fix behaviour';reason='Execution flags are more important than filter tweaks right now.'}else if(st.total>=10&&st.expectancyR!==null){if(st.expectancyR>0){verdict='Learning positive';reason='Closed trade expectancy is above zero. Keep collecting before scaling.'}else{verdict='Tighten rules';reason='Closed trade expectancy is below zero. Reduce lower quality entries.'}}return {rows,groups,jSig,confirmed,confirming,missed,taken,behaviour,sessions,watch,verdict,reason,suggestions:suggestions.slice(0,10)}}
 function renderLearningLab(){if(!$('learningBody'))return;const ls=learningStats();$('learnSnapshots').textContent=String(ls.rows.length);$('learnConfirmed').textContent=String(ls.confirmed);$('learnMissed').textContent=String(ls.missed);$('learnFlickers').textContent=String(ls.confirming);$('learnBehaviour').textContent=String(ls.behaviour.count);const bestSession=ls.sessions.find(s=>s.r2h.length>=3);$('learnSession').textContent=bestSession?bestSession.session.replace(' US market',''): 'n/a';const strong=ls.watch.filter(w=>w.quality==='Strong').length,weak=ls.watch.filter(w=>w.quality==='Weak').length;$('learnWatchlist').textContent=ls.watch.length?(strong+' strong / '+weak+' weak'):'n/a';$('learnVerdict').textContent=ls.verdict;$('learnVerdict').className='val '+(ls.verdict==='Learning positive'?'goodText':(ls.verdict==='Tighten rules'||ls.verdict==='Fix behaviour'?'badText':'warnText'));$('learnVerdictReason').textContent=ls.reason;$('learningSuggestions').className=ls.verdict==='Learning positive'?'okBox':(ls.verdict==='Tighten rules'||ls.verdict==='Fix behaviour'?'dangerBox':'warnBox');$('learningSuggestions').innerHTML='<b>Supervised suggestions</b><div class="tiny" style="margin-top:6px">'+ls.suggestions.map(x=>'• '+escapeHTML(x)).join('<br>')+'</div>';$('behaviourBox').className=ls.behaviour.cls;$('behaviourBox').innerHTML='<b>Behaviour detector: '+escapeHTML(ls.behaviour.verdict)+'</b><div class="tiny" style="margin-top:6px">'+(ls.behaviour.flags.length?ls.behaviour.flags.map(x=>'• '+escapeHTML(x)).join('<br>'):'No obvious execution leaks yet. Keep it boring, boring is profitable.')+'</div>';const html=ls.groups.map(g=>{const j=ls.jSig[g.signal]||{trades:0,wins:0,pl:0,r:0};const avg5=avgNums(g.r5),avg10=avgNums(g.r10),avg15=avgNums(g.r15),avg30=avgNums(g.r30),avg2=avgNums(g.r2h),avgJR=j.trades?j.r/j.trades:null;const hitRate=g.hit10Samples?g.hit10/g.hit10Samples*100:null;return '<tr><td data-label="Signal"><b>'+escapeHTML(g.signal)+'</b></td><td data-label="Samples">'+g.samples+'</td><td data-label="Confirmed">'+g.confirmed+'</td><td data-label="Missed">'+g.missed+'</td><td data-label="Taken">'+g.taken+'</td><td data-label="Green tiers" class="tiny">A '+g.greenA+' / B '+g.greenB+' / C '+g.greenC+'</td><td data-label="5m R">'+(avg5===null?'n/a':n(avg5,2)+'R')+'</td><td data-label="10m R">'+(avg10===null?'n/a':n(avg10,2)+'R')+'</td><td data-label="Hit target 10m" class="'+(hitRate!==null&&(hitRate>=60?'hitRateGood':hitRate<45?'hitRateBad':''))+'">'+(hitRate===null?'n/a':n(hitRate,0)+'%')+'</td><td data-label="15m R">'+(avg15===null?'n/a':n(avg15,2)+'R')+'</td><td data-label="30m R">'+(avg30===null?'n/a':n(avg30,2)+'R')+'</td><td data-label="2h R">'+(avg2===null?'n/a':n(avg2,2)+'R')+'</td><td data-label="Closed trades">'+j.trades+'</td><td data-label="Journal avg R">'+(avgJR===null?'n/a':n(avgJR,2)+'R')+'</td><td data-label="Suggestion" class="tiny">'+escapeHTML(suggestionForGroup(g,j))+'</td></tr>'}).join('');$('learningBody').innerHTML=html||'<tr><td colspan="15" class="muted">No learning rows yet.</td></tr>';const sessionHtml=ls.sessions.map(s=>{const a30=avgNums(s.r30),a2=avgNums(s.r2h);let read='Collect more';if(s.samples>=10&&a2!==null&&a2>0.15)read='Promising session';else if(s.samples>=10&&a2!==null&&a2<0)read='Be cautious here';return '<tr><td data-label="Session"><b>'+escapeHTML(s.session)+'</b></td><td data-label="Samples">'+s.samples+'</td><td data-label="Confirmed">'+s.confirmed+'</td><td data-label="Missed">'+s.missed+'</td><td data-label="30m R">'+(a30===null?'n/a':n(a30,2)+'R')+'</td><td data-label="2h R">'+(a2===null?'n/a':n(a2,2)+'R')+'</td><td data-label="Read" class="tiny">'+escapeHTML(read)+'</td></tr>'}).join('');if($('sessionLearningBody'))$('sessionLearningBody').innerHTML=sessionHtml||'<tr><td colspan="7" class="muted">No session evidence yet.</td></tr>';const watchHtml=ls.watch.slice(0,40).map(w=>'<tr><td data-label="Symbol"><b>'+escapeHTML(w.symbol)+'</b></td><td data-label="Samples">'+w.samples+'</td><td data-label="Confirmed">'+w.confirmed+'</td><td data-label="Missed">'+w.missed+'</td><td data-label="Taken">'+w.taken+'</td><td data-label="2h R">'+(w.avg2===null?'n/a':n(w.avg2,2)+'R')+'</td><td data-label="Journal R">'+(w.jAvg===null?'n/a':n(w.jAvg,2)+'R')+'</td><td data-label="Quality" class="'+w.cls+'"><b>'+escapeHTML(w.quality)+'</b></td><td data-label="Action" class="tiny">'+escapeHTML(w.action)+'</td></tr>').join('');if($('watchLearningBody'))$('watchLearningBody').innerHTML=watchHtml||'<tr><td colspan="9" class="muted">No watchlist evidence yet.</td></tr>'}
-function learningPack(){const ls=learningStats(),st=journalStats();const groups=ls.groups.map(g=>{const j=ls.jSig[g.signal]||{trades:0,wins:0,pl:0,r:0};const avg2=avgNums(g.r2h),avgJR=j.trades?j.r/j.trades:null;return `${g.signal}: scans ${g.samples}, confirmed ${g.confirmed}, missed ${g.missed}, taken ${g.taken}, tiers A/B/C ${g.greenA}/${g.greenB}/${g.greenC}, avg 5m ${avgNums(g.r5)===null?'n/a':n(avgNums(g.r5),2)+'R'}, avg 10m ${avgNums(g.r10)===null?'n/a':n(avgNums(g.r10),2)+'R'}, hit target 10m ${g.hit10Samples? n(g.hit10/g.hit10Samples*100,0)+'%':'n/a'}, avg 15m ${avgNums(g.r15)===null?'n/a':n(avgNums(g.r15),2)+'R'}, avg 30m ${avgNums(g.r30)===null?'n/a':n(avgNums(g.r30),2)+'R'}, avg 2h ${avg2===null?'n/a':n(avg2,2)+'R'}, closed trades ${j.trades}, journal avg ${avgJR===null?'n/a':n(avgJR,2)+'R'}, suggestion ${suggestionForGroup(g,j)}`}).join('\n')||'No signal groups yet.';const sessions=ls.sessions.map(s=>`${s.session}: samples ${s.samples}, confirmed ${s.confirmed}, missed ${s.missed}, 30m ${avgNums(s.r30)===null?'n/a':n(avgNums(s.r30),2)+'R'}, 2h ${avgNums(s.r2h)===null?'n/a':n(avgNums(s.r2h),2)+'R'}`).join('\n')||'No session evidence yet.';const watch=ls.watch.slice(0,30).map(w=>`${w.symbol}: ${w.quality}, samples ${w.samples}, confirmed ${w.confirmed}, missed ${w.missed}, taken ${w.taken}, 2h ${w.avg2===null?'n/a':n(w.avg2,2)+'R'}, journal ${w.jAvg===null?'n/a':n(w.jAvg,2)+'R'}, action ${w.action}`).join('\n')||'No watchlist evidence yet.';const recent=(state.learning||[]).slice(-35).reverse().map(x=>`${x.ts} | ${x.symbol} | ${x.signal} | ${x.buyTrigger} | ${x.greenTier||''} | score ${n(+x.score,0)} | price ${n(+x.price,2)} | session ${x.sessionLabel||x.session} | missed ${!!x.missed} | taken ${!!x.taken} | 2h ${x.outcomes&&x.outcomes.h2&&isFinite(x.outcomes.h2.r)?n(x.outcomes.h2.r,2)+'R':'pending'} | behaviour ${(x.behaviourWarnings||[]).join('; ')||'none'}`).join('\n');return `Trading 212 Manual God Mode v85 Learning Lab pack\nDate: ${new Date().toLocaleString('en-GB')}\n\nOverall journal\nClosed trades ${st.total}, win rate ${st.winRate===null?'n/a':n(st.winRate,1)+'%'}, expectancy ${st.expectancyR===null?'n/a':n(st.expectancyR,2)+'R'}, profit factor ${st.profitFactor===null?'n/a':(st.profitFactor===Infinity?'∞':n(st.profitFactor,2))}, total P/L ${moneyGBP(st.totalPL)}, max drawdown ${moneyGBP(st.maxDD)}.\n\nLearning verdict\n${ls.verdict}: ${ls.reason}\n\nBehaviour\n${ls.behaviour.verdict}, flags ${ls.behaviour.count}: ${ls.behaviour.flags.join(' | ')||'none'}\n\nSuggestions\n${ls.suggestions.map(x=>'- '+x).join('\n')}\n\nSignal evidence\n${groups}\n\nSession evidence\n${sessions}\n\nWatchlist quality\n${watch}\n\nRecent scan snapshots\n${recent||'None yet'}\n\nPlease review the evidence and suggest supervised rule changes only. Do not recommend automatic live trading.`}
+function learningPack(){const ls=learningStats(),st=journalStats();const groups=ls.groups.map(g=>{const j=ls.jSig[g.signal]||{trades:0,wins:0,pl:0,r:0};const avg2=avgNums(g.r2h),avgJR=j.trades?j.r/j.trades:null;return `${g.signal}: scans ${g.samples}, confirmed ${g.confirmed}, missed ${g.missed}, taken ${g.taken}, tiers A/B/C ${g.greenA}/${g.greenB}/${g.greenC}, avg 5m ${avgNums(g.r5)===null?'n/a':n(avgNums(g.r5),2)+'R'}, avg 10m ${avgNums(g.r10)===null?'n/a':n(avgNums(g.r10),2)+'R'}, hit target 10m ${g.hit10Samples? n(g.hit10/g.hit10Samples*100,0)+'%':'n/a'}, avg 15m ${avgNums(g.r15)===null?'n/a':n(avgNums(g.r15),2)+'R'}, avg 30m ${avgNums(g.r30)===null?'n/a':n(avgNums(g.r30),2)+'R'}, avg 2h ${avg2===null?'n/a':n(avg2,2)+'R'}, closed trades ${j.trades}, journal avg ${avgJR===null?'n/a':n(avgJR,2)+'R'}, suggestion ${suggestionForGroup(g,j)}`}).join('\n')||'No signal groups yet.';const sessions=ls.sessions.map(s=>`${s.session}: samples ${s.samples}, confirmed ${s.confirmed}, missed ${s.missed}, 30m ${avgNums(s.r30)===null?'n/a':n(avgNums(s.r30),2)+'R'}, 2h ${avgNums(s.r2h)===null?'n/a':n(avgNums(s.r2h),2)+'R'}`).join('\n')||'No session evidence yet.';const watch=ls.watch.slice(0,30).map(w=>`${w.symbol}: ${w.quality}, samples ${w.samples}, confirmed ${w.confirmed}, missed ${w.missed}, taken ${w.taken}, 2h ${w.avg2===null?'n/a':n(w.avg2,2)+'R'}, journal ${w.jAvg===null?'n/a':n(w.jAvg,2)+'R'}, action ${w.action}`).join('\n')||'No watchlist evidence yet.';const recent=(state.learning||[]).slice(-35).reverse().map(x=>`${x.ts} | ${x.symbol} | ${x.signal} | ${x.buyTrigger} | ${x.greenTier||''} | score ${n(+x.score,0)} | price ${n(+x.price,2)} | session ${x.sessionLabel||x.session} | missed ${!!x.missed} | taken ${!!x.taken} | 2h ${x.outcomes&&x.outcomes.h2&&isFinite(x.outcomes.h2.r)?n(x.outcomes.h2.r,2)+'R':'pending'} | behaviour ${(x.behaviourWarnings||[]).join('; ')||'none'}`).join('\n');return `Trading 212 Manual God Mode v87 Learning Lab pack\nDate: ${new Date().toLocaleString('en-GB')}\n\nOverall journal\nClosed trades ${st.total}, win rate ${st.winRate===null?'n/a':n(st.winRate,1)+'%'}, expectancy ${st.expectancyR===null?'n/a':n(st.expectancyR,2)+'R'}, profit factor ${st.profitFactor===null?'n/a':(st.profitFactor===Infinity?'∞':n(st.profitFactor,2))}, total P/L ${moneyGBP(st.totalPL)}, max drawdown ${moneyGBP(st.maxDD)}.\n\nLearning verdict\n${ls.verdict}: ${ls.reason}\n\nBehaviour\n${ls.behaviour.verdict}, flags ${ls.behaviour.count}: ${ls.behaviour.flags.join(' | ')||'none'}\n\nSuggestions\n${ls.suggestions.map(x=>'- '+x).join('\n')}\n\nSignal evidence\n${groups}\n\nSession evidence\n${sessions}\n\nWatchlist quality\n${watch}\n\nRecent scan snapshots\n${recent||'None yet'}\n\nPlease review the evidence and suggest supervised rule changes only. Do not recommend automatic live trading.`}
 function copyLearningPack(){const txt=learningPack();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>toast('Learning pack copied','Paste it here and I can tune the rules using real evidence.','good')).catch(()=>toast('Copy failed','Your browser blocked clipboard copy. Use Export learning JSON instead.','warn'))}else toast('Copy unavailable','Use Export learning JSON instead.','warn')}
 function exportLearningJSON(){const payload={version:'v69-ignition-sniper',exportedAt:new Date().toISOString(),learning:state.learning||[],journal:state.journal||[],positions:state.positions||[],stats:learningStats()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download='trading212_god_mode_v69_learning.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function clearLearningMemory(){if(!confirm('Clear the Learning Lab scan memory in this browser? Your trade journal stays unless you clear it separately.'))return;state.learning=[];state.learningLastLog={};saveJSON(LS.learning,state.learning);saveJSON(LS.learningLast,state.learningLastLog);renderLearningLab();toast('Learning memory cleared','Scan snapshots cleared. Journal was not touched.','good')}
 function groupedStatsBy(field){const rows={};(state.journal||[]).forEach(j=>{const k=j[field]||'Unknown';if(!rows[k])rows[k]={trades:0,pl:0,r:0,wins:0};rows[k].trades++;rows[k].pl+=(+j.pl||0);rows[k].r+=(+j.r||0);if((+j.pl||0)>0)rows[k].wins++});return Object.entries(rows).map(([k,v])=>`${k}: ${v.trades} trades, ${moneyGBP(v.pl)}, ${n(v.r/v.trades,2)}R avg, ${n(v.wins/v.trades*100,0)}% wins`).join('\n')||'None yet'}
-function reviewPack(){const s=settings(),st=journalStats(),scale=scaleStatus(st);const recent=(state.journal||[]).slice(0,15).map(j=>`${j.date} | ${j.symbol} | ${j.side} | entry ${n(+j.entry,2)} | exit ${n(+j.exit,2)} | P/L ${moneyGBP(+j.pl||0)} | R ${n(+j.r,2)} | ${j.signal||''} | ${j.grade||'ungraded'} | ${j.notes||''}`).join('\n');const open=(state.positions||[]).map(p=>`${p.symbol} | entry ${n(+p.entry,2)} | last ${n(+p.last,2)} | stop ${n(+p.stop,2)} | target ${n(+p.target,2)} | qty ${n(+p.qty,6)} | signal ${p.signal||''} | notes ${p.notes||''}`).join('\n')||'None';const best=st.symbols.slice(0,5).map(x=>`${x.symbol}: ${moneyGBP(x.pl)}, ${n(x.r,2)}R, ${x.trades} trades, ${n(x.winRate,0)}% wins`).join('\n')||'None yet';const worst=st.symbols.slice().sort((a,b)=>a.pl-b.pl).slice(0,5).map(x=>`${x.symbol}: ${moneyGBP(x.pl)}, ${n(x.r,2)}R, ${x.trades} trades, ${n(x.winRate,0)}% wins`).join('\n')||'None yet';return `Trading 212 Manual God Mode v85 review pack\nDate: ${new Date().toLocaleString('en-GB')}\n\nSettings\nTrading 212 account ${s.t212AccountType}, execution ${s.executionMode}.\nPot £${n(s.pot,2)}, cash field £${n(s.cash,2)}, effective cash £${n(cashLedger(s).available,2)}, cash mode ${s.cashMode||'auto'}, risk ${n(s.riskPct,2)}%, daily target ${n(s.dailyTargetPct,2)}%, stretch ${n(s.dailyStretchPct,2)}%, red lock ${n(s.dailyLossPct,2)}%, after target ${s.lockAfterTarget||'lock'}, max allocation ${n(s.maxAllocPct,0)}%, min order £${n(s.minOrderGBP||0,2)}, sizing ${s.microSizing||'auto'}, max positions ${s.maxOpenPositions}, target ${n(s.targetR,2)}R, opportunity mode ${s.opportunityMode}, sensitivity ${s.entrySensitivity}, min signal ${s.minBuySignal}, mini backtest role ${s.btMode||'advisory'}, min 5m drift ${n(s.min5DriftPct,2)}%, min 15m drift ${n(s.min15DriftPct,2)}%, block flat setups ${s.blockFlatSetups}, pre-market watch only ${s.premarketWatchOnly}.\n\nClosed trade stats\nTrades: ${st.total}\nWins: ${st.wins}\nLosses: ${st.losses}\nFlats: ${st.flats}\nWin rate: ${st.winRate===null?'n/a':n(st.winRate,1)+'%'}\nTotal P/L: ${moneyGBP(st.totalPL)}\nExpectancy: ${st.expectancyR===null?'n/a':n(st.expectancyR,2)+'R'}\nProfit factor: ${st.profitFactor===null?'n/a':(st.profitFactor===Infinity?'∞':n(st.profitFactor,2))}\nAverage win/loss: ${(st.avgWinR===null||st.avgLossR===null)?'n/a':n(st.avgWinR,2)+'R / '+n(st.avgLossR,2)+'R'}\nMax drawdown: ${moneyGBP(st.maxDD)}\nScale status: ${scale.level}, ${scale.reason}\n\nStats by signal\n${groupedStatsBy('signal')}\n\nStats by trade grade\n${groupedStatsBy('grade')}\n\nOpen positions\n${open}\n\nBest symbols\n${best}\n\nWorst symbols\n${worst}\n\nRecent closed trades\n${recent||'None yet'}\n\nPlease analyse this feedback, identify whether BUY, A+, APEX, WATCH and manual experiment trades are working, and whether rules should be tightened or loosened.`}
+function reviewPack(){const s=settings(),st=journalStats(),scale=scaleStatus(st);const recent=(state.journal||[]).slice(0,15).map(j=>`${j.date} | ${j.symbol} | ${j.side} | entry ${n(+j.entry,2)} | exit ${n(+j.exit,2)} | P/L ${moneyGBP(+j.pl||0)} | R ${n(+j.r,2)} | ${j.signal||''} | ${j.grade||'ungraded'} | ${j.notes||''}`).join('\n');const open=(state.positions||[]).map(p=>`${p.symbol} | entry ${n(+p.entry,2)} | last ${n(+p.last,2)} | stop ${n(+p.stop,2)} | target ${n(+p.target,2)} | qty ${n(+p.qty,6)} | signal ${p.signal||''} | notes ${p.notes||''}`).join('\n')||'None';const best=st.symbols.slice(0,5).map(x=>`${x.symbol}: ${moneyGBP(x.pl)}, ${n(x.r,2)}R, ${x.trades} trades, ${n(x.winRate,0)}% wins`).join('\n')||'None yet';const worst=st.symbols.slice().sort((a,b)=>a.pl-b.pl).slice(0,5).map(x=>`${x.symbol}: ${moneyGBP(x.pl)}, ${n(x.r,2)}R, ${x.trades} trades, ${n(x.winRate,0)}% wins`).join('\n')||'None yet';return `Trading 212 Manual God Mode v87 review pack\nDate: ${new Date().toLocaleString('en-GB')}\n\nSettings\nTrading 212 account ${s.t212AccountType}, execution ${s.executionMode}.\nPot £${n(s.pot,2)}, cash field £${n(s.cash,2)}, effective cash £${n(cashLedger(s).available,2)}, cash mode ${s.cashMode||'auto'}, risk ${n(s.riskPct,2)}%, daily target ${n(s.dailyTargetPct,2)}%, stretch ${n(s.dailyStretchPct,2)}%, red lock ${n(s.dailyLossPct,2)}%, after target ${s.lockAfterTarget||'lock'}, max allocation ${n(s.maxAllocPct,0)}%, min order £${n(s.minOrderGBP||0,2)}, sizing ${s.microSizing||'auto'}, max positions ${s.maxOpenPositions}, target ${n(s.targetR,2)}R, opportunity mode ${s.opportunityMode}, sensitivity ${s.entrySensitivity}, min signal ${s.minBuySignal}, mini backtest role ${s.btMode||'advisory'}, min 5m drift ${n(s.min5DriftPct,2)}%, min 15m drift ${n(s.min15DriftPct,2)}%, block flat setups ${s.blockFlatSetups}, pre-market watch only ${s.premarketWatchOnly}.\n\nClosed trade stats\nTrades: ${st.total}\nWins: ${st.wins}\nLosses: ${st.losses}\nFlats: ${st.flats}\nWin rate: ${st.winRate===null?'n/a':n(st.winRate,1)+'%'}\nTotal P/L: ${moneyGBP(st.totalPL)}\nExpectancy: ${st.expectancyR===null?'n/a':n(st.expectancyR,2)+'R'}\nProfit factor: ${st.profitFactor===null?'n/a':(st.profitFactor===Infinity?'∞':n(st.profitFactor,2))}\nAverage win/loss: ${(st.avgWinR===null||st.avgLossR===null)?'n/a':n(st.avgWinR,2)+'R / '+n(st.avgLossR,2)+'R'}\nMax drawdown: ${moneyGBP(st.maxDD)}\nScale status: ${scale.level}, ${scale.reason}\n\nStats by signal\n${groupedStatsBy('signal')}\n\nStats by trade grade\n${groupedStatsBy('grade')}\n\nOpen positions\n${open}\n\nBest symbols\n${best}\n\nWorst symbols\n${worst}\n\nRecent closed trades\n${recent||'None yet'}\n\nPlease analyse this feedback, identify whether BUY, A+, APEX, WATCH and manual experiment trades are working, and whether rules should be tightened or loosened.`}
 
 function copyReviewPack(){const txt=reviewPack();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>toast('Review pack copied','Paste it into ChatGPT and I can tune the rules.','good')).catch(()=>toast('Copy failed','Your browser blocked clipboard copy. Use Export JSON instead.','warn'))}else toast('Copy unavailable','Use Export JSON instead.','warn')}
 function exportJSON(){const payload={version:'v69-ignition-sniper',exportedAt:new Date().toISOString(),settings:settings(),positions:state.positions,journal:state.journal,stats:journalStats()};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));a.download='trading212_god_mode_v69_feedback.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
@@ -1981,263 +1992,187 @@ loadSettings();bind();syncCashDisplay();renderHistoryState();renderPositions();r
 (function(){
 'use strict';
 try{
-const KEY={plan:'t212gm86_best_plan',tracker:'t212gm86_best_tracker',journal:'t212gm86_best_journal'};
-const OLD_KEYS={plan:'t212gm84_growth_plan',tracker:'t212gm84_growth_tracker',journal:'t212gm84_growth_journal'};
+const KEY={plan:'t212gm87_evidence_plan',tracker:'t212gm87_evidence_tracker',journal:'t212gm87_evidence_journal',cache:'t212gm87_evidence_cache'};
+const OLD_KEYS={tracker:'t212gm86_best_tracker',journal:'t212gm86_best_journal'};
 const $=id=>document.getElementById(id);
 const gbp=v=>'£'+(isFinite(v)?Number(v).toFixed(2):'0.00');
 const today=()=>new Date().toISOString().slice(0,10);
 const future=d=>{const x=new Date();x.setDate(x.getDate()+d);return x.toISOString().slice(0,10)};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const round50=v=>Math.floor((+v||0)/0.5)*0.5;
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
-function round50(v){return Math.floor((+v||0)/0.5)*0.5}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
-function maybeMigrate(){
-  if(!localStorage.getItem(KEY.tracker) && localStorage.getItem(OLD_KEYS.tracker)) save(KEY.tracker, load(OLD_KEYS.tracker,[]));
-  if(!localStorage.getItem(KEY.journal) && localStorage.getItem(OLD_KEYS.journal)) save(KEY.journal, load(OLD_KEYS.journal,[]));
-}
+function getKeys(){try{return JSON.parse(localStorage.getItem('t212gm36_us_keys')||'{}')}catch(e){return {}}}
+function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function maybeMigrate(){if(!localStorage.getItem(KEY.tracker)&&localStorage.getItem(OLD_KEYS.tracker))save(KEY.tracker,load(OLD_KEYS.tracker,[]));if(!localStorage.getItem(KEY.journal)&&localStorage.getItem(OLD_KEYS.journal))save(KEY.journal,load(OLD_KEYS.journal,[]));}
 const BASE=[
-{sym:'SPY',name:'S&P 500 ETF',role:'Core ETF',sector:'Core ETF',score:79,pot:10,risk:'low',expect:'Core market holding. Add steadily, review quarterly.'},
-{sym:'QQQ',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',score:80,pot:13,risk:'medium',expect:'Growth ETF. Strong long-term engine, expect bigger drawdowns.'},
-{sym:'IWM',name:'Russell 2000 ETF',role:'Core ETF',sector:'Core ETF',score:80,pot:12,risk:'medium',expect:'Small-cap diversification. Use staged buys and hold for cycle recovery.'},
-{sym:'DIA',name:'Dow ETF',role:'Core ETF',sector:'Core ETF',score:76,pot:8,risk:'low',expect:'Lower-volatility US blue-chip exposure.'},
-{sym:'V',name:'Visa',role:'Quality compounder',sector:'Financials',score:82,pot:13,risk:'medium',expect:'3 to 5 year hold. Review growth, regulation and valuation.'},
-{sym:'MSFT',name:'Microsoft',role:'Quality compounder',sector:'Technology',score:81,pot:12,risk:'medium',expect:'Quality compounder. Add on plan, review every 90 days.'},
-{sym:'GOOGL',name:'Alphabet',role:'Quality compounder',sector:'Communication',score:81,pot:14,risk:'medium',expect:'Quality growth. Review AI capex, ad growth and valuation.'},
-{sym:'META',name:'Meta',role:'Quality compounder',sector:'Communication',score:79,pot:13,risk:'medium',expect:'High quality but sentiment can swing. Review spending and growth.'},
-{sym:'TSM',name:'TSMC',role:'Quality compounder',sector:'Semiconductors',score:82,pot:16,risk:'high',expect:'Higher cycle risk. Use smaller staged buys and review valuation, debt and demand cycle.'},
-{sym:'NVDA',name:'Nvidia',role:'Growth',sector:'Semiconductors',score:78,pot:18,risk:'high',expect:'High growth, high valuation risk. Smaller staged buys only.'},
-{sym:'AVGO',name:'Broadcom',role:'Quality compounder',sector:'Semiconductors',score:79,pot:14,risk:'high',expect:'Quality chip and infrastructure compounder. Watch valuation.'},
-{sym:'AMZN',name:'Amazon',role:'Quality compounder',sector:'Consumer/Cloud',score:78,pot:13,risk:'medium',expect:'Growth and margin expansion thesis. Review AWS and retail margins.'},
-{sym:'JPM',name:'JPMorgan',role:'Quality compounder',sector:'Financials',score:76,pot:8,risk:'medium',expect:'Bank quality leader. Review credit cycle and rates.'},
-{sym:'COST',name:'Costco',role:'Quality compounder',sector:'Consumer',score:77,pot:9,risk:'low',expect:'Excellent quality, often expensive. Add only on plan or pullbacks.'},
-{sym:'LLY',name:'Eli Lilly',role:'Growth',sector:'Healthcare',score:76,pot:15,risk:'high',expect:'Healthcare growth. Check valuation and product concentration.'},
-{sym:'PLTR',name:'Palantir',role:'Growth',sector:'Software',score:70,pot:20,risk:'very high',expect:'Speculative growth. Tiny allocation only unless valuation is sensible.'},
-{sym:'CRWD',name:'CrowdStrike',role:'Growth',sector:'Software',score:72,pot:17,risk:'high',expect:'Cybersecurity growth. Review valuation and execution.'},
-{sym:'ASML',name:'ASML',role:'Quality compounder',sector:'Semiconductors',score:78,pot:14,risk:'high',expect:'Unique semi equipment moat. Review cycle and China restrictions.'}
+{sym:'SPY',name:'S&P 500 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:79,pot:10,risk:'low',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'pass',moat:'pass'},expect:'Core market holding. Add steadily, review quarterly.'},
+{sym:'QQQ',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:80,pot:13,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Growth ETF. Strong long-term engine, expect bigger drawdowns.'},
+{sym:'IWM',name:'Russell 2000 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:78,pot:11,risk:'medium',base:{growth:'check',cash:'pass',debt:'pass',valuation:'pass',moat:'check'},expect:'Small-cap diversification. Use staged buys and hold for cycle recovery.'},
+{sym:'DIA',name:'Dow ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:76,pot:8,risk:'low',base:{growth:'check',cash:'pass',debt:'pass',valuation:'pass',moat:'pass'},expect:'Lower-volatility US blue-chip exposure.'},
+{sym:'V',name:'Visa',role:'Quality compounder',sector:'Financials',theme:'Payments',score:82,pot:13,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'3 to 5 year hold. Review growth, regulation and valuation.'},
+{sym:'MSFT',name:'Microsoft',role:'Quality compounder',sector:'Technology',theme:'Mega cap tech',score:81,pot:12,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Quality compounder. Add on plan, review every 90 days.'},
+{sym:'GOOGL',name:'Alphabet',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:81,pot:14,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'pass',moat:'pass'},expect:'Quality growth. Review AI capex, ad growth and valuation.'},
+{sym:'META',name:'Meta',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:79,pot:13,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'pass',moat:'pass'},expect:'High quality but sentiment can swing. Review spending and growth.'},
+{sym:'TSM',name:'TSMC',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:82,pot:16,risk:'high',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Higher cycle risk. Use smaller staged buys and review valuation, debt and demand cycle.'},
+{sym:'NVDA',name:'Nvidia',role:'Growth',sector:'Semiconductors',theme:'Semis',score:78,pot:18,risk:'high',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'High growth, high valuation risk. Smaller staged buys only.'},
+{sym:'AVGO',name:'Broadcom',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:79,pot:14,risk:'high',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Quality chip and infrastructure compounder. Watch valuation.'},
+{sym:'AMZN',name:'Amazon',role:'Quality compounder',sector:'Consumer/Cloud',theme:'Mega cap tech',score:78,pot:13,risk:'medium',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Growth and margin expansion thesis. Review AWS and retail margins.'},
+{sym:'JPM',name:'JPMorgan',role:'Quality compounder',sector:'Financials',theme:'Banks',score:76,pot:8,risk:'medium',base:{growth:'check',cash:'pass',debt:'check',valuation:'pass',moat:'pass'},expect:'Bank quality leader. Review credit cycle and rates.'},
+{sym:'COST',name:'Costco',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:77,pot:9,risk:'low',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Excellent quality, often expensive. Add only on plan or pullbacks.'},
+{sym:'LLY',name:'Eli Lilly',role:'Growth',sector:'Healthcare',theme:'Healthcare growth',score:76,pot:15,risk:'high',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Healthcare growth. Check valuation and product concentration.'},
+{sym:'PLTR',name:'Palantir',role:'Growth',sector:'Software',theme:'Software',score:70,pot:20,risk:'very high',base:{growth:'pass',cash:'check',debt:'pass',valuation:'block',moat:'check'},expect:'Speculative growth. Tiny allocation only unless valuation is sensible.'},
+{sym:'CRWD',name:'CrowdStrike',role:'Growth',sector:'Software',theme:'Software',score:72,pot:17,risk:'high',base:{growth:'pass',cash:'check',debt:'pass',valuation:'check',moat:'check'},expect:'Cybersecurity growth. Review valuation and execution.'},
+{sym:'ASML',name:'ASML',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:78,pot:14,risk:'high',base:{growth:'pass',cash:'pass',debt:'pass',valuation:'check',moat:'pass'},expect:'Unique semi equipment moat. Review cycle and China restrictions.'}
 ];
 function histMap(){try{return JSON.parse(localStorage.getItem('t212gm36_us_history')||'{}')}catch(e){return {}}}
-function enrich(x){
-  const h=(histMap()[x.sym]||{}).data||[];
-  let score=x.score,pot=x.pot,evidence='Preset',trend=50,oneYear=null,sixMonth=null;
-  if(h.length>80){
-    const c=h.map(r=>+r.c).filter(Number.isFinite);
-    if(c.length>80){
-      const last=c[c.length-1], m3=c[Math.max(0,c.length-64)], m6=c[Math.max(0,c.length-126)], y=c[Math.max(0,c.length-252)]||c[0];
-      const r3=(last/m3-1)*100, r6=(last/m6-1)*100, r1=(last/y-1)*100;
-      sixMonth=r6; oneYear=r1;
-      trend=clamp(50+r6*1.1+r3*0.55,10,100);
-      score+=clamp(r6/4,-8,8);
-      pot+=clamp(r1/6,-5,8);
-      evidence='History';
-    }
+function historyEvidence(sym){
+  const h=(histMap()[sym]||{}).data||[]; if(!h.length)return {source:'No history',trend:50,historyPass:false,oneYear:null,sixMonth:null,scoreAdj:0,potAdj:0};
+  const c=h.map(r=>+r.c).filter(Number.isFinite); if(c.length<80)return {source:'Thin history',trend:50,historyPass:false,oneYear:null,sixMonth:null,scoreAdj:0,potAdj:0};
+  const last=c[c.length-1], m3=c[Math.max(0,c.length-64)], m6=c[Math.max(0,c.length-126)], y=c[Math.max(0,c.length-252)]||c[0];
+  const r3=(last/m3-1)*100, r6=(last/m6-1)*100, r1=(last/y-1)*100;
+  const trend=clamp(50+r6*1.1+r3*0.55,5,100);
+  return {source:'Cached history',trend:Math.round(trend),historyPass:trend>=45,oneYear:r1,sixMonth:r6,scoreAdj:clamp(r6/4,-8,8),potAdj:clamp(r1/6,-5,8)};
+}
+function liveEvidence(sym){const q=window.state&&window.state.quotes&&window.state.quotes[sym];return q&&isFinite(q.changePct)?{source:'Live quote',changePct:q.changePct,scoreAdj:clamp(q.changePct/2,-2,2)}:{source:'No live quote',scoreAdj:0};}
+function cagr(first,last,years){if(!isFinite(first)||!isFinite(last)||first<=0||last<=0||years<=0)return null;return (Math.pow(last/first,1/years)-1)*100}
+function latestNum(obj,keys){for(const k of keys){const v=Number(obj&&obj[k]);if(Number.isFinite(v))return v;}return null;}
+async function fetchJSON(url,timeout=15000){const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),timeout);try{const r=await fetch(url,{signal:ctrl.signal});const data=await r.json().catch(()=>null);if(!r.ok)throw new Error('HTTP '+r.status);return data;}finally{clearTimeout(timer)}}
+async function getFmpEvidence(sym){
+  const key=(getKeys().fmpKey||'').trim(); if(!key)return null;
+  const cache=load(KEY.cache,{}); const item=cache[sym]; const now=Date.now(); if(item&&item.ts&&now-item.ts<7*86400000)return item.data;
+  try{
+    const base='https://financialmodelingprep.com/api/v3/';
+    const [inc,bal,cf,metrics]=await Promise.all([
+      fetchJSON(base+'income-statement/'+encodeURIComponent(sym)+'?limit=5&apikey='+encodeURIComponent(key)),
+      fetchJSON(base+'balance-sheet-statement/'+encodeURIComponent(sym)+'?limit=5&apikey='+encodeURIComponent(key)),
+      fetchJSON(base+'cash-flow-statement/'+encodeURIComponent(sym)+'?limit=5&apikey='+encodeURIComponent(key)),
+      fetchJSON(base+'key-metrics-ttm/'+encodeURIComponent(sym)+'?apikey='+encodeURIComponent(key))
+    ]);
+    const income=Array.isArray(inc)?inc:[], balance=Array.isArray(bal)?bal:[], cash=Array.isArray(cf)?cf:[], km=Array.isArray(metrics)?metrics[0]:null;
+    if(!income.length&&!cash.length&&!balance.length)return null;
+    const newest=income[0]||{}, oldest=income[Math.min(4,income.length-1)]||{};
+    const revNew=latestNum(newest,['revenue']), revOld=latestNum(oldest,['revenue']);
+    const epsNew=latestNum(newest,['eps','epsdiluted']), epsOld=latestNum(oldest,['eps','epsdiluted']);
+    const years=Math.max(1, Math.min(4, income.length-1));
+    const revCagr=cagr(revOld,revNew,years);
+    const epsCagr=(isFinite(epsOld)&&isFinite(epsNew)&&epsOld>0&&epsNew>0)?cagr(epsOld,epsNew,years):null;
+    const fcfNew=latestNum(cash[0]||{},['freeCashFlow']); const fcfOld=latestNum(cash[Math.min(4,cash.length-1)]||{},['freeCashFlow']);
+    const fcfCagr=(isFinite(fcfOld)&&isFinite(fcfNew)&&fcfOld>0&&fcfNew>0)?cagr(fcfOld,fcfNew,Math.max(1,Math.min(4,cash.length-1))):null;
+    const debt=latestNum(balance[0]||{},['totalDebt','shortTermDebt']); const cashEq=latestNum(balance[0]||{},['cashAndCashEquivalents','cashAndShortTermInvestments']); const equity=latestNum(balance[0]||{},['totalStockholdersEquity']);
+    const debtEq=(isFinite(debt)&&isFinite(equity)&&equity>0)?debt/equity:null;
+    const pe=latestNum(km||{},['peRatioTTM','peRatio']); const pfcf=latestNum(km||{},['pfcfRatioTTM','pfcfRatio']); const roe=latestNum(km||{},['roeTTM','roe']);
+    const data={source:'FMP fundamentals',revCagr,epsCagr,fcfCagr,debtEq,pe,pfcf,roe,cashEq,debt,asOf:today()};
+    cache[sym]={ts:now,data}; save(KEY.cache,cache); return data;
+  }catch(e){console.warn('FMP evidence failed for',sym,e); return null;}
+}
+function baselineFundamentals(x){return {source:'Built-in baseline',baseline:true,revCagr:null,epsCagr:null,fcfCagr:null,debtEq:null,pe:null,pfcf:null,roe:null,checks:x.base||{}}}
+function evalChecks(x,fund,hist,strictness){
+  const checks=[]; let dataConfidence=0; let red=[]; let sourceTags=[];
+  const isETF=x.role==='Core ETF';
+  if(isETF){checks.push(['data','pass','ETF structure, no company balance sheet needed']); dataConfidence+=30; sourceTags.push('ETF baseline');}
+  if(fund&&fund.source==='FMP fundamentals') {dataConfidence+=45; sourceTags.push('FMP fundamentals');} else if(!isETF){dataConfidence+=15; sourceTags.push('Baseline fundamentals');}
+  if(hist.historyPass){dataConfidence+=25; sourceTags.push('Cached history');} else if(hist.source!=='No history'){dataConfidence+=10; sourceTags.push(hist.source);} 
+  const live=liveEvidence(x.sym); if(live.source==='Live quote'){dataConfidence+=5; sourceTags.push('Live quote');}
+  function add(name,status,note){checks.push([name,status,note]); if(status==='block')red.push(note);}
+  if(isETF){add('fundamentals','pass','ETF ballast, company fundamentals not required');}
+  else if(fund&&fund.source==='FMP fundamentals'){
+    const growthOk=[fund.revCagr,fund.epsCagr,fund.fcfCagr].filter(v=>isFinite(v)&&v>3).length;
+    add('growth',growthOk>=1?'pass':'check',`Revenue ${fmtPct(fund.revCagr)}, EPS ${fmtPct(fund.epsCagr)}, FCF ${fmtPct(fund.fcfCagr)}`);
+    const cashDebtOk=(!isFinite(fund.debtEq)||fund.debtEq<1.8);
+    add('balance sheet',cashDebtOk?'pass':'check',`Debt/equity ${isFinite(fund.debtEq)?fund.debtEq.toFixed(2):'n/a'}`);
+    const fcfOk=!isFinite(fund.fcfCagr)||fund.fcfCagr>-8;
+    add('cash flow',fcfOk?'pass':'check',`FCF CAGR ${fmtPct(fund.fcfCagr)}`);
+    const expensive=(isFinite(fund.pe)&&fund.pe>75)||(isFinite(fund.pfcf)&&fund.pfcf>90);
+    add('valuation',expensive?'check':'pass',`PE ${fmtNum(fund.pe)}, P/FCF ${fmtNum(fund.pfcf)}`);
+    if(expensive&&x.risk==='very high')red.push('Very high risk plus stretched valuation');
+  }else{
+    const b=x.base||{};
+    add('growth',b.growth==='pass'?'pass':b.growth==='block'?'block':'check','Baseline, needs FMP for real statement evidence');
+    add('balance sheet',b.debt==='pass'?'pass':b.debt==='block'?'block':'check','Baseline, needs FMP debt check');
+    add('cash flow',b.cash==='pass'?'pass':b.cash==='block'?'block':'check','Baseline, needs FMP cash-flow check');
+    add('valuation',b.valuation==='pass'?'pass':b.valuation==='block'?'block':'check','Baseline valuation sanity, not live fundamentals');
   }
-  const q=window.state&&window.state.quotes&&window.state.quotes[x.sym];
-  if(q&&isFinite(q.changePct)){score+=clamp(q.changePct/2,-2,2);evidence=evidence==='History'?'History / Live':'Live';}
-  score=Math.round(clamp(score,45,95));
-  pot=Math.round(clamp(pot,3,28));
-  return {...x,score,pot,trend:Math.round(trend),oneYear,sixMonth,evidence};
+  add('trend',hist.historyPass?'pass':(hist.source==='No history'?'check':'check'),hist.source+', trend '+hist.trend);
+  if(strictness==='strict'&&!isETF&&(!fund||fund.source!=='FMP fundamentals')) red.push('Strict mode needs FMP fundamentals');
+  const pass=checks.filter(c=>c[1]==='pass').length, check=checks.filter(c=>c[1]==='check').length, block=checks.filter(c=>c[1]==='block').length;
+  let gate='CHECK';
+  if(block||red.length)gate='BLOCK';
+  else if(isETF&&hist.source!=='No history')gate='PASS';
+  else if(pass>=4 && dataConfidence>=55)gate='PASS';
+  else if(strictness==='explore' && pass>=3 && dataConfidence>=35)gate='PASS';
+  return {gate,pass,check,block,red,checks,dataConfidence:Math.min(100,Math.round(dataConfidence)),sourceTags:[...new Set(sourceTags)]};
 }
-function universe(mode){
-  let arr=BASE.map(enrich);
-  if(mode==='etf')arr=arr.filter(x=>x.role==='Core ETF');
-  if(mode==='growth')arr=arr.filter(x=>x.role==='Growth'||x.sector==='Semiconductors'||x.sym==='GOOGL'||x.sym==='MSFT'||x.sym==='V'||x.sym==='AMZN');
-  if(mode==='quality')arr=arr.filter(x=>x.role==='Quality compounder');
-  return arr.sort((a,b)=>opportunityScore(b,'best')-opportunityScore(a,'best'));
+function fmtPct(v){return isFinite(v)?(v>=0?'+':'')+v.toFixed(1)+'%':'n/a'}
+function fmtNum(v){return isFinite(v)?Number(v).toFixed(1):'n/a'}
+function opportunityScore(x,style){const hist=x.hist||historyEvidence(x.sym); const gate=x.evidence&&x.evidence.gate==='PASS'?1:(x.evidence&&x.evidence.gate==='CHECK'?0.82:0.55); let score=x.score*0.35+x.pot*2.0+hist.trend*0.28; if(x.role==='Core ETF'&&style==='best')score+=14; if(x.risk==='high')score-=style==='growth'?3:9; if(x.risk==='very high')score-=style==='growth'?8:18; return Math.round(score*gate);}
+function capPct(x,style){if(x.role==='Core ETF')return style==='growth'?0.22:0.30; if(x.risk==='very high')return style==='growth'?0.08:0.03; if(x.risk==='high')return style==='growth'?0.15:0.08; if(x.role==='Growth')return style==='growth'?0.18:0.10; return style==='growth'?0.22:0.16;}
+function themeCap(theme,style){if(theme==='Core ETF')return style==='growth'?0.35:0.45; if(theme==='Mega cap tech')return style==='growth'?0.45:0.32; if(theme==='Semis')return style==='growth'?0.28:0.18; if(theme==='Software')return style==='growth'?0.18:0.10; return 0.22;}
+async function enrichAll(strictness,style){
+  const raw=BASE.map(x=>({...x}));
+  const topForFmp=raw.filter(x=>x.role!=='Core ETF').sort((a,b)=>(b.score+b.pot)-(a.score+a.pot)).slice(0,12);
+  const fmpMap={};
+  await Promise.all(topForFmp.map(async x=>{fmpMap[x.sym]=await getFmpEvidence(x.sym)}));
+  return raw.map(x=>{const hist=historyEvidence(x.sym), live=liveEvidence(x.sym), fund=fmpMap[x.sym]||baselineFundamentals(x); let score=Math.round(clamp(x.score+hist.scoreAdj+live.scoreAdj,40,96)); let pot=Math.round(clamp(x.pot+hist.potAdj,3,28)); const y={...x,score,pot,hist,fund,trend:hist.trend,evidence:null}; y.evidence=evalChecks(y,fund,hist,strictness); y.opp=opportunityScore(y,style); return y;});
 }
-function riskPenalty(x,style){
-  const base=x.risk==='very high'?0.50:x.risk==='high'?0.72:x.risk==='medium'?0.94:1.08;
-  if(style==='growth')return base*(x.risk==='high'||x.risk==='very high'?1.10:1.0);
-  if(style==='best')return base*(x.risk==='high'||x.risk==='very high'?0.88:1.0);
-  return base;
-}
-function themeGroup(x){
-  if(x.role==='Core ETF')return 'ETF';
-  if(['Semiconductors','Software','Technology','Consumer/Cloud','Communication'].includes(x.sector))return 'Growth tech';
-  if(x.sector==='Financials')return 'Financials';
-  if(x.sector==='Healthcare')return 'Healthcare';
-  return x.sector||'Other';
-}
-function styleBoost(x,style){
-  if(style==='etf') return x.role==='Core ETF'?1.75:(x.role==='Growth'?0.48:0.78);
-  if(style==='growth') return x.role==='Growth'?1.22:(x.role==='Core ETF'?0.58:1.0);
-  if(style==='best') return x.role==='Core ETF'?1.20:(x.role==='Quality compounder'?1.08:0.84);
-  return x.role==='Core ETF'?1.12:(x.role==='Growth'?0.88:1.02);
-}
-function valuationSanity(x){
-  // Base version has limited fundamentals, so use risk and role as a proxy until FMP/deep data is connected.
-  if(x.risk==='very high')return 0.78;
-  if(x.risk==='high')return 0.88;
-  if(x.role==='Core ETF')return 1.03;
-  return 0.98;
-}
-function opportunityScore(x,style){
-  const quality=(+x.score||0)/100;
-  const growth=(+x.pot||0)/22;
-  const trend=(+x.trend||50)/100;
-  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.92;
-  const raw=(quality*0.36 + growth*0.34 + trend*0.18 + valuationSanity(x)*0.12);
-  return Math.round(100*raw*riskPenalty(x,style)*styleBoost(x,style)*evidence);
-}
-function allocationWeight(x,style,rank){
-  const quality=(+x.score||0)/100;
-  const growth=(+x.pot||0)/20;
-  const trend=(+x.trend||50)/100;
-  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.90;
-  const rankTilt=Math.max(0.74,1-rank*0.04);
-  const growthPower=style==='growth'?1.35:1.12;
-  return Math.max(0.01, (Math.pow(growth,growthPower)*0.38 + quality*0.34 + trend*0.18 + valuationSanity(x)*0.10) * riskPenalty(x,style) * styleBoost(x,style) * evidence * rankTilt);
-}
-function maxCapPct(x,style){
-  if(style==='etf' && x.role==='Core ETF') return 0.36;
+function filterUniverse(arr,mode){if(mode==='etf')return arr.filter(x=>x.role==='Core ETF'); if(mode==='growth')return arr.filter(x=>x.role==='Growth'||x.sector==='Semiconductors'||['GOOGL','MSFT','V','AMZN'].includes(x.sym)); if(mode==='quality')return arr.filter(x=>x.role==='Quality compounder'); return arr;}
+function weight(x,rank,style){let w=(x.pot*0.42)+(x.score*0.28)+(x.trend*0.18)+(x.evidence.dataConfidence*0.12); if(x.role==='Core ETF'&&style==='best')w+=20; if(style==='growth')w+=x.pot*0.8; if(x.evidence.gate!=='PASS')w*=0.1; w*=Math.max(0.55,1-rank*0.025); return Math.max(0,w);}
+function allocate(candidates,deploy,minBuy,maxBuys,style){
+  let pass=candidates.filter(x=>x.evidence.gate==='PASS').sort((a,b)=>b.opp-a.opp);
   if(style==='best'){
-    if(x.role==='Core ETF')return 0.26;
-    if(x.risk==='very high')return 0.05;
-    if(x.risk==='high')return 0.10;
-    if(x.role==='Growth')return 0.11;
-    return 0.16;
+    const etf=pass.filter(x=>x.role==='Core ETF').sort((a,b)=>b.opp-a.opp).slice(0,2);
+    const non=pass.filter(x=>x.role!=='Core ETF');
+    pass=[...etf,...non.filter(x=>!etf.find(e=>e.sym===x.sym))];
   }
-  if(x.role==='Core ETF') return 0.30;
-  if(x.risk==='very high') return style==='growth'?0.09:0.06;
-  if(x.risk==='high') return style==='growth'?0.15:0.10;
-  if(x.role==='Growth') return 0.12;
-  return style==='growth'?0.20:0.16;
-}
-function selectForPlan(candidates,maxBuys,style){
-  const sorted=candidates.slice().sort((a,b)=>b.opp-a.opp);
-  if(style==='growth')return sorted.slice(0,maxBuys);
-  if(style==='etf'){
-    const etf=sorted.filter(x=>x.role==='Core ETF');
-    const rest=sorted.filter(x=>x.role!=='Core ETF');
-    return [...etf,...rest].slice(0,maxBuys);
-  }
-  const picked=[];
-  function add(x){if(x && !picked.find(p=>p.sym===x.sym) && picked.length<maxBuys)picked.push(x)}
-  const etfs=sorted.filter(x=>x.role==='Core ETF');
-  add(etfs[0]);
-  if(maxBuys>=4)add(etfs[1]);
-  const nonEtf=sorted.filter(x=>x.role!=='Core ETF');
-  for(const x of nonEtf){
-    const themeCount=picked.filter(p=>themeGroup(p)===themeGroup(x)).length;
-    const highRiskCount=picked.filter(p=>p.risk==='high'||p.risk==='very high').length;
-    if(themeCount>=2)continue;
-    if((x.risk==='high'||x.risk==='very high') && highRiskCount>=1 && picked.length<maxBuys-1)continue;
-    add(x);
-  }
-  for(const x of sorted)add(x);
-  return picked.slice(0,maxBuys);
-}
-function getCandidates(style){
-  let arr=universe('broad');
-  if(style==='etf'){const etf=arr.filter(x=>x.role==='Core ETF');const rest=arr.filter(x=>x.role!=='Core ETF');arr=[...etf,...rest];}
-  else if(style==='growth')arr=arr.sort((a,b)=>opportunityScore(b,'growth')-opportunityScore(a,'growth'));
-  else arr=arr.sort((a,b)=>opportunityScore(b,style||'best')-opportunityScore(a,style||'best'));
-  return arr.map((x,i)=>({...x,opp:opportunityScore(x,style||'best'),allocWeight:allocationWeight(x,style||'best',i),theme:themeGroup(x)}));
-}
-function allocateWeighted(candidates,deploy,minBuy,maxBuys,style){
-  let chosen=selectForPlan(candidates,Math.max(maxBuys,1),style||'best');
-  let working=chosen.map((c,i)=>({...c,weight:c.allocWeight||allocationWeight(c,style,i),cap:deploy*maxCapPct(c,style),amount:0}));
-  const themeCap=style==='growth'?0.72:(style==='etf'?0.45:0.48);
-  let remaining=deploy, active=working.slice(), safety=0;
-  while(active.length && remaining>0.01 && safety++<30){
-    const totalW=active.reduce((a,x)=>a+x.weight,0)||1;
-    for(const x of active){
-      const add=remaining*(x.weight/totalW);
-      const room=Math.max(0,x.cap-x.amount);
-      const groupUsed=working.filter(w=>themeGroup(w)===themeGroup(x)).reduce((a,w)=>a+w.amount,0);
-      const groupRoom=Math.max(0,deploy*themeCap-groupUsed);
-      const used=Math.min(room,groupRoom,add);
-      x.amount+=used;
-    }
-    const allocated=working.reduce((a,x)=>a+x.amount,0);
-    remaining=Math.max(0,deploy-allocated);
-    const next=active.filter(x=>x.amount<x.cap-0.01 && working.filter(w=>themeGroup(w)===themeGroup(x)).reduce((a,w)=>a+w.amount,0)<deploy*themeCap-0.01);
-    if(next.length===active.length)break;
-    active=next;
-  }
-  if((style==='best'||style==='balanced') && deploy>=minBuy*3){
-    const etfFloor=deploy*(style==='best'?0.30:0.25);
-    let etfRows=working.filter(x=>x.role==='Core ETF');
-    let etfTotal=etfRows.reduce((a,x)=>a+x.amount,0);
-    let guardFloor=0;
-    while(etfRows.length && etfTotal+0.5<=etfFloor && guardFloor++<80){
-      const target=etfRows.slice().sort((a,b)=>(b.weight*(b.cap-b.amount))-(a.weight*(a.cap-a.amount)))[0];
-      const donor=working.filter(x=>x.role!=='Core ETF' && x.amount>=minBuy+0.5).sort((a,b)=>a.weight-b.weight)[0];
-      if(!target || !donor || target.amount+0.5>target.cap+0.01)break;
-      target.amount+=0.5; donor.amount-=0.5; etfTotal+=0.5;
+  pass=pass.slice(0,Math.max(8,maxBuys*3));
+  const rows=[]; const themeUsed={}; let remaining=deploy;
+  for(let loop=0;loop<2 && rows.length<maxBuys;loop++){
+    const total=pass.reduce((a,x,i)=>a+weight(x,i,style),0)||1;
+    for(let i=0;i<pass.length && rows.length<maxBuys;i++){
+      const x=pass[i]; if(rows.find(r=>r.sym===x.sym))continue;
+      const raw=deploy*(weight(x,i,style)/total);
+      const cap=deploy*capPct(x,style); const tcap=deploy*themeCap(x.theme||x.sector,style); const usedTheme=themeUsed[x.theme||x.sector]||0;
+      let amt=Math.min(raw,cap,Math.max(0,tcap-usedTheme),remaining);
+      if(amt<minBuy && loop===0)continue;
+      amt=round50(amt);
+      if(amt>=minBuy && remaining-amt>=-0.01){rows.push({...x,amount:amt}); remaining-=amt; themeUsed[x.theme||x.sector]=usedTheme+amt;}
     }
   }
-  let rows=working.map(x=>({...x,amount:round50(x.amount)})).filter(x=>x.amount>=minBuy);
-  let used=rows.reduce((a,x)=>a+x.amount,0);
-  // If rounding/minimum leaves deploy unused, top up best rows without breaking caps.
-  let guard=0;
-  while(deploy-used>=0.5 && rows.length && guard++<200){
-    let target=rows.slice().sort((a,b)=>((b.cap-b.amount)+(b.opp/100))-((a.cap-a.amount)+(a.opp/100)))[0];
-    if(!target || target.amount+0.5>target.cap+0.01)break;
-    target.amount=+(target.amount+0.5).toFixed(2); used+=0.5;
-  }
-  // If too few pass minimum, use fewer better ideas rather than tiny equal dust.
-  rows=rows.slice(0,maxBuys);
-  return rows;
+  return rows.sort((a,b)=>b.amount-a.amount || b.opp-a.opp);
 }
-function buildPlan(){
-  const fund=Math.max(0,+($('ltsFund')?.value||100));
-  const deployPct=clamp(+($('ltsDeployPct')?.value||70),10,100);
-  const deployTarget=fund*deployPct/100;
-  const maxBuys=clamp(Math.round(+($('ltsMaxBuys')?.value||5)),1,8);
-  const minBuy=Math.max(1,+($('ltsMinBuy')?.value||5));
-  const style=$('ltsStyle')?.value||'growth';
-  const cand=getCandidates(style).slice(0,Math.max(maxBuys*3,10));
-  let rows=allocateWeighted(cand,deployTarget,minBuy,maxBuys,style);
-  const used=rows.reduce((a,r)=>a+r.amount,0);
-  const plan={date:today(),fund,deployPct,deployTarget,deploy:used,hold:Math.max(0,fund-used),style,minBuy,method:'Best portfolio: quality, growth, trend, evidence, valuation sanity, ETF floor, sector caps and risk caps',rows};
-  save(KEY.plan,plan); mergePlanToTracker(plan); renderAll();
+async function buildPlan(){
+  const btn=$('ltsBuildPlan'); if(btn){btn.disabled=true;btn.textContent='Checking evidence...';}
+  try{
+    const fund=+($('ltsFund')?.value||100), deployPct=clamp(+($('ltsDeployPct')?.value||70),10,100), maxBuys=clamp(+($('ltsMaxBuys')?.value||5),1,8), minBuy=Math.max(1,+($('ltsMinBuy')?.value||5)), style=$('ltsStyle')?.value||'best', strictness=$('ltsStrictness')?.value||'balanced';
+    const deploy=fund*deployPct/100;
+    const all=await enrichAll(strictness,style);
+    const candidates=filterUniverse(all,'broad').sort((a,b)=>b.opp-a.opp);
+    const rows=allocate(candidates,deploy,minBuy,maxBuys,style);
+    const used=rows.reduce((a,r)=>a+r.amount,0);
+    const plan={date:today(),fund,deployPct,deployTarget:deploy,deploy:used,hold:Math.max(0,fund-used),style,strictness,minBuy,rows,report:candidates.map(x=>({sym:x.sym,name:x.name,role:x.role,sector:x.sector,theme:x.theme,score:x.score,pot:x.pot,trend:x.trend,opp:x.opp,evidence:x.evidence,fundSource:x.fund&&x.fund.source,expect:x.expect}))};
+    save(KEY.plan,plan); mergePlanToTracker(plan); renderAll();
+  } finally {if(btn){btn.disabled=false;btn.textContent='Build evidence plan';}}
 }
-function mergePlanToTracker(plan){
-  const t=load(KEY.tracker,[]);
-  for(const r of plan.rows){
-    let ex=t.find(x=>x.sym===r.sym);
-    const base={sym:r.sym,name:r.name,role:r.role,sector:r.sector,score:r.score,owned:0,target:Math.max(r.amount*2,5),price:0,expect:r.expect,review:future(90),created:today()};
-    if(!ex)t.push(base); else {ex.score=r.score;ex.expect=ex.expect||r.expect;ex.role=ex.role||r.role;ex.sector=ex.sector||r.sector;ex.target=Math.max(+ex.target||0,r.amount*2,5);}
-  }
-  save(KEY.tracker,t);
-}
-function renderOverview(){
-  const plan=load(KEY.plan,null),t=load(KEY.tracker,[]),j=load(KEY.journal,[]);
-  const used=plan?plan.rows.reduce((a,r)=>a+r.amount,0):0;
-  const hold=plan?Math.max(0,plan.fund-used):0;
-  const top=plan&&plan.rows&&plan.rows[0]?plan.rows[0].sym:'n/a';
-  const el=$('ltsOverview');
-  if(el)el.innerHTML=`<div class="mini"><span>Plan</span><b>${plan?plan.rows.length+' buys':'Not built'}</b></div><div class="mini"><span>Deploy</span><b>${gbp(used)}</b></div><div class="mini"><span>Hold cash</span><b>${gbp(hold)}</b></div><div class="mini"><span>Top growth use</span><b>${top}</b></div><div class="mini"><span>Journal</span><b>${j.length}</b></div>`;
-}
-function whyText(r){
-  const risk=r.risk==='very high'?'very high risk cap':r.risk==='high'?'higher risk cap':r.role==='Core ETF'?'core ETF ballast':'quality compounder allowance';
-  const theme=r.theme?`, ${r.theme} cap checked`:'';
-  return `opportunity ${r.opp}, potential +${r.pot}%/yr, trend ${r.trend}, ${risk}${theme}`;
-}
-function renderPlan(){
-  const plan=load(KEY.plan,null); const summary=$('ltsPlanSummary'),list=$('ltsPlanList'); if(!summary||!list)return;
-  if(!plan||!plan.rows.length){summary.textContent='Tap Build finance plan. Amounts are weighted by growth potential, quality, trend, evidence and portfolio balance. Only rows shown here are buys today.';list.innerHTML='<div class="ltEmpty">No finance plan yet.</div>';return;}
-  const used=plan.rows.reduce((a,r)=>a+r.amount,0), hold=Math.max(0,plan.fund-used);
-  summary.textContent=`Best portfolio plan ready: deploy ${gbp(used)} of ${gbp(plan.fund)}. Bigger amounts go to stronger risk-adjusted growth, but the app also enforces ETF ballast, sector balance and high-risk caps. Hold ${gbp(hold)} cash. Buy today: ${plan.rows.map(r=>r.sym+' '+gbp(r.amount)).join(', ')}.`;
-  list.innerHTML=plan.rows.map((r,i)=>`<div class="ltPlanRow"><div class="rank">${i+1}.</div><div><div class="sym">${r.sym}</div><div class="meta">${r.role} · ${whyText(r)}</div></div><div class="amt">${gbp(r.amount)}</div><button class="good" data-lts-log="${r.sym}">Log bought</button></div>`).join('')+`<div class="ltHoldCash"><b>Hold cash</b><span>${gbp(hold)} kept back because either deployment cap, risk caps, or minimum-buy rules stopped the app forcing money into weaker ideas.</span></div>`;
-}
-function renderTracker(){
-  const plan=load(KEY.plan,{rows:[]}),planned=new Map((plan.rows||[]).map(r=>[r.sym,r])); const t=load(KEY.tracker,[]); const box=$('ltsTrackerCards'); if(!box)return;
-  if(!t.length){box.innerHTML='<div class="ltEmpty">No tracker items yet. Build a plan or add an idea from Growth radar.</div>';return;}
-  box.innerHTML=t.map(x=>{const p=planned.get(x.sym);const status=(+x.owned||0)>0?'hold':(p?'plan':'watch');const st=status==='hold'?'Hold':(status==='plan'?'Plan today':'Watch');const next=status==='plan'?`Buy ${gbp(p.amount)} manually in Trading 212, then tap Log bought in the finance plan above. Reason: ${whyText(p)}.`:((+x.owned||0)>0?'Hold. Review thesis on the review date.':'Good candidate, but it is not in today’s finance plan.');return `<div class="ltTrackCard ${status==='plan'?'plan':''}"><div class="ltTrackHead"><div><b>${x.sym}</b><div class="muted">${x.role||'Candidate'} · ${x.sector||''}</div></div><div class="ltTrackScore">${Math.round(+x.score||0)}</div></div><span class="ltStatus ${status==='plan'?'plan':status==='hold'?'hold':''}">${st}</span><div class="ltTrackMetrics"><div class="ltTrackMini"><span>Owned</span><b>${gbp(+x.owned||0)}</b></div><div class="ltTrackMini"><span>Planned today</span><b>${gbp(p?p.amount:0)}</b></div><div class="ltTrackMini"><span>Target</span><b>${gbp(+x.target||0)}</b></div><div class="ltTrackMini"><span>P/L</span><b>${gbp(+x.pl||0)}</b></div><div class="ltTrackMini"><span>Review</span><b>${x.review||future(90)}</b></div><div class="ltTrackMini"><span>Price</span><b>${x.price?Number(x.price).toFixed(2):'n/a'}</b></div></div><div class="ltTrackNote"><b>Expectation:</b> ${x.expect||'3 to 5 year hold. Review every 90 days.'}<br/><b>Next action:</b> ${next}</div><div class="ltTrackActions"><button class="secondary" data-lts-review="${x.sym}">Review</button><button class="secondary" data-lts-edit="${x.sym}">Edit</button><button class="bad" data-lts-delete="${x.sym}">Delete</button></div></div>`}).join('');
-}
-function renderJournal(){const j=load(KEY.journal,[]);const el=$('ltsJournalRows');if(!el)return;if(!j.length){el.innerHTML='<div class="ltEmpty">No long term journal entries yet.</div>';return;}el.innerHTML=j.slice().reverse().map(x=>`<div class="ltJournalItem"><b>${x.date} · ${x.sym}</b><br/>${x.action} · ${gbp(x.amount)}${x.note?' · '+x.note:''}</div>`).join('');}
-function renderRadar(){const mode=$('ltsUniverse')?.value||'broad',count=clamp(+($('ltsRadarCount')?.value||8),3,20);const list=$('ltsRadarList');if(!list)return;const t=load(KEY.tracker,[]);const tracked=new Set(t.map(x=>x.sym));list.innerHTML=universe(mode).slice(0,count).map(x=>`<div class="ltRadarCard"><b>${x.sym}</b><span class="muted"> · ${x.sector}</span><div class="potential">+${x.pot}%/yr estimate · opportunity ${opportunityScore(x,'growth')}</div><div class="tiny">Score ${x.score}, trend ${x.trend}, ${x.evidence}. Discovery only, finance plan decides buys.</div><div class="row tight" style="margin-top:8px"><button class="secondary" data-lts-add="${x.sym}" ${tracked.has(x.sym)?'disabled':''}>${tracked.has(x.sym)?'On tracker':'Add to tracker'}</button></div></div>`).join('');}
+function mergePlanToTracker(plan){const t=load(KEY.tracker,[]); for(const r of plan.rows){let ex=t.find(x=>x.sym===r.sym); const base={sym:r.sym,name:r.name,role:r.role,sector:r.sector,score:r.score,owned:0,target:Math.max(r.amount*2,5),price:0,expect:r.expect,review:future(90),created:today()}; if(!ex)t.push(base); else {ex.score=r.score;ex.expect=ex.expect||r.expect;ex.role=ex.role||r.role;ex.sector=ex.sector||r.sector;ex.target=Math.max(+ex.target||0,r.amount*2,5);}} save(KEY.tracker,t);}
+function evidencePills(e){return (e&&e.checks?e.checks:[]).map(c=>`<span class="ltEPill ${c[1]}">${escapeHTML(c[0])}</span>`).join('')}
+function whyText(r){const src=r.evidence&&r.evidence.sourceTags?r.evidence.sourceTags.join(' + '):'evidence'; return `opp ${r.opp}, potential +${r.pot}%/yr, trend ${r.trend}, confidence ${r.evidence.dataConfidence}%, ${src}`;}
+function renderOverview(){const plan=load(KEY.plan,null),t=load(KEY.tracker,[]),j=load(KEY.journal,[]); const used=plan?plan.rows.reduce((a,r)=>a+r.amount,0):0; const hold=plan?Math.max(0,plan.fund-used):0; const passes=plan&&plan.report?plan.report.filter(x=>x.evidence.gate==='PASS').length:0; const checks=plan&&plan.report?plan.report.filter(x=>x.evidence.gate==='CHECK').length:0; const el=$('ltsOverview'); if(el)el.innerHTML=`<div class="mini"><span>Plan</span><b>${plan?plan.rows.length+' buys':'Not built'}</b></div><div class="mini"><span>Evidence</span><b>${plan?passes+' pass, '+checks+' check':'Not checked'}</b></div><div class="mini"><span>Deploy</span><b>${gbp(used)}</b></div><div class="mini"><span>Hold cash</span><b>${gbp(hold)}</b></div><div class="mini"><span>Journal</span><b>${j.length}</b></div>`;}
+function renderEvidenceGrid(plan){const el=$('ltsEvidenceGrid'); if(!el)return; if(!plan||!plan.report){el.innerHTML='';return;} const pass=plan.report.filter(x=>x.evidence.gate==='PASS').length, check=plan.report.filter(x=>x.evidence.gate==='CHECK').length, block=plan.report.filter(x=>x.evidence.gate==='BLOCK').length, fmp=plan.report.filter(x=>x.fundSource==='FMP fundamentals').length; el.innerHTML=`<div class="ltEvidenceMini pass"><span>Pass</span><b>${pass}</b></div><div class="ltEvidenceMini check"><span>Check only</span><b>${check}</b></div><div class="ltEvidenceMini block"><span>Blocked</span><b>${block}</b></div><div class="ltEvidenceMini"><span>FMP fundamentals</span><b>${fmp}</b></div>`;}
+function renderPlan(){const plan=load(KEY.plan,null); const summary=$('ltsPlanSummary'),list=$('ltsPlanList'); if(!summary||!list)return; renderEvidenceGrid(plan); if(!plan||!plan.rows.length){summary.textContent='Tap Build evidence plan. Only PASS rows can become buys. CHECK rows are watch or review only.';list.innerHTML='<div class="ltEmpty">No finance plan yet.</div>';renderEvidenceReport(plan);return;} const used=plan.rows.reduce((a,r)=>a+r.amount,0), hold=Math.max(0,plan.fund-used); summary.textContent=`Evidence plan ready: deploy ${gbp(used)} of ${gbp(plan.fund)}. Only PASS rows are buys today. Hold ${gbp(hold)} cash. Buy today: ${plan.rows.map(r=>r.sym+' '+gbp(r.amount)).join(', ')}.`; list.innerHTML=plan.rows.map((r,i)=>`<div class="ltPlanRow pass"><div class="rank">${i+1}.</div><div><div class="sym">${escapeHTML(r.sym)} <span class="ltSourceTag">PASS</span></div><div class="meta">${escapeHTML(r.role)} · ${escapeHTML(whyText(r))}</div><div class="evidenceLine">${evidencePills(r.evidence)}</div></div><div class="amt">${gbp(r.amount)}</div><button class="good" data-lts-log="${escapeHTML(r.sym)}">Log bought</button></div>`).join('')+`<div class="ltHoldCash"><b>Hold cash</b><span>${gbp(hold)} kept back because evidence gates, deployment cap, risk caps, sector caps or minimum-buy rules stopped the app forcing money into weaker ideas.</span></div>`; renderEvidenceReport(plan);}
+function renderEvidenceReport(plan){const el=$('ltsEvidenceBody'); if(!el)return; if(!plan||!plan.report){el.innerHTML='<div class="ltEmpty">No evidence report yet.</div>';return;} const rows=plan.report.slice().sort((a,b)=>({PASS:0,CHECK:1,BLOCK:2}[a.evidence.gate]-{PASS:0,CHECK:1,BLOCK:2}[b.evidence.gate])||b.opp-a.opp).slice(0,18); el.innerHTML=rows.map(x=>`<div class="ltEvidenceCard"><b>${escapeHTML(x.sym)}</b> <span class="ltEPill ${x.evidence.gate==='PASS'?'pass':x.evidence.gate==='BLOCK'?'block':'check'}">${x.evidence.gate}</span><span class="ltSourceTag">${escapeHTML(x.fundSource||'No fundamentals')}</span><div class="tiny">Opp ${x.opp}, score ${x.score}, potential +${x.pot}%/yr, trend ${x.trend}, confidence ${x.evidence.dataConfidence}%.</div><div class="ltEvidencePills">${evidencePills(x.evidence)}</div><div class="tiny">${escapeHTML((x.evidence.red&&x.evidence.red.length)?x.evidence.red.join('; '):'No red gate.')} </div></div>`).join('');}
+function renderTracker(){const plan=load(KEY.plan,{rows:[]}),planned=new Map((plan.rows||[]).map(r=>[r.sym,r])); const t=load(KEY.tracker,[]); const box=$('ltsTrackerCards'); if(!box)return; if(!t.length){box.innerHTML='<div class="ltEmpty">No tracker items yet. Build a plan or add an idea from Growth radar.</div>';return;} box.innerHTML=t.map(x=>{const p=planned.get(x.sym);const status=(+x.owned||0)>0?'hold':(p?'plan':'watch');const st=status==='hold'?'Hold':(status==='plan'?'Plan today':'Watch');const next=status==='plan'?`Buy ${gbp(p.amount)} manually in Trading 212, then tap Log bought in the finance plan above. Reason: ${whyText(p)}.`:((+x.owned||0)>0?'Hold. Review thesis on the review date.':'Good candidate, but it is not in today’s evidence finance plan.');return `<div class="ltTrackCard ${status==='plan'?'plan':''}"><div class="ltTrackHead"><div><b>${escapeHTML(x.sym)}</b><div class="muted">${escapeHTML(x.role||'Candidate')} · ${escapeHTML(x.sector||'')}</div></div><div class="ltTrackScore">${Math.round(+x.score||0)}</div></div><span class="ltStatus ${status==='plan'?'plan':status==='hold'?'hold':''}">${st}</span><div class="ltTrackMetrics"><div class="ltTrackMini"><span>Owned</span><b>${gbp(+x.owned||0)}</b></div><div class="ltTrackMini"><span>Planned today</span><b>${gbp(p?p.amount:0)}</b></div><div class="ltTrackMini"><span>Target</span><b>${gbp(+x.target||0)}</b></div><div class="ltTrackMini"><span>P/L</span><b>${gbp(+x.pl||0)}</b></div><div class="ltTrackMini"><span>Review</span><b>${x.review||future(90)}</b></div><div class="ltTrackMini"><span>Price</span><b>${x.price?Number(x.price).toFixed(2):'n/a'}</b></div></div><div class="ltTrackNote"><b>Expectation:</b> ${escapeHTML(x.expect||'3 to 5 year hold. Review every 90 days.')}<br/><b>Next action:</b> ${escapeHTML(next)}</div><div class="ltTrackActions"><button class="secondary" data-lts-review="${escapeHTML(x.sym)}">Review</button><button class="secondary" data-lts-edit="${escapeHTML(x.sym)}">Edit</button><button class="bad" data-lts-delete="${escapeHTML(x.sym)}">Delete</button></div></div>`}).join('');}
+function renderJournal(){const j=load(KEY.journal,[]);const el=$('ltsJournalRows');if(!el)return;if(!j.length){el.innerHTML='<div class="ltEmpty">No long term journal entries yet.</div>';return;}el.innerHTML=j.slice().reverse().map(x=>`<div class="ltJournalItem"><b>${escapeHTML(x.date)} · ${escapeHTML(x.sym)}</b><br/>${escapeHTML(x.action)} · ${gbp(x.amount)}${x.note?' · '+escapeHTML(x.note):''}</div>`).join('');}
+async function renderRadar(){const mode=$('ltsUniverse')?.value||'broad',count=clamp(+($('ltsRadarCount')?.value||8),3,20), list=$('ltsRadarList'); if(!list)return; list.innerHTML='<div class="ltEmpty">Checking ideas...</div>'; const strictness=$('ltsStrictness')?.value||'balanced', style=$('ltsStyle')?.value||'best'; const all=await enrichAll(strictness,style); const t=load(KEY.tracker,[]); const tracked=new Set(t.map(x=>x.sym)); list.innerHTML=filterUniverse(all,mode).sort((a,b)=>b.opp-a.opp).slice(0,count).map(x=>`<div class="ltRadarCard"><b>${escapeHTML(x.sym)}</b><span class="muted"> · ${escapeHTML(x.sector)}</span> <span class="ltEPill ${x.evidence.gate==='PASS'?'pass':x.evidence.gate==='BLOCK'?'block':'check'}">${x.evidence.gate}</span><div class="potential">+${x.pot}%/yr estimate · opp ${x.opp} · confidence ${x.evidence.dataConfidence}%</div><div class="tiny">${escapeHTML(x.evidence.sourceTags.join(' + '))}. Discovery only, evidence plan decides buys.</div><div class="row tight" style="margin-top:8px"><button class="secondary" data-lts-add="${escapeHTML(x.sym)}" ${tracked.has(x.sym)?'disabled':''}>${tracked.has(x.sym)?'On tracker':'Add to tracker'}</button></div></div>`).join('');}
 function renderAll(){renderOverview();renderPlan();renderTracker();renderJournal();}
-function logBought(sym){const plan=load(KEY.plan,{rows:[]});const r=(plan.rows||[]).find(x=>x.sym===sym);if(!r)return alert('That stock is not in today’s finance plan.');let amount=parseFloat(prompt('Amount actually bought in £', r.amount));if(!isFinite(amount)||amount<=0)return;let price=parseFloat(prompt('Actual share price, optional', ''));const t=load(KEY.tracker,[]);let ex=t.find(x=>x.sym===sym);if(!ex){ex={sym:r.sym,name:r.name,role:r.role,sector:r.sector,score:r.score,owned:0,target:Math.max(amount*2,5),expect:r.expect,review:future(90)};t.push(ex)}ex.owned=(+ex.owned||0)+amount;if(isFinite(price)&&price>0)ex.price=price;ex.review=ex.review||future(90);save(KEY.tracker,t);const j=load(KEY.journal,[]);j.push({date:today(),sym,action:'Bought',amount,note:'Logged from growth-weighted finance plan'});save(KEY.journal,j);renderAll();}
-function addToTracker(sym){const x=BASE.map(enrich).find(a=>a.sym===sym);if(!x)return;const t=load(KEY.tracker,[]);if(!t.find(a=>a.sym===sym)){t.push({sym:x.sym,name:x.name,role:x.role,sector:x.sector,score:x.score,owned:0,target:5,expect:x.expect,review:future(90),created:today()});save(KEY.tracker,t)}renderAll();renderRadar();}
+function logBought(sym){const plan=load(KEY.plan,{rows:[]});const r=(plan.rows||[]).find(x=>x.sym===sym);if(!r)return alert('That stock is not in today’s evidence finance plan.');let amount=parseFloat(prompt('Amount actually bought in £', r.amount));if(!isFinite(amount)||amount<=0)return;let price=parseFloat(prompt('Actual share price, optional', ''));const t=load(KEY.tracker,[]);let ex=t.find(x=>x.sym===sym);if(!ex){ex={sym:r.sym,name:r.name,role:r.role,sector:r.sector,score:r.score,owned:0,target:Math.max(amount*2,5),expect:r.expect,review:future(90)};t.push(ex)}ex.owned=(+ex.owned||0)+amount;if(isFinite(price)&&price>0)ex.price=price;ex.review=ex.review||future(90);save(KEY.tracker,t);const j=load(KEY.journal,[]);j.push({date:today(),sym,action:'Bought',amount,note:'Logged from v87 evidence plan'});save(KEY.journal,j);renderAll();}
+function addToTracker(sym){const x=BASE.find(a=>a.sym===sym);if(!x)return;const t=load(KEY.tracker,[]);if(!t.find(a=>a.sym===sym)){t.push({sym:x.sym,name:x.name,role:x.role,sector:x.sector,score:x.score,owned:0,target:5,expect:x.expect,review:future(90),created:today()});save(KEY.tracker,t)}renderAll();renderRadar();}
 function editItem(sym){const t=load(KEY.tracker,[]);const x=t.find(a=>a.sym===sym);if(!x)return;let target=parseFloat(prompt('Target value £', +x.target||5));if(isFinite(target)&&target>=0)x.target=target;let owned=parseFloat(prompt('Owned value £', +x.owned||0));if(isFinite(owned)&&owned>=0)x.owned=owned;save(KEY.tracker,t);renderAll();}
 function reviewItem(sym){const t=load(KEY.tracker,[]);const x=t.find(a=>a.sym===sym);if(!x)return;x.review=future(90);const j=load(KEY.journal,[]);j.push({date:today(),sym,action:'Reviewed',amount:0,note:'Review date moved 90 days'});save(KEY.tracker,t);save(KEY.journal,j);renderAll();}
 function deleteItem(sym){if(!confirm('Remove '+sym+' from long term tracker?'))return;save(KEY.tracker,load(KEY.tracker,[]).filter(x=>x.sym!==sym));renderAll();renderRadar();}
-function exportCSV(){const j=load(KEY.journal,[]);const rows=['date,symbol,action,amount,note',...j.map(x=>[x.date,x.sym,x.action,x.amount,`"${String(x.note||'').replace(/"/g,'""')}"`].join(','))];const blob=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='long-term-journal.csv';a.click();URL.revokeObjectURL(a.href);}
+function exportCSV(){const j=load(KEY.journal,[]);const rows=['date,symbol,action,amount,note',...j.map(x=>[x.date,x.sym,x.action,x.amount,`"${String(x.note||'').replace(/"/g,'""')}"`].join(','))];const blob=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='long-term-journal-v87.csv';a.click();URL.revokeObjectURL(a.href);}
 function init(){maybeMigrate();const root=$('longSimpleSection');if(!root)return;root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ltsBuildPlan')buildPlan();else if(b.id==='ltsClearPlan'){save(KEY.plan,null);renderAll()}else if(b.id==='ltsGoTracker')$('ltsTrackerBox')?.scrollIntoView({behavior:'smooth',block:'start'});else if(b.id==='ltsRunRadar')renderRadar();else if(b.id==='ltsExportJournal')exportCSV();else if(b.id==='ltsClearJournal'){if(confirm('Clear long term journal?')){save(KEY.journal,[]);renderAll()}}else if(b.dataset.ltsLog)logBought(b.dataset.ltsLog);else if(b.dataset.ltsAdd)addToTracker(b.dataset.ltsAdd);else if(b.dataset.ltsEdit)editItem(b.dataset.ltsEdit);else if(b.dataset.ltsReview)reviewItem(b.dataset.ltsReview);else if(b.dataset.ltsDelete)deleteItem(b.dataset.ltsDelete);});renderAll();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-}catch(err){console.error('v86 best portfolio long term failed',err);}
+}catch(err){console.error('v87 evidence-gated long term failed',err);}
 })();
 </script>
 
