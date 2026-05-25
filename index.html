@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v78, Deploy Control</title>
+<title>Trading 212 Manual God Mode v79, Deploy Control</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -551,6 +551,13 @@
     @media(max-width:780px){.cashLedger{padding:10px;border-radius:15px}.cashLedgerGrid{grid-template-columns:repeat(2,1fr);gap:6px}.cashMini{padding:7px}.cashMini b{font-size:13px}}
 
 
+    /* v79 daily live detail fix */
+    .liveDetailPanel{margin-top:10px;border:1px solid rgba(94,231,255,.22);background:linear-gradient(180deg,rgba(94,231,255,.07),rgba(7,17,31,.88));border-radius:16px;overflow:hidden}
+    .liveDetailPanel summary{list-style:none;cursor:pointer;padding:11px 12px;font-weight:950;color:var(--text);display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .liveDetailPanel summary::-webkit-details-marker{display:none}.liveDetailPanel summary span{color:var(--muted);font-size:11px;font-weight:850;text-align:right}.liveDetailBody{padding:0 12px 12px}.liveDetailGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:6px}.liveDetailMini{background:rgba(5,13,25,.62);border:1px solid rgba(141,162,187,.14);border-radius:12px;padding:8px}.liveDetailMini span{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:950}.liveDetailMini b{font-size:14px}.liveDetailNote{border:1px solid rgba(141,162,187,.16);background:rgba(16,35,60,.42);border-radius:12px;padding:9px;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.35}.liveDetailActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.liveDetailActions button{padding:8px 9px;border-radius:10px;font-size:12px}
+    @media(max-width:780px){.liveDetailPanel{margin-top:8px;border-radius:13px}.liveDetailGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.liveDetailMini{padding:7px}.liveDetailMini b{font-size:13px}.liveDetailActions{display:grid;grid-template-columns:1fr 1fr}.liveDetailActions button{width:100%}}
+
+
     /* v67 opportunity engine, blocker board, tiers and rotation */
     .opportunityControls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.opportunityControls button.active{background:var(--warn);color:#06101e}
     .blockerBoard{display:grid;grid-template-columns:1.25fr repeat(4,1fr);gap:10px}.blockerMain,.blockerTile{background:#07111f;border:1px solid rgba(141,162,187,.18);border-radius:15px;padding:12px}.blockerMain b{display:block;font-size:22px;letter-spacing:-.03em}.blockerMain span,.blockerTile span{font-size:12px;color:var(--muted);line-height:1.35}.blockerTile b{font-size:19px}.blockerTile.good{border-color:rgba(46,229,137,.32);background:rgba(46,229,137,.07)}.blockerTile.warn{border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.07)}.blockerTile.bad{border-color:rgba(255,97,113,.32);background:rgba(255,97,113,.07)}.blockerList{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.blockerPill{display:inline-flex;gap:5px;align-items:center;border:1px solid rgba(141,162,187,.2);background:rgba(16,35,60,.58);border-radius:999px;padding:5px 8px;font-size:11px;color:var(--muted)}.blockerPill b{color:var(--text);font-size:11px}.tierBadge{display:inline-flex;align-items:center;border-radius:999px;border:1px solid rgba(141,162,187,.22);padding:4px 8px;font-size:11px;font-weight:950;margin-right:5px}.tier1{background:rgba(46,229,137,.12);border-color:rgba(46,229,137,.38);color:var(--good)}.tier2{background:rgba(255,209,102,.11);border-color:rgba(255,209,102,.38);color:var(--warn)}.tier3{background:rgba(187,156,255,.10);border-color:rgba(187,156,255,.36);color:var(--purple)}.moverTag{background:rgba(94,231,255,.10);border-color:rgba(94,231,255,.34);color:var(--cyan)}
@@ -882,8 +889,8 @@
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v78, Deploy Control</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v74 keeps the stable finder and mobile Long Term Tracker, then simplifies Auto Finance into one clear plan, a small shortlist and optional detailed checks.</div>
+<h1>Trading 212 Manual God Mode v79, Deploy Control</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v79 keeps the single long term finance plan and fixes the daily live detail panel so the short term live day, cash ledger and checklist work cleanly on phone.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -894,7 +901,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v78</span>
+<span class="mobileTitleText">Manual God Mode v79</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1116,6 +1123,10 @@ COIN"></textarea>
 <div class="sessionMetric"><div class="k">Loss lock room</div><div class="v">n/a</div></div>
 </div>
 <div class="checklist" id="dailyChecklist"></div>
+<details class="liveDetailPanel" id="dailyLiveDetail" open="">
+<summary>Daily live detail <span id="dailyLiveSummary">Waiting for scan</span></summary>
+<div class="liveDetailBody" id="dailyLiveDetailBody">Run Load history + go live, or Scan now, to populate the live day detail.</div>
+</details>
 </section>
 <section class="card span12 blockersSection" id="blockerSection">
 <h2>Why no trades?</h2>
@@ -2015,6 +2026,36 @@ function dailyMissionHTML(port){
 }
 function cashLedgerHTML(port){const c=(port&&port.cashLedger)||cashLedger(settings());const cls=c.available>0?'goodText':'badText';return '<div class="cashLedger"><div class="cashLedgerHead"><div><b class="'+cls+'">Cash ledger, '+moneyGBP(c.available)+' available</b><br><span>Auto cash = pot plus realised P/L minus open bought value. Manual is an override only.</span></div><span class="badge '+(c.mode==='auto'?'good':'warn')+'">'+escapeHTML(c.mode==='auto'?'Auto':'Manual')+'</span></div><div class="cashLedgerGrid"><div class="cashMini"><span>Day start</span><b>'+moneyGBP(c.dayStart)+'</b></div><div class="cashMini"><span>Realised today</span><b class="'+(c.realisedToday>=0?'goodText':'badText')+'">'+moneyGBP(c.realisedToday)+'</b></div><div class="cashMini"><span>Open bought</span><b>'+moneyGBP(c.bought)+'</b></div><div class="cashMini"><span>Open now</span><b>'+moneyGBP(c.current)+'</b></div><div class="cashMini"><span>Account est</span><b>'+moneyGBP(c.accountEstimate)+'</b></div></div><div class="cashActions"><button type="button" class="secondary" data-cash-auto="1">Use auto ledger</button><button type="button" class="secondary" data-cash-reconcile="1">Reconcile cash</button></div></div>'}
 
+
+function wireSessionPanelActions(){
+  wireCommandShortcuts();
+  document.querySelectorAll('[data-cash-reconcile]').forEach(b=>b.onclick=reconcileCash);
+  document.querySelectorAll('[data-cash-auto]').forEach(b=>b.onclick=useAutoCash);
+  document.querySelectorAll('[data-session-scroll]').forEach(b=>b.onclick=()=>scrollToCockpitTarget(b.dataset.sessionScroll));
+}
+function renderDailyLiveDetail(port,sess,cmd,counts,open,closed,risk,tradesToday,buyZones,sellNow,readyHist,quoteOK){
+  const body=$('dailyLiveDetailBody'), sum=$('dailyLiveSummary');
+  if(!body)return;
+  const dailyPL=(+closed||0)+(+open||0);
+  const cls=v=>v>0?'goodText':v<0?'badText':'muted';
+  const marketText=sess&&sess.regular?'US Open':(sess&&sess.premarket?'Pre-market':'Closed');
+  if(sum)sum.textContent=marketText+' · day '+moneyGBP(dailyPL)+' · buys '+buyZones+' · sells '+sellNow;
+  body.innerHTML='<div class="liveDetailGrid">'+
+    '<div class="liveDetailMini"><span>Market</span><b class="'+(sess&&sess.regular?'goodText':'warnText')+'">'+escapeHTML(marketText)+'</b></div>'+
+    '<div class="liveDetailMini"><span>Day P/L</span><b class="'+cls(dailyPL)+'">'+moneyGBP(dailyPL)+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>Cash</span><b class="'+((port.cashAvailable||0)>0?'goodText':'badText')+'">'+moneyGBP(port.cashAvailable||0)+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>Trades</span><b>'+tradesToday+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>Open P/L</span><b class="'+cls(open)+'">'+moneyGBP(open)+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>Closed P/L</span><b class="'+cls(closed)+'">'+moneyGBP(closed)+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>Risk open</span><b>'+moneyGBP(risk)+'</b></div>'+ 
+    '<div class="liveDetailMini"><span>History</span><b>'+readyHist+'/'+allSymbols().length+'</b></div>'+ 
+    '</div>'+
+    '<div class="liveDetailNote"><b class="'+(cmd&&cmd.cls?cmd.cls:'warnText')+'">'+escapeHTML(cmd&&cmd.main?cmd.main:'No scan yet')+'</b><br>'+escapeHTML(cmd&&cmd.sub?cmd.sub:'Run a scan first.')+'<br>Live quotes: '+(quoteOK?'seen':'waiting')+'. Confirmed buys: '+buyZones+'. Sell alerts: '+sellNow+'.</div>'+
+    dailyMissionHTML(port)+cashLedgerHTML(port)+
+    '<div class="liveDetailActions"><button type="button" class="secondary" data-session-scroll="scannerSection">Scanner</button><button type="button" class="secondary" data-session-scroll="positionsSection">Positions</button><button type="button" class="secondary" data-cash-reconcile="1">Reconcile cash</button><button type="button" class="secondary" data-cash-auto="1">Use auto cash</button></div>';
+  wireSessionPanelActions();
+}
+
 function renderSessionPanel(rows){
   if(!$('sessionPanel'))return;
   const s=activeSettings(),sess=usSessionState(),scanRows=rows||state.lastRows||[],cmd=sessionCommand(scanRows);
@@ -2049,11 +2090,12 @@ function renderSessionPanel(rows){
     '<div class="sessionMetric"><div class="k">Closed P/L</div><div class="v '+clsPL(closed)+'">'+moneyGBP(closed)+'</div></div>'+
     '<div class="sessionMetric"><div class="k">Risk open</div><div class="v">'+moneyGBP(risk)+'</div></div>'+
     '<div class="sessionMetric"><div class="k">Cash available</div><div class="v '+((port.cashAvailable||0)>0?'goodText':'badText')+'">'+moneyGBP(port.cashAvailable||0)+'</div></div>'+dailyMissionHTML(port)+cashLedgerHTML(port);
-  wireCommandShortcuts();
+  wireSessionPanelActions();
   const readyHist=allSymbols().filter(x=>historyFresh(x)).length;
   const quoteOK=Object.keys(state.quotes||{}).length>0;
   const checks=[['US regular market',sess.regular,!sess.regular&&s.premarketWatchOnly?'watch only':'ok'],['History ready',readyHist>=Math.min(allSymbols().length,watchlist().length),' '+readyHist+'/'+allSymbols().length],['Live quotes',quoteOK,'Finnhub'],['Buy zones',buyZones>0,String(buyZones)],['Spread checked',false,'manual check in Trading 212'],['Daily target',target>0,'target '+moneyGBP(target)+' / red '+moneyGBP(dailyLoss)],['Risk saved',s.pot>0&&port.cashAvailable>=0,'pot '+moneyGBP(s.pot)+', cash '+moneyGBP(port.cashAvailable)]];
-  $('dailyChecklist').innerHTML=checks.map(c=>'<div class="checkItem '+(c[1]?'ok':(c[0]==='Spread checked'?'warn':'bad'))+'"><b>'+escapeHTML(c[0])+'</b><br>'+escapeHTML(c[2])+'</div>').join('')
+  if($('dailyChecklist'))$('dailyChecklist').innerHTML=checks.map(c=>'<div class="checkItem '+(c[1]?'ok':(c[0]==='Spread checked'?'warn':'bad'))+'"><b>'+escapeHTML(c[0])+'</b><br>'+escapeHTML(c[2])+'</div>').join('');
+  renderDailyLiveDetail(port,sess,cmd,counts,open,closed,risk,tradesToday,buyZones,sellNow,readyHist,quoteOK);
 }
 function moveStopBreakeven(id){const p=state.positions.find(x=>String(x.id)===String(id));if(!p)return;p.stop=Math.max(p.stop||0,p.entry);p.notes=(p.notes||'')+' | stop moved to breakeven '+new Date().toLocaleString('en-GB');saveJSON(LS.positions,state.positions);renderPositions();toast('Stop updated',p.symbol+' stop moved to entry. Update Trading 212 manually too.','good')}
 function updateStop(id){const p=state.positions.find(x=>String(x.id)===String(id));if(!p)return;const v=parseFloat(prompt('New stop price for '+p.symbol,n(p.stop,2)));if(!isFinite(v)||v<=0)return;p.stop=v;p.notes=(p.notes||'')+' | stop manually updated to '+n(v,2);saveJSON(LS.positions,state.positions);renderPositions();toast('Stop updated',p.symbol+' stop updated in the dashboard. Match it in Trading 212.','good')}
