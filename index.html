@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v72, Mobile Board Fix</title>
+<title>Trading 212 Manual God Mode v73, Auto Finance Mode</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -807,12 +807,38 @@
   #ltActionBoard>.scroll{display:none!important}
 }
 
+
+/* v73 Auto Check and Finance Mode */
+.ltAutoPanel{border-color:rgba(46,229,137,.30);background:linear-gradient(180deg,rgba(46,229,137,.075),rgba(7,17,31,.96));margin-top:12px}
+.ltAutoControls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:end;margin-top:10px}
+.ltAutoStatus{margin-top:10px;border:1px solid rgba(46,229,137,.28);background:rgba(46,229,137,.08);border-radius:13px;padding:10px;color:#ceffe3;font-size:12px;line-height:1.35}
+.ltAutoStatus.warn{border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08);color:#fff1c2}
+.ltAutoStatus.bad{border-color:rgba(255,97,113,.34);background:rgba(255,97,113,.08);color:#ffd2d7}
+.ltAutoCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.ltAutoCard{background:#07111f;border:1px solid rgba(141,162,187,.16);border-radius:14px;padding:10px;min-height:118px}
+.ltAutoCard.finance{border-color:rgba(46,229,137,.40);background:linear-gradient(180deg,rgba(46,229,137,.10),#07111f)}
+.ltAutoCard.review{border-color:rgba(255,209,102,.36);background:linear-gradient(180deg,rgba(255,209,102,.08),#07111f)}
+.ltAutoCard.wait{border-color:rgba(121,173,255,.28);background:linear-gradient(180deg,rgba(121,173,255,.07),#07111f)}
+.ltAutoCard.block{border-color:rgba(255,97,113,.32);background:linear-gradient(180deg,rgba(255,97,113,.07),#07111f)}
+.ltAutoTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.ltAutoTop b{font-size:18px;letter-spacing:-.03em}.ltAutoTop strong{font-size:20px;color:var(--good)}
+.ltAutoPill{display:inline-flex;border:1px solid rgba(141,162,187,.22);background:rgba(16,35,60,.54);border-radius:999px;padding:3px 7px;font-size:10px;color:var(--muted);font-weight:900;margin:5px 4px 0 0}
+.ltAutoPill.good{color:var(--good);border-color:rgba(46,229,137,.34);background:rgba(46,229,137,.09)}
+.ltAutoPill.warn{color:var(--warn);border-color:rgba(255,209,102,.34);background:rgba(255,209,102,.08)}
+.ltAutoPill.bad{color:var(--bad);border-color:rgba(255,97,113,.32);background:rgba(255,97,113,.08)}
+.ltAutoReason{border:1px solid rgba(141,162,187,.14);background:rgba(16,35,60,.44);border-radius:11px;padding:8px;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.35}
+.ltAutoPlan{margin-top:10px;border:1px solid rgba(94,231,255,.25);background:rgba(94,231,255,.07);border-radius:13px;padding:10px;color:#d7fbff;font-size:12px;line-height:1.4}
+.ltFinanceLine{display:flex;justify-content:space-between;gap:8px;border-top:1px solid rgba(141,162,187,.14);padding-top:7px;margin-top:7px}.ltFinanceLine:first-child{border-top:0;margin-top:0;padding-top:0}
+.longTermSection.ltCollapsed .ltAutoPanel{display:none!important}
+@media(max-width:1120px){.ltAutoControls{grid-template-columns:1fr 1fr}.ltAutoCards{grid-template-columns:1fr 1fr}}
+@media(max-width:780px){.ltAutoControls{grid-template-columns:1fr!important}.ltAutoCards{grid-template-columns:1fr!important}.ltFinanceLine{display:block}.ltFinanceLine b{display:block;margin-bottom:2px}}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v72, Mobile Board Fix</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v72 keeps the stable finder and adds a mobile Long Term Action Board card view, so added ideas are visible and manageable on phone.</div>
+<h1>Trading 212 Manual God Mode v73, Auto Finance Mode</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v73 keeps the stable finder and mobile Long Term Action Board, then adds Auto Check and Finance Mode so you can fund a long term pot and let the app produce a staged candidate plan without touching the short term sniper cockpit.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -823,7 +849,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v72</span>
+<span class="mobileTitleText">Manual God Mode v73</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1118,7 +1144,7 @@ COIN"></textarea>
 <p class="tiny">Separate from Ignition Sniper. This is for building positions over months and years, using quality, valuation, allocation, buy zones and a calm journal. It still does not place orders.</p>
 </div>
 <div class="ltHeaderTools">
-<span class="ltBadge">v72 · mobile board fixed</span>
+<span class="ltBadge">v73 · auto finance</span>
 <button class="secondary ltToggleBtn" id="ltToggleCompact" type="button">Hide long term</button>
 </div>
 </div>
@@ -1237,6 +1263,26 @@ COIN"></textarea>
 <div class="scroll"><table class="ltFinderTable" id="ltFinderTable"><thead><tr><th>Action</th><th>Ticker</th><th>Score</th><th>Quality</th><th>Strength</th><th>Growth</th><th>Valuation</th><th>Returns</th><th>Trend</th><th>Moat</th><th>Safety</th><th>Sector</th><th>Price</th><th>Fair value</th><th>Buy zone</th><th>Data</th><th>Reasons</th><th>Actions</th></tr></thead><tbody id="ltFinderBody"><tr><td class="muted" colspan="18">Run the finder to rank long term candidates.</td></tr></tbody></table></div>
 </div>
 </details>
+
+<details class="ltPanel ltAutoPanel" id="ltAutoPanel" open="">
+<summary>Auto check and finance mode <span>fund the plan, not every idea</span></summary>
+<p class="tiny" style="margin-top:8px">This turns the long term board into a funding plan. It automatically checks score quality, valuation sanity, trend evidence, data confidence, allocation room and cash. It still does not place orders.</p>
+<div class="ltAutoControls">
+<div><label>Money to finance now, £</label><input id="ltFinanceNow" min="0" step="0.01" type="number" value="25"/></div>
+<div><label>Max one buy, £</label><input id="ltFinanceMaxOne" min="1" step="1" type="number" value="25"/></div>
+<div><label>Core ETF priority, %</label><input id="ltFinanceCorePct" max="100" min="0" step="5" type="number" value="50"/></div>
+<div><label>Auto strictness</label><select id="ltFinanceStrictness"><option selected="" value="guarded">Guarded, best default</option><option value="etf_first">ETF first</option><option value="growth">Quality growth</option><option value="strict">Strict value</option></select></div>
+</div>
+<div class="ltActions">
+<button class="good" id="ltRunAutoChecks" type="button">Run auto checks</button>
+<button class="secondary" id="ltApplyFinanceCash" type="button">Add finance to LT cash</button>
+<button class="secondary" id="ltAutoGoBoard" type="button">Go to action board</button>
+</div>
+<div class="ltAutoStatus" id="ltAutoStatus">Auto mode ready. Run the finder, add candidates to the board, then run auto checks. The output is a finance plan, not an order.</div>
+<div class="ltAutoPlan" id="ltAutoPlan" style="display:none"></div>
+<div class="ltAutoCards" id="ltAutoCards"></div>
+</details>
+
 <div class="ltTableWrap" id="ltActionBoard">
 <div class="ltJournalBar">
 <h2>Long term action board</h2>
@@ -2374,5 +2420,44 @@ function bind(){if(!$('longTermSection'))return;migrate();applySettings(jget(LT.
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
 })();
 </script>
+
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const K={settings:'t212gm71_lt_settings',stocks:'t212gm71_lt_stocks',finance:'t212gm73_lt_finance'};
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jget(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function jset(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function gbp(v){v=Number(v);return isFinite(v)?'£'+v.toFixed(2):'£0.00'}
+function pc(v){v=Number(v);return isFinite(v)?v.toFixed(0)+'%':'n/a'}
+function clamp(x,a,b){x=Number(x);return Math.max(a,Math.min(b,isFinite(x)?x:0))}
+function toast(title,msg,type){if(typeof window.toast==='function')window.toast(title,msg,type||'info');else console.log(title,msg)}
+function today(){return new Date().toISOString().slice(0,10)}
+function isEtf(t){return ['SPY','QQQ','IWM','DIA','VUSA','VUAG','VWRL','VWRP','EQQQ','CSP1','SWDA','VHVG','VEVE'].includes(String(t).toUpperCase())}
+function stocks(){const v=jget(K.stocks,[]);return Array.isArray(v)?v.filter(x=>x&&x.ticker):[]}
+function settings(){const s=jget(K.settings,{})||{};return {cash:+(($('ltCash')&&$('ltCash').value)||s.cash||0),stagePct:+(($('ltStagePct')&&$('ltStagePct').value)||s.stagePct||25),minBuyScore:+(($('ltMinBuyScore')&&$('ltMinBuyScore').value)||s.minBuyScore||75),strongBuyScore:+(($('ltStrongBuyScore')&&$('ltStrongBuyScore').value)||s.strongBuyScore||85),reviewDays:+(($('ltReviewDays')&&$('ltReviewDays').value)||s.reviewDays||90)}}
+function financeSettings(){const saved=jget(K.finance,{})||{};return {amount:+(($('ltFinanceNow')&&$('ltFinanceNow').value)||saved.amount||25),maxOne:+(($('ltFinanceMaxOne')&&$('ltFinanceMaxOne').value)||saved.maxOne||25),corePct:+(($('ltFinanceCorePct')&&$('ltFinanceCorePct').value)||saved.corePct||50),strictness:(($('ltFinanceStrictness')&&$('ltFinanceStrictness').value)||saved.strictness||'guarded')}}
+function saveFinance(){const f=financeSettings();jset(K.finance,f)}
+function score(x){return Math.round((+x.quality||0)*.25+(+x.strength||0)*.20+(+x.growth||0)*.15+(+x.valuation||0)*.20+(+x.returns||0)*.10+(+x.trend||0)*.10)}
+function cachedHistory(sym){const h=jget('t212gm36_us_history',{})||{};const row=h[String(sym).toUpperCase()];return row&&Array.isArray(row.data)?row.data:[]}
+function historyReady(sym){return cachedHistory(sym).length>=60}
+function reviewDue(x){return x.reviewDate && new Date(x.reviewDate+'T00:00:00')<=new Date(today()+'T00:00:00')}
+function totals(list,extraCash){const s=settings();const current=list.reduce((a,x)=>a+(+x.ownedGBP||0),0);const cost=list.reduce((a,x)=>a+(+x.costGBP||0),0);const cash=(+s.cash||0)+(+extraCash||0);const portfolio=current+cash;return {cash,current,cost,portfolio,pl:current-cost}}
+function analyse(x,total){const s=settings(), sc=score(x), price=+x.price||0, owned=+x.ownedGBP||0, cost=+x.costGBP||0;const targetValue=(total.portfolio||0)*(+x.targetPct||0)/100;const maxValue=(total.portfolio||0)*(+x.maxPct||0)/100;const gap=Math.max(0,targetValue-owned);const room=Math.max(0,maxValue-owned);let suggested=Math.min(gap,room,gap*((+s.stagePct||25)/100),total.cash*.25||total.cash);if(!isFinite(suggested)||suggested<1)suggested=0;const inZone=price>0&&+x.buyLow>0&&+x.buyHigh>0&&price>=+x.buyLow&&price<=+x.buyHigh;const below=price>0&&+x.buyLow>0&&price<+x.buyLow;const fair=price>0&&+x.fairHigh>0&&price<=+x.fairHigh;const overMax=maxValue>0&&owned>maxValue*1.02;const under=targetValue>0&&owned<targetValue*.98;let status='Wait';if(sc<65){status='Avoid';suggested=0}else if(overMax){status='Trim';suggested=0}else if(sc>=s.strongBuyScore&&(inZone||below)&&under&&suggested>0){status='Buy now'}else if(sc>=s.minBuyScore&&(fair||inZone||below)&&under&&suggested>0){status='Accumulate'}else if(owned>0){status='Hold'}else if(sc>=s.minBuyScore){status='Wait'}if(reviewDue(x)&&status==='Hold')status='Review';return {score:sc,suggested,targetValue,maxValue,status,pl:owned-cost,price,fair,inZone,below,under}}
+function checkStock(x,a,total,cfg){const flags=[],good=[];const sc=a.score, price=+x.price||0;const dataScore=(price?20:0)+((+x.fairHigh>0&&+x.buyHigh>0)?20:0)+(historyReady(x.ticker)?20:0)+((+x.quality>0&&+x.strength>0&&+x.growth>0)?20:0)+(String(x.thesis||'').length>30?20:0);if(dataScore>=80)good.push('data strong');else if(dataScore>=60)flags.push('data medium');else flags.push('data thin');if(+x.quality>=75)good.push('quality');else flags.push('quality check');if(+x.strength>=70)good.push('balance sheet');else flags.push('debt or strength check');if(+x.growth>=60)good.push('growth');else flags.push('growth weak');if(+x.trend>=55||isEtf(x.ticker))good.push('trend');else flags.push('trend weak');if(+x.valuation>=60||isEtf(x.ticker))good.push('valuation');else flags.push('valuation check');if(price&&+x.fairHigh>0){const ratio=+x.fairHigh/price;if(ratio>2.2)flags.push('fair value too generous');if(ratio<0.75)flags.push('above fair value')}else flags.push('valuation source');if(sc<65)flags.push('score below floor');if(a.suggested<=0)flags.push('no cash or no allocation room');if(reviewDue(x))flags.push('review due');const serious=flags.filter(f=>/score below|fair value too generous|no cash|allocation|valuation source|data thin/.test(f)).length;let verdict='Wait',cls='wait';if(sc<65){verdict='Block';cls='block'}else if(a.suggested>0&&serious===0&&(a.status==='Buy now'||a.status==='Accumulate')){verdict='Finance';cls='finance'}else if(a.suggested>0&&serious<=1&&cfg.strictness!=='strict'){verdict='Small staged finance';cls='finance'}else if(sc>=75){verdict='Review first';cls='review'}return {verdict,cls,confidence:clamp(dataScore-serious*15+good.length*4,0,100),good,flags}}
+function makePlan(){saveFinance();const cfg=financeSettings();const list=stocks();const total=totals(list,cfg.amount);const analysed=list.map(x=>{const a=analyse(x,total);const c=checkStock(x,a,total,cfg);return {x,a,c}});let pool=cfg.amount;const plan=[];function add(o,cap){if(pool<=0)return;const maxOne=Math.max(1,+cfg.maxOne||25);const amount=Math.min(pool,maxOne,cap,o.a.suggested);if(amount>=1){plan.push({ticker:o.x.ticker,amount,why:o.c.verdict+' · score '+o.a.score});pool-=amount}}
+let candidates=analysed.filter(o=>o.c.cls==='finance').sort((a,b)=>b.c.confidence-a.c.confidence||b.a.score-a.a.score);
+if(cfg.strictness==='etf_first'||cfg.corePct>0){const coreBudget=cfg.amount*(+cfg.corePct||0)/100;let coreLeft=coreBudget;for(const o of candidates.filter(o=>isEtf(o.x.ticker)).sort((a,b)=>b.a.score-a.a.score)){if(coreLeft<=0)break;const before=pool;add(o,coreLeft);coreLeft-=Math.max(0,before-pool)}}
+for(const o of candidates.filter(o=>!(cfg.strictness==='etf_first'&&isEtf(o.x.ticker))).sort((a,b)=>b.c.confidence-a.c.confidence||b.a.score-a.a.score)){add(o,pool)}
+return {cfg,list,total,analysed,plan,remaining:pool}}
+function renderAuto(){const box=$('ltAutoCards'),status=$('ltAutoStatus'),planEl=$('ltAutoPlan');if(!box||!status)return;const res=makePlan();if(!res.list.length){status.className='ltAutoStatus warn';status.textContent='No long term board yet. Run the finder, add candidates to the board, then run auto checks.';box.innerHTML='';if(planEl)planEl.style.display='none';return}const financeable=res.analysed.filter(o=>o.c.cls==='finance').length;status.className='ltAutoStatus '+(financeable?'':'warn');status.textContent=financeable?('Auto checks found '+financeable+' financeable candidate(s). Suggested finance plan uses '+gbp(res.cfg.amount)+' and keeps '+gbp(res.remaining)+' unallocated.'):'Auto checks found no clean finance candidate. Add cash later or review the flagged names first.';if(planEl){planEl.style.display='block';planEl.innerHTML=res.plan.length?('<b>Finance plan</b>'+res.plan.map(p=>'<div class="ltFinanceLine"><b>'+esc(p.ticker)+'</b><span>'+gbp(p.amount)+' · '+esc(p.why)+'</span></div>').join('')+(res.remaining>=1?'<div class="ltFinanceLine"><b>Keep cash</b><span>'+gbp(res.remaining)+' unallocated until a cleaner setup appears.</span></div>':'')):'<b>Finance plan</b><div class="ltFinanceLine"><b>Wait</b><span>No clean automatic allocation. Review flagged names or keep cash.</span></div>'}
+box.innerHTML=res.analysed.sort((a,b)=>({finance:1,review:2,wait:3,block:4}[a.c.cls]-({finance:1,review:2,wait:3,block:4}[b.c.cls]))||b.c.confidence-a.c.confidence||b.a.score-a.a.score).slice(0,12).map(o=>{const pills=[...o.c.good.slice(0,4).map(g=>'<span class="ltAutoPill good">'+esc(g)+'</span>'),...o.c.flags.slice(0,4).map(f=>'<span class="ltAutoPill warn">'+esc(f)+'</span>')].join('');return '<div class="ltAutoCard '+o.c.cls+'"><div class="ltAutoTop"><b>'+esc(o.x.ticker)+'</b><strong>'+pc(o.c.confidence)+'</strong></div><div class="tiny">'+esc(o.c.verdict)+' · '+esc(o.a.status)+' · suggested '+gbp(o.a.suggested)+'</div><div>'+pills+'</div><div class="ltAutoReason">'+esc(o.x.thesis||'No thesis saved yet. Auto checks can filter, but the board still needs a business thesis before serious cash.')+'</div></div>'}).join('')}
+function applyFinanceCash(){const f=financeSettings();if(!isFinite(f.amount)||f.amount<=0)return toast('No finance amount','Enter a money amount first.','warn');const cash=$('ltCash');if(cash){cash.value=(Number(cash.value||0)+f.amount).toFixed(2);cash.dispatchEvent(new Event('change',{bubbles:true}));}const s=jget(K.settings,{})||{};s.cash=Number((+s.cash||0)+f.amount).toFixed?+(+s.cash||0)+f.amount:(+s.cash||0)+f.amount;jset(K.settings,s);toast('Long term cash funded','Added '+gbp(f.amount)+' to the Long Term cash pot. Now use the finance plan, then buy manually in Trading 212 and Buy log it.','good');setTimeout(renderAuto,200)}
+function bind(){['ltFinanceNow','ltFinanceMaxOne','ltFinanceCorePct','ltFinanceStrictness'].forEach(id=>{const el=$(id);if(el)el.addEventListener('change',()=>{saveFinance();renderAuto()})});const saved=jget(K.finance,null);if(saved){if($('ltFinanceNow'))$('ltFinanceNow').value=saved.amount??25;if($('ltFinanceMaxOne'))$('ltFinanceMaxOne').value=saved.maxOne??25;if($('ltFinanceCorePct'))$('ltFinanceCorePct').value=saved.corePct??50;if($('ltFinanceStrictness'))$('ltFinanceStrictness').value=saved.strictness||'guarded'}if($('ltRunAutoChecks'))$('ltRunAutoChecks').onclick=renderAuto;if($('ltApplyFinanceCash'))$('ltApplyFinanceCash').onclick=applyFinanceCash;if($('ltAutoGoBoard'))$('ltAutoGoBoard').onclick=()=>{const el=$('ltActionBoard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})};setTimeout(renderAuto,600)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+
 </body>
 </html>
