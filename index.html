@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v79, Deploy Control</title>
+<title>Trading 212 Manual God Mode v80, Deploy Control</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -885,12 +885,47 @@
 /* v78, single finance plan clarity */
 .ltFinanceLine{gap:10px}.ltFinanceLine button{flex:0 0 auto;padding:8px 10px;border-radius:10px;font-size:12px}.ltFinderPanel:not([open]){opacity:.88}.ltAutoPlanTitle::after{content:' ';}
 @media(max-width:780px){.ltFinanceLine{display:grid!important;grid-template-columns:1fr auto;align-items:center}.ltFinanceLine button{grid-column:1 / -1;width:100%}.ltFinderPanel{order:99!important}.ltAutoPanel{order:1!important}.ltTableWrap#ltActionBoard{order:2!important}}
+
+
+/* v80 simple long term layout, one source of truth */
+#longTermSection.ltSimpleMode{border-color:rgba(46,229,137,.34)!important;background:linear-gradient(180deg,rgba(46,229,137,.06),rgba(9,20,36,.98))!important}
+#longTermSection.ltSimpleMode .ltHeader h2{font-size:20px!important}
+#longTermSection.ltSimpleMode .ltHeader p{font-size:12px!important;color:var(--muted)!important;max-width:900px!important}
+#longTermSection.ltSimpleMode .ltOverview,
+#longTermSection.ltSimpleMode .ltSplit,
+#longTermSection.ltSimpleMode > details.ltPanel:not(.ltAutoPanel):not(.ltFinderPanel){display:none!important}
+#longTermSection.ltSimpleMode .ltFinderPanel:not([open]){padding:0!important;overflow:hidden!important}
+#longTermSection.ltSimpleMode .ltFinderPanel:not([open]) summary{margin:0!important;border-radius:16px!important;background:#07111f!important}
+#longTermSection.ltSimpleMode .ltFinderPanel[open]{border-color:rgba(255,209,102,.26)!important;background:rgba(255,209,102,.04)!important}
+#longTermSection.ltSimpleMode #ltActionBoard{margin-top:14px!important}
+#longTermSection.ltSimpleMode #ltActionBoard .scroll{display:none!important}
+#longTermSection.ltSimpleMode button[data-lt-plan="0"],
+#longTermSection.ltSimpleMode button[data-lt-plan="0.00"],
+#longTermSection.ltSimpleMode button[data-lt-plan=""]{display:none!important}
+#longTermSection.ltSimpleMode .ltBoardCard.review button[data-lt-buy]{display:none!important}
+#longTermSection.ltSimpleMode .ltTableWrap:last-of-type{display:none!important}
+.ltSimpleBoss{border:1px solid rgba(46,229,137,.38);background:linear-gradient(180deg,rgba(46,229,137,.11),rgba(7,17,31,.86));border-radius:18px;padding:12px;margin:10px 0 12px;color:#d8ffe9;line-height:1.35}.ltSimpleBoss b{display:block;color:#fff;font-size:16px;margin-bottom:3px}.ltSimpleBoss span{color:#a8bdd3;font-size:12px}
+#longTermSection.ltSimpleMode .ltAutoPanel{border-color:rgba(46,229,137,.38)!important;background:linear-gradient(180deg,rgba(46,229,137,.08),rgba(7,17,31,.94))!important}
+#longTermSection.ltSimpleMode .ltAutoPanel summary{font-size:18px!important;color:#fff!important}
+@media(max-width:780px){
+  #longTermSection.ltSimpleMode{order:6!important;padding:10px!important}
+  #longTermSection.ltSimpleMode .ltHeader{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+  #longTermSection.ltSimpleMode .ltHeaderTools{display:flex!important;width:100%!important}
+  #longTermSection.ltSimpleMode .ltHeaderTools button{flex:1!important}
+  #longTermSection.ltSimpleMode .ltAutoControls{grid-template-columns:1fr 1fr!important;gap:7px!important}
+  #longTermSection.ltSimpleMode .ltAutoControls label{font-size:10px!important}
+  #longTermSection.ltSimpleMode .ltAutoPlan .ltPlanRow{grid-template-columns:1fr!important}
+  #longTermSection.ltSimpleMode .ltBoardActions{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  #longTermSection.ltSimpleMode .ltBoardActions button{font-size:11px!important;padding:9px 3px!important}
+  #longTermSection.ltSimpleMode .ltBoardActions button[data-lt-plan="0"]{display:none!important}
+}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v79, Deploy Control</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v79 keeps the single long term finance plan and fixes the daily live detail panel so the short term live day, cash ledger and checklist work cleanly on phone.</div>
+<h1>Trading 212 Manual God Mode v80, Deploy Control</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v80 simplifies the long term section to one finance plan, one aftercare tracker, and advanced discovery hidden away.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -901,7 +936,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v79</span>
+<span class="mobileTitleText">Manual God Mode v80</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1200,7 +1235,7 @@ COIN"></textarea>
 <p class="tiny">Separate from Ignition Sniper. This is for building positions over months and years, using quality, valuation, allocation, buy zones and a calm journal. It still does not place orders.</p>
 </div>
 <div class="ltHeaderTools">
-<span class="ltBadge">v78 · one finance plan</span>
+<span class="ltBadge">v80 · simple plan</span>
 <button class="secondary ltToggleBtn" id="ltToggleCompact" type="button">Hide long term</button>
 </div>
 </div>
@@ -2661,6 +2696,46 @@ box.innerHTML=sorted.slice(0,8).map(o=>{
 function applyFinanceCash(){const f=financeSettings();if(!isFinite(f.amount)||f.amount<=0)return toast('No finance amount','Enter a money amount first.','warn');const cash=$('ltCash');if(cash){cash.value=(Number(cash.value||0)+f.amount).toFixed(2);cash.dispatchEvent(new Event('change',{bubbles:true}));}const s=jget(K.settings,{})||{};s.cash=Number((+s.cash||0)+f.amount).toFixed?+(+s.cash||0)+f.amount:(+s.cash||0)+f.amount;jset(K.settings,s);toast('Long term cash funded','Added '+gbp(f.amount)+' to the Long Term cash pot. Now use the finance plan, then buy manually in Trading 212 and Buy log it.','good');setTimeout(renderAuto,200)}
 function bind(){['ltFinanceNow','ltFinanceDeployPct','ltFinanceMinBuy','ltFinanceMaxOne','ltFinanceMaxBuys','ltFinanceStrictness'].forEach(id=>{const el=$(id);if(el)el.addEventListener('change',()=>{saveFinance();renderAuto()})});const saved=jget(K.finance,null);if(saved){if($('ltFinanceNow'))$('ltFinanceNow').value=saved.amount??25;if($('ltFinanceDeployPct'))$('ltFinanceDeployPct').value=saved.deployPct??60;if($('ltFinanceMinBuy'))$('ltFinanceMinBuy').value=saved.minBuy??5;if($('ltFinanceMaxOne'))$('ltFinanceMaxOne').value=saved.maxOne??25;if($('ltFinanceMaxBuys'))$('ltFinanceMaxBuys').value=saved.maxBuys??7;if($('ltFinanceStrictness'))$('ltFinanceStrictness').value=saved.strictness||'guarded'}if($('ltRunAutoChecks'))$('ltRunAutoChecks').onclick=renderAuto;if($('ltApplyFinanceCash'))$('ltApplyFinanceCash').onclick=applyFinanceCash;if($('ltAutoGoBoard'))$('ltAutoGoBoard').onclick=()=>{const el=$('ltActionBoard');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})};setTimeout(renderAuto,600)}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+
+
+<script>
+(function(){
+  function $(id){return document.getElementById(id)}
+  function tidyLongTermSimple(){
+    var sec=$('longTermSection'); if(!sec) return;
+    sec.classList.add('ltSimpleMode');
+    var h=sec.querySelector('.ltHeader h2'); if(h) h.textContent='Long Term Plan';
+    var p=sec.querySelector('.ltHeader p'); if(p) p.textContent='One buy list, one tracker. Today\'s finance plan is the only section that tells you what to buy. Growth radar is discovery only and stays tucked away.';
+    var badge=sec.querySelector('.ltBadge'); if(badge) badge.textContent='v80 · simple plan';
+    var auto=$('ltAutoPanel'), board=$('ltActionBoard'), finder=sec.querySelector('.ltFinderPanel'), compact=$('ltCompactSummary'), overview=$('ltOverview');
+    if(auto && compact && auto.previousElementSibling!==compact) compact.insertAdjacentElement('afterend',auto);
+    if(board && auto && board.previousElementSibling!==auto) auto.insertAdjacentElement('afterend',board);
+    if(finder && board && finder.previousElementSibling!==board) board.insertAdjacentElement('afterend',finder);
+    if(auto) auto.open=true;
+    if(finder) finder.open=false;
+    if(!document.getElementById('ltSimpleBoss') && auto){
+      var boss=document.createElement('div'); boss.id='ltSimpleBoss'; boss.className='ltSimpleBoss';
+      boss.innerHTML='<b>Use this only:</b><span>Run auto checks, buy only the rows in Today\'s finance plan, then tap Log bought on that same row. The tracker below is aftercare only.</span>';
+      auto.parentNode.insertBefore(boss,auto);
+    }
+    var sum=auto&&auto.querySelector('summary'); if(sum) sum.innerHTML='Today\'s finance plan <span>only buy list</span>';
+    var boardTitle=board&&board.querySelector('h2'); if(boardTitle) boardTitle.textContent='Plan tracker, aftercare only';
+    var finderSummary=finder&&finder.querySelector('summary'); if(finderSummary) finderSummary.innerHTML='Advanced growth radar <span>optional discovery, not a buy list</span>';
+    document.querySelectorAll('#ltActionBoard button[data-lt-plan]').forEach(function(b){
+      var v=parseFloat(b.getAttribute('data-lt-plan')||'0');
+      if(!isFinite(v)||v<=0){b.style.display='none';}
+      else{b.style.display=''; b.textContent='Log planned buy';}
+    });
+    document.querySelectorAll('#ltActionBoard .ltTrackerReason').forEach(function(el){
+      el.innerHTML=el.innerHTML.replace(/Good candidate, but it is not in today's finance plan\./g,'Watch only. Do not buy today unless it appears in the finance plan.');
+    });
+  }
+  window.addEventListener('load',function(){tidyLongTermSimple(); setTimeout(tidyLongTermSimple,500); setTimeout(tidyLongTermSimple,1500);});
+  document.addEventListener('click',function(e){setTimeout(tidyLongTermSimple,250);},true);
+  var obs=new MutationObserver(function(){tidyLongTermSimple();});
+  window.addEventListener('load',function(){var sec=$('longTermSection'); if(sec) obs.observe(sec,{childList:true,subtree:true});});
 })();
 </script>
 
