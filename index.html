@@ -621,7 +621,7 @@
     }
 
 
-/* v84 Simple Long Term, growth weighted allocator, single buy list */
+/* v86 Best Portfolio Long Term, risk-adjusted allocator, single buy list */
 .longSimpleSection{border-color:rgba(46,229,137,.34);background:linear-gradient(180deg,rgba(46,229,137,.06),rgba(9,20,36,.98))}
 .ltSimpleTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ltSimpleTop h2{margin:0}.ltSimpleBadge{border:1px solid rgba(46,229,137,.35);background:rgba(46,229,137,.10);color:#ceffe3;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:950}
 .ltSimpleGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:10px 0}.ltSimpleGrid .mini{background:#07111f;border:1px solid rgba(141,162,187,.18);border-radius:13px;padding:9px}.ltSimpleGrid .mini span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.ltSimpleGrid .mini b{display:block;font-size:16px;margin-top:4px}
@@ -942,8 +942,8 @@ COIN"></textarea>
 
 <div class="card span12 longSimpleSection" id="longSimpleSection" role="region" aria-label="Long term simple plan">
   <div class="ltSimpleTop">
-    <div><h2>Long term, simple plan</h2><p class="tiny">One buy list only. The finance plan now weights money towards the best risk-adjusted growth, with caps so it does not overload one name.</p></div>
-    <span class="ltSimpleBadge">v84 growth weighted</span>
+    <div><h2>Long term, best portfolio plan</h2><p class="tiny">One buy list only. The allocator now uses growth potential, quality, trend, evidence, valuation sanity, sector balance and concentration caps. Best means risk-adjusted, not just highest excitement.</p></div>
+    <span class="ltSimpleBadge">v86 best portfolio</span>
   </div>
   <div class="ltSimpleGrid" id="ltsOverview">
     <div class="mini"><span>Plan</span><b>Not built</b></div><div class="mini"><span>Deploy</span><b>£0.00</b></div><div class="mini"><span>Hold cash</span><b>£0.00</b></div><div class="mini"><span>Tracker</span><b>0</b></div><div class="mini"><span>Journal</span><b>0</b></div>
@@ -953,7 +953,7 @@ COIN"></textarea>
     <label>Use this round, %<input id="ltsDeployPct" min="10" max="100" step="5" type="number" value="70"></label>
     <label>Max buys now<input id="ltsMaxBuys" min="1" max="8" step="1" type="number" value="5"></label>
     <label>Minimum buy, £<input id="ltsMinBuy" min="1" step="1" type="number" value="5"></label>
-    <label>Style<select id="ltsStyle"><option value="growth" selected>Growth weighted</option><option value="balanced">Balanced growth</option><option value="etf">ETF safety first</option></select></label>
+    <label>Style<select id="ltsStyle"><option value="best" selected>Best portfolio</option><option value="balanced">Balanced growth</option><option value="growth">Maximum growth</option><option value="etf">ETF safety first</option></select></label>
   </div>
   <div class="ltButtons">
     <button class="good" id="ltsBuildPlan" type="button">Build finance plan</button>
@@ -961,8 +961,8 @@ COIN"></textarea>
     <button class="secondary" id="ltsClearPlan" type="button">Clear today plan</button>
   </div>
   <div class="ltPlanBox">
-    <h2>Today’s finance plan, growth weighted</h2>
-    <div id="ltsPlanSummary" class="ltPlanSummary">Tap Build finance plan. Amounts are weighted by growth potential, quality and risk caps. Only rows shown here are buys today.</div>
+    <h2>Today’s finance plan, best portfolio weighted</h2>
+    <div id="ltsPlanSummary" class="ltPlanSummary">Tap Build finance plan. Amounts are weighted by growth potential, quality, trend, evidence and portfolio balance. Only rows shown here are buys today.</div>
     <div class="ltPlanList" id="ltsPlanList"><div class="ltEmpty">No finance plan yet.</div></div>
     <div class="ltWhat"><b>What you do</b><br/>Buy only these rows manually in Trading 212. Then tap Log bought on the same row. Ignore discovery names unless they appear in this plan.</div>
   </div>
@@ -1981,8 +1981,8 @@ loadSettings();bind();syncCashDisplay();renderHistoryState();renderPositions();r
 (function(){
 'use strict';
 try{
-const KEY={plan:'t212gm84_growth_plan',tracker:'t212gm84_growth_tracker',journal:'t212gm84_growth_journal'};
-const OLD_KEYS={plan:'t212gm82_simple_plan',tracker:'t212gm82_simple_tracker',journal:'t212gm82_simple_journal'};
+const KEY={plan:'t212gm86_best_plan',tracker:'t212gm86_best_tracker',journal:'t212gm86_best_journal'};
+const OLD_KEYS={plan:'t212gm84_growth_plan',tracker:'t212gm84_growth_tracker',journal:'t212gm84_growth_journal'};
 const $=id=>document.getElementById(id);
 const gbp=v=>'£'+(isFinite(v)?Number(v).toFixed(2):'0.00');
 const today=()=>new Date().toISOString().slice(0,10);
@@ -2040,65 +2040,131 @@ function enrich(x){
 function universe(mode){
   let arr=BASE.map(enrich);
   if(mode==='etf')arr=arr.filter(x=>x.role==='Core ETF');
-  if(mode==='growth')arr=arr.filter(x=>x.role==='Growth'||x.sector==='Semiconductors'||x.sym==='GOOGL'||x.sym==='MSFT'||x.sym==='V');
+  if(mode==='growth')arr=arr.filter(x=>x.role==='Growth'||x.sector==='Semiconductors'||x.sym==='GOOGL'||x.sym==='MSFT'||x.sym==='V'||x.sym==='AMZN');
   if(mode==='quality')arr=arr.filter(x=>x.role==='Quality compounder');
-  return arr.sort((a,b)=>opportunityScore(b,'growth')-opportunityScore(a,'growth'));
+  return arr.sort((a,b)=>opportunityScore(b,'best')-opportunityScore(a,'best'));
 }
-function riskPenalty(x){return x.risk==='very high'?0.55:x.risk==='high'?0.78:x.risk==='medium'?0.95:1.08}
+function riskPenalty(x,style){
+  const base=x.risk==='very high'?0.50:x.risk==='high'?0.72:x.risk==='medium'?0.94:1.08;
+  if(style==='growth')return base*(x.risk==='high'||x.risk==='very high'?1.10:1.0);
+  if(style==='best')return base*(x.risk==='high'||x.risk==='very high'?0.88:1.0);
+  return base;
+}
+function themeGroup(x){
+  if(x.role==='Core ETF')return 'ETF';
+  if(['Semiconductors','Software','Technology','Consumer/Cloud','Communication'].includes(x.sector))return 'Growth tech';
+  if(x.sector==='Financials')return 'Financials';
+  if(x.sector==='Healthcare')return 'Healthcare';
+  return x.sector||'Other';
+}
 function styleBoost(x,style){
-  if(style==='etf') return x.role==='Core ETF'?1.7:(x.role==='Growth'?0.55:0.85);
-  if(style==='growth') return x.role==='Growth'?1.22:(x.role==='Core ETF'?0.72:1.0);
-  return x.role==='Core ETF'?1.05:1.0;
+  if(style==='etf') return x.role==='Core ETF'?1.75:(x.role==='Growth'?0.48:0.78);
+  if(style==='growth') return x.role==='Growth'?1.22:(x.role==='Core ETF'?0.58:1.0);
+  if(style==='best') return x.role==='Core ETF'?1.20:(x.role==='Quality compounder'?1.08:0.84);
+  return x.role==='Core ETF'?1.12:(x.role==='Growth'?0.88:1.02);
+}
+function valuationSanity(x){
+  // Base version has limited fundamentals, so use risk and role as a proxy until FMP/deep data is connected.
+  if(x.risk==='very high')return 0.78;
+  if(x.risk==='high')return 0.88;
+  if(x.role==='Core ETF')return 1.03;
+  return 0.98;
 }
 function opportunityScore(x,style){
   const quality=(+x.score||0)/100;
   const growth=(+x.pot||0)/22;
   const trend=(+x.trend||50)/100;
-  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.94;
-  return Math.round(100*(quality*0.34 + growth*0.46 + trend*0.20)*riskPenalty(x)*styleBoost(x,style)*evidence);
+  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.92;
+  const raw=(quality*0.36 + growth*0.34 + trend*0.18 + valuationSanity(x)*0.12);
+  return Math.round(100*raw*riskPenalty(x,style)*styleBoost(x,style)*evidence);
 }
 function allocationWeight(x,style,rank){
   const quality=(+x.score||0)/100;
   const growth=(+x.pot||0)/20;
   const trend=(+x.trend||50)/100;
-  const roleBoost=styleBoost(x,style);
-  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.92;
-  const rankTilt=Math.max(0.72,1-rank*0.045);
-  return Math.max(0.01, (growth**1.35*0.52 + quality*0.30 + trend*0.18) * riskPenalty(x) * roleBoost * evidence * rankTilt);
+  const evidence=x.evidence&&x.evidence.includes('History')?1.08:0.90;
+  const rankTilt=Math.max(0.74,1-rank*0.04);
+  const growthPower=style==='growth'?1.35:1.12;
+  return Math.max(0.01, (Math.pow(growth,growthPower)*0.38 + quality*0.34 + trend*0.18 + valuationSanity(x)*0.10) * riskPenalty(x,style) * styleBoost(x,style) * evidence * rankTilt);
 }
 function maxCapPct(x,style){
-  if(style==='etf' && x.role==='Core ETF') return 0.38;
-  if(x.role==='Core ETF') return 0.32;
-  if(x.risk==='very high') return 0.10;
-  if(x.risk==='high') return style==='growth'?0.22:0.16;
-  if(x.role==='Growth') return 0.18;
-  return style==='growth'?0.26:0.22;
+  if(style==='etf' && x.role==='Core ETF') return 0.36;
+  if(style==='best'){
+    if(x.role==='Core ETF')return 0.26;
+    if(x.risk==='very high')return 0.05;
+    if(x.risk==='high')return 0.10;
+    if(x.role==='Growth')return 0.11;
+    return 0.16;
+  }
+  if(x.role==='Core ETF') return 0.30;
+  if(x.risk==='very high') return style==='growth'?0.09:0.06;
+  if(x.risk==='high') return style==='growth'?0.15:0.10;
+  if(x.role==='Growth') return 0.12;
+  return style==='growth'?0.20:0.16;
+}
+function selectForPlan(candidates,maxBuys,style){
+  const sorted=candidates.slice().sort((a,b)=>b.opp-a.opp);
+  if(style==='growth')return sorted.slice(0,maxBuys);
+  if(style==='etf'){
+    const etf=sorted.filter(x=>x.role==='Core ETF');
+    const rest=sorted.filter(x=>x.role!=='Core ETF');
+    return [...etf,...rest].slice(0,maxBuys);
+  }
+  const picked=[];
+  function add(x){if(x && !picked.find(p=>p.sym===x.sym) && picked.length<maxBuys)picked.push(x)}
+  const etfs=sorted.filter(x=>x.role==='Core ETF');
+  add(etfs[0]);
+  if(maxBuys>=4)add(etfs[1]);
+  const nonEtf=sorted.filter(x=>x.role!=='Core ETF');
+  for(const x of nonEtf){
+    const themeCount=picked.filter(p=>themeGroup(p)===themeGroup(x)).length;
+    const highRiskCount=picked.filter(p=>p.risk==='high'||p.risk==='very high').length;
+    if(themeCount>=2)continue;
+    if((x.risk==='high'||x.risk==='very high') && highRiskCount>=1 && picked.length<maxBuys-1)continue;
+    add(x);
+  }
+  for(const x of sorted)add(x);
+  return picked.slice(0,maxBuys);
 }
 function getCandidates(style){
   let arr=universe('broad');
   if(style==='etf'){const etf=arr.filter(x=>x.role==='Core ETF');const rest=arr.filter(x=>x.role!=='Core ETF');arr=[...etf,...rest];}
   else if(style==='growth')arr=arr.sort((a,b)=>opportunityScore(b,'growth')-opportunityScore(a,'growth'));
-  else arr=arr.sort((a,b)=>opportunityScore(b,'balanced')-opportunityScore(a,'balanced'));
-  return arr.map((x,i)=>({...x,opp:opportunityScore(x,style),allocWeight:allocationWeight(x,style,i)}));
+  else arr=arr.sort((a,b)=>opportunityScore(b,style||'best')-opportunityScore(a,style||'best'));
+  return arr.map((x,i)=>({...x,opp:opportunityScore(x,style||'best'),allocWeight:allocationWeight(x,style||'best',i),theme:themeGroup(x)}));
 }
 function allocateWeighted(candidates,deploy,minBuy,maxBuys,style){
-  let chosen=candidates.slice(0,Math.max(maxBuys,1));
+  let chosen=selectForPlan(candidates,Math.max(maxBuys,1),style||'best');
   let working=chosen.map((c,i)=>({...c,weight:c.allocWeight||allocationWeight(c,style,i),cap:deploy*maxCapPct(c,style),amount:0}));
+  const themeCap=style==='growth'?0.72:(style==='etf'?0.45:0.48);
   let remaining=deploy, active=working.slice(), safety=0;
-  while(active.length && remaining>0.01 && safety++<20){
+  while(active.length && remaining>0.01 && safety++<30){
     const totalW=active.reduce((a,x)=>a+x.weight,0)||1;
-    let next=[];
     for(const x of active){
       const add=remaining*(x.weight/totalW);
       const room=Math.max(0,x.cap-x.amount);
-      const used=Math.min(room,add);
+      const groupUsed=working.filter(w=>themeGroup(w)===themeGroup(x)).reduce((a,w)=>a+w.amount,0);
+      const groupRoom=Math.max(0,deploy*themeCap-groupUsed);
+      const used=Math.min(room,groupRoom,add);
       x.amount+=used;
     }
     const allocated=working.reduce((a,x)=>a+x.amount,0);
     remaining=Math.max(0,deploy-allocated);
-    next=active.filter(x=>x.amount<x.cap-0.01);
+    const next=active.filter(x=>x.amount<x.cap-0.01 && working.filter(w=>themeGroup(w)===themeGroup(x)).reduce((a,w)=>a+w.amount,0)<deploy*themeCap-0.01);
     if(next.length===active.length)break;
     active=next;
+  }
+  if((style==='best'||style==='balanced') && deploy>=minBuy*3){
+    const etfFloor=deploy*(style==='best'?0.30:0.25);
+    let etfRows=working.filter(x=>x.role==='Core ETF');
+    let etfTotal=etfRows.reduce((a,x)=>a+x.amount,0);
+    let guardFloor=0;
+    while(etfRows.length && etfTotal+0.5<=etfFloor && guardFloor++<80){
+      const target=etfRows.slice().sort((a,b)=>(b.weight*(b.cap-b.amount))-(a.weight*(a.cap-a.amount)))[0];
+      const donor=working.filter(x=>x.role!=='Core ETF' && x.amount>=minBuy+0.5).sort((a,b)=>a.weight-b.weight)[0];
+      if(!target || !donor || target.amount+0.5>target.cap+0.01)break;
+      target.amount+=0.5; donor.amount-=0.5; etfTotal+=0.5;
+    }
   }
   let rows=working.map(x=>({...x,amount:round50(x.amount)})).filter(x=>x.amount>=minBuy);
   let used=rows.reduce((a,x)=>a+x.amount,0);
@@ -2123,7 +2189,7 @@ function buildPlan(){
   const cand=getCandidates(style).slice(0,Math.max(maxBuys*3,10));
   let rows=allocateWeighted(cand,deployTarget,minBuy,maxBuys,style);
   const used=rows.reduce((a,r)=>a+r.amount,0);
-  const plan={date:today(),fund,deployPct,deployTarget,deploy:used,hold:Math.max(0,fund-used),style,minBuy,method:'Growth weighted: quality 34%, potential 46%, trend 20%, then risk caps',rows};
+  const plan={date:today(),fund,deployPct,deployTarget,deploy:used,hold:Math.max(0,fund-used),style,minBuy,method:'Best portfolio: quality, growth, trend, evidence, valuation sanity, ETF floor, sector caps and risk caps',rows};
   save(KEY.plan,plan); mergePlanToTracker(plan); renderAll();
 }
 function mergePlanToTracker(plan){
@@ -2144,14 +2210,15 @@ function renderOverview(){
   if(el)el.innerHTML=`<div class="mini"><span>Plan</span><b>${plan?plan.rows.length+' buys':'Not built'}</b></div><div class="mini"><span>Deploy</span><b>${gbp(used)}</b></div><div class="mini"><span>Hold cash</span><b>${gbp(hold)}</b></div><div class="mini"><span>Top growth use</span><b>${top}</b></div><div class="mini"><span>Journal</span><b>${j.length}</b></div>`;
 }
 function whyText(r){
-  const risk=r.risk==='very high'?'very high risk cap':r.risk==='high'?'higher risk cap':r.role==='Core ETF'?'core ETF allowance':'quality compounder allowance';
-  return `opportunity ${r.opp}, potential +${r.pot}%/yr, trend ${r.trend}, ${risk}`;
+  const risk=r.risk==='very high'?'very high risk cap':r.risk==='high'?'higher risk cap':r.role==='Core ETF'?'core ETF ballast':'quality compounder allowance';
+  const theme=r.theme?`, ${r.theme} cap checked`:'';
+  return `opportunity ${r.opp}, potential +${r.pot}%/yr, trend ${r.trend}, ${risk}${theme}`;
 }
 function renderPlan(){
   const plan=load(KEY.plan,null); const summary=$('ltsPlanSummary'),list=$('ltsPlanList'); if(!summary||!list)return;
-  if(!plan||!plan.rows.length){summary.textContent='Tap Build finance plan. Amounts are weighted by growth potential, quality and risk caps. Only rows shown here are buys today.';list.innerHTML='<div class="ltEmpty">No finance plan yet.</div>';return;}
+  if(!plan||!plan.rows.length){summary.textContent='Tap Build finance plan. Amounts are weighted by growth potential, quality, trend, evidence and portfolio balance. Only rows shown here are buys today.';list.innerHTML='<div class="ltEmpty">No finance plan yet.</div>';return;}
   const used=plan.rows.reduce((a,r)=>a+r.amount,0), hold=Math.max(0,plan.fund-used);
-  summary.textContent=`Growth weighted plan ready: deploy ${gbp(used)} of ${gbp(plan.fund)}. Bigger amounts go to stronger risk-adjusted growth. Hold ${gbp(hold)} cash. Buy today: ${plan.rows.map(r=>r.sym+' '+gbp(r.amount)).join(', ')}.`;
+  summary.textContent=`Best portfolio plan ready: deploy ${gbp(used)} of ${gbp(plan.fund)}. Bigger amounts go to stronger risk-adjusted growth, but the app also enforces ETF ballast, sector balance and high-risk caps. Hold ${gbp(hold)} cash. Buy today: ${plan.rows.map(r=>r.sym+' '+gbp(r.amount)).join(', ')}.`;
   list.innerHTML=plan.rows.map((r,i)=>`<div class="ltPlanRow"><div class="rank">${i+1}.</div><div><div class="sym">${r.sym}</div><div class="meta">${r.role} · ${whyText(r)}</div></div><div class="amt">${gbp(r.amount)}</div><button class="good" data-lts-log="${r.sym}">Log bought</button></div>`).join('')+`<div class="ltHoldCash"><b>Hold cash</b><span>${gbp(hold)} kept back because either deployment cap, risk caps, or minimum-buy rules stopped the app forcing money into weaker ideas.</span></div>`;
 }
 function renderTracker(){
@@ -2170,7 +2237,7 @@ function deleteItem(sym){if(!confirm('Remove '+sym+' from long term tracker?'))r
 function exportCSV(){const j=load(KEY.journal,[]);const rows=['date,symbol,action,amount,note',...j.map(x=>[x.date,x.sym,x.action,x.amount,`"${String(x.note||'').replace(/"/g,'""')}"`].join(','))];const blob=new Blob([rows.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='long-term-journal.csv';a.click();URL.revokeObjectURL(a.href);}
 function init(){maybeMigrate();const root=$('longSimpleSection');if(!root)return;root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ltsBuildPlan')buildPlan();else if(b.id==='ltsClearPlan'){save(KEY.plan,null);renderAll()}else if(b.id==='ltsGoTracker')$('ltsTrackerBox')?.scrollIntoView({behavior:'smooth',block:'start'});else if(b.id==='ltsRunRadar')renderRadar();else if(b.id==='ltsExportJournal')exportCSV();else if(b.id==='ltsClearJournal'){if(confirm('Clear long term journal?')){save(KEY.journal,[]);renderAll()}}else if(b.dataset.ltsLog)logBought(b.dataset.ltsLog);else if(b.dataset.ltsAdd)addToTracker(b.dataset.ltsAdd);else if(b.dataset.ltsEdit)editItem(b.dataset.ltsEdit);else if(b.dataset.ltsReview)reviewItem(b.dataset.ltsReview);else if(b.dataset.ltsDelete)deleteItem(b.dataset.ltsDelete);});renderAll();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
-}catch(err){console.error('v84 growth weighted long term failed',err);}
+}catch(err){console.error('v86 best portfolio long term failed',err);}
 })();
 </script>
 
