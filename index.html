@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v71, Stable Long Term Finder</title>
+<title>Trading 212 Manual God Mode v72, Mobile Board Fix</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -783,12 +783,36 @@
 @media(max-width:1120px){.ltDeepBoard{grid-template-columns:repeat(2,minmax(0,1fr))}.ltDeepControls{grid-template-columns:1fr 1fr}}
 @media(max-width:780px){.ltDeepControls{grid-template-columns:1fr!important}.ltDeepBoard{grid-template-columns:1fr 1fr!important;gap:6px}.ltDeepTile{padding:7px;min-height:58px}.ltDeepTile span{font-size:7px}.ltDeepTile b{font-size:12px}.ltDeepTile small{font-size:8.5px}.ltFinderCard .ltActions{grid-template-columns:1fr 1fr!important}}
 
+
+
+/* v72 mobile Long Term Action Board cards, fixes blank wide table on phone */
+.ltBoardCards{display:none}
+.ltBoardCard{background:#07111f;border:1px solid rgba(141,162,187,.18);border-radius:16px;padding:12px;margin:9px 0;box-shadow:0 10px 28px rgba(0,0,0,.16)}
+.ltBoardCard.buy,.ltBoardCard.accumulate{border-color:rgba(46,229,137,.36);background:linear-gradient(180deg,rgba(46,229,137,.09),#07111f)}
+.ltBoardCard.wait{border-color:rgba(255,209,102,.32);background:linear-gradient(180deg,rgba(255,209,102,.07),#07111f)}
+.ltBoardCard.trim,.ltBoardCard.avoid{border-color:rgba(255,97,113,.30);background:linear-gradient(180deg,rgba(255,97,113,.07),#07111f)}
+.ltBoardHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ltBoardSymbol{font-size:24px;font-weight:1000;letter-spacing:-.04em;color:var(--text)}
+.ltBoardScore{font-size:28px;font-weight:1000;color:var(--good);line-height:1}
+.ltBoardSub{font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}
+.ltBoardGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+.ltBoardMini{background:rgba(16,35,60,.60);border:1px solid rgba(141,162,187,.14);border-radius:11px;padding:7px;min-width:0}
+.ltBoardMini span{display:block;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ltBoardMini b{display:block;font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ltBoardReason{border:1px solid rgba(141,162,187,.15);background:rgba(16,35,60,.45);border-radius:12px;padding:8px;margin-top:8px;color:var(--muted);font-size:12px;line-height:1.35}
+.ltBoardActions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:9px}
+.ltBoardActions button{font-size:10px!important;padding:8px 4px!important;border-radius:9px!important;min-width:0!important}
+@media(max-width:780px){
+  #ltActionBoard .ltBoardCards{display:block!important}
+  #ltActionBoard>.scroll{display:none!important}
+}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v71, Stable Long Term Finder</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v71 adds a stable isolated Long Term Buyer finder that can rank from the watchlist and cached history even when live fundamentals are unavailable.</div>
+<h1>Trading 212 Manual God Mode v72, Mobile Board Fix</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v72 keeps the stable finder and adds a mobile Long Term Action Board card view, so added ideas are visible and manageable on phone.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -799,7 +823,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v71</span>
+<span class="mobileTitleText">Manual God Mode v72</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1094,7 +1118,7 @@ COIN"></textarea>
 <p class="tiny">Separate from Ignition Sniper. This is for building positions over months and years, using quality, valuation, allocation, buy zones and a calm journal. It still does not place orders.</p>
 </div>
 <div class="ltHeaderTools">
-<span class="ltBadge">v71 · stable isolated finder</span>
+<span class="ltBadge">v72 · mobile board fixed</span>
 <button class="secondary ltToggleBtn" id="ltToggleCompact" type="button">Hide long term</button>
 </div>
 </div>
@@ -1221,6 +1245,7 @@ COIN"></textarea>
 <button class="secondary" id="ltSortScore" type="button">Sort by score</button>
 </div>
 </div>
+<div class="ltBoardCards" id="ltBoardCards"><div class="ltEmpty">No long term stocks yet. Run the finder and tap Add to board.</div></div>
 <div class="scroll"><table class="ltTable" id="ltTable"><thead><tr><th>Ticker</th><th>Type</th><th>Score</th><th>Status</th><th>Price</th><th>Buy zone</th><th>Fair value</th><th>Owned</th><th>Target</th><th>Max</th><th>Suggested buy</th><th>P/L</th><th>Review</th><th>Reason</th><th>Actions</th></tr></thead><tbody id="ltBody"><tr><td class="muted" colspan="15">No long term stocks yet.</td></tr></tbody></table></div>
 </div>
 <div class="ltTableWrap">
@@ -2280,7 +2305,7 @@ async function runFinder(){saveSettings();setCompact(false,true);const token=act
 function actionWeight(a){return {'Candidate, buy zone':5,'Candidate, fair value':4,'Watchlist candidate':3,'Avoid':1}[a]||2}
 function finderToStock(r){const s=settings();return normaliseStock({ticker:r.ticker,name:r.name||r.ticker,type:r.type||'Quality compounder',sector:r.sector||'',price:r.price,fairLow:r.fairLow,fairHigh:r.fairHigh,buyLow:r.buyLow,buyHigh:r.buyHigh,reviewDate:addDays(s.reviewDays),ownedGBP:0,costGBP:0,targetPct:isEtf(r.ticker)?10:5,maxPct:isEtf(r.ticker)?s.defaultMaxEtf:s.defaultMaxStock,quality:r.quality,strength:r.strength,growth:r.growth,valuation:r.valuation,returns:r.returns,trend:r.trend,thesis:'Finder candidate. Evidence: '+r.reasons+'. Check valuation, moat, debt, earnings trend and position size before adding cash.'})}
 function addFinderRow(ticker,editOnly){const t=String(ticker||'').toUpperCase();const r=finderRows().find(x=>String(x.ticker).toUpperCase()===t);if(!r)return toast('Finder row missing','Run the finder again, then add from fresh results.','warn');const x=finderToStock(r);if(editOnly){fillForm(x,true);return}const list=stocks();const i=list.findIndex(s=>s.ticker===x.ticker);if(i>=0){list[i]={...list[i],...x,ownedGBP:list[i].ownedGBP,costGBP:list[i].costGBP,reviewDate:list[i].reviewDate||x.reviewDate,thesis:list[i].thesis||x.thesis}}else list.push(x);saveStocks(list);setCompact(false,true);closeManual();render();setTimeout(goBoard,80);toast('Added to action board',x.ticker+' is now saved in the Long Term Action Board.','good')}
-function addBest(){const rows=finderRows();if(!rows.length)return toast('No finder results yet','Tap Find long term ideas first.','warn');let picks=rows.filter(r=>r.cls==='buy').slice(0,8);if(!picks.length)picks=rows.filter(r=>r.score>=(settings().finderMinScore||70)).slice(0,5);if(!picks.length)picks=rows.slice(0,3);picks.forEach(r=>{const x=finderToStock(r);const list=stocks();const i=list.findIndex(s=>s.ticker===x.ticker);if(i>=0)list[i]={...list[i],...x,ownedGBP:list[i].ownedGBP,costGBP:list[i].costGBP,reviewDate:list[i].reviewDate||x.reviewDate,thesis:list[i].thesis||x.thesis};else list.push(x);saveStocks(list)});setCompact(false,true);render();setTimeout(goBoard,100);toast('Best ideas added',picks.length+' candidate(s) added to the action board.','good')}
+function addBest(){const rows=finderRows();if(!rows.length)return toast('No finder results yet','Tap Find long term ideas first.','warn');let picks=rows.filter(r=>r.cls==='buy').slice(0,8);if(!picks.length)picks=rows.filter(r=>r.score>=(settings().finderMinScore||70)).slice(0,5);if(!picks.length)picks=rows.slice(0,3);const list=stocks();picks.forEach(r=>{const x=finderToStock(r);const i=list.findIndex(s=>s.ticker===x.ticker);if(i>=0)list[i]={...list[i],...x,ownedGBP:list[i].ownedGBP,costGBP:list[i].costGBP,reviewDate:list[i].reviewDate||x.reviewDate,thesis:list[i].thesis||x.thesis};else list.push(x)});saveStocks(list);setCompact(false,true);render();setTimeout(goBoard,100);toast('Best ideas added',picks.length+' candidate(s) added to the action board.','good')}
 function renderFinder(){const rows=finderRows();const body=$('ltFinderBody'),cards=$('ltFinderCards');if(!body)return;if(!rows.length){body.innerHTML='<tr><td class="muted" colspan="18">Tap Find long term ideas to rank candidates. This stable finder can work from the watchlist and cached history even if live data is unavailable.</td></tr>';if(cards)cards.innerHTML='';renderDeepBoard([]);return}const existing=new Set(stocks().map(x=>x.ticker));if($('ltFinderStatus'))$('ltFinderStatus').textContent='Finder has '+rows.length+' ranked candidates. Add to the board, then use the action board for sizing.';renderDeepBoard(rows);if(cards)cards.innerHTML=rows.slice(0,6).map(r=>cardHTML(r,existing)).join('');body.innerHTML=rows.map(r=>rowHTML(r,existing)).join('');document.querySelectorAll('[data-ltf-add]').forEach(b=>b.onclick=()=>addFinderRow(b.dataset.ltfAdd,false));document.querySelectorAll('[data-ltf-fill]').forEach(b=>b.onclick=()=>addFinderRow(b.dataset.ltfFill,true))}
 function cardHTML(r,existing){const added=existing.has(r.ticker);return '<div class="ltFinderCard '+esc(r.cls||'wait')+'"><div class="ltFinderTop"><b>'+esc(r.ticker)+'</b><span class="ltFinderScore">'+esc(r.score)+'</span></div><div class="tiny">'+esc(r.action)+' · '+(r.price?num(r.price,2):'no price')+(r.sector?' · '+esc(r.sector):'')+'</div><div class="ltFinderTags"><span class="ltFinderTag">Q '+r.quality+'</span><span class="ltFinderTag">V '+r.valuation+'</span><span class="ltFinderTag">T '+r.trend+'</span><span class="ltFinderTag">S '+r.strength+'</span></div><div class="tiny" style="margin-top:7px">'+esc(r.reasons)+'</div><div class="ltActions">'+(added?'<span class="ltAddedNote">On board</span>':'<button class="good" data-ltf-add="'+esc(r.ticker)+'">Add to board</button>')+'<button class="secondary" data-ltf-fill="'+esc(r.ticker)+'">Edit raw data</button></div></div>'}
 function rowHTML(r,existing){const fair=(r.fairLow||r.fairHigh)?num(r.fairLow,2)+' to '+num(r.fairHigh,2):'n/a';const zone=(r.buyLow||r.buyHigh)?num(r.buyLow,2)+' to '+num(r.buyHigh,2):'n/a';const data=(r.metrics?'Live metrics':'No metrics')+', '+(r.history?'cached history':'no history');const added=existing.has(r.ticker);return '<tr><td><span class="ltStatus '+esc(r.cls||'wait')+'">'+esc(r.action)+'</span></td><td><b>'+esc(r.ticker)+'</b></td><td><b>'+r.score+'</b></td><td>'+r.quality+'</td><td>'+r.strength+'</td><td>'+r.growth+'</td><td>'+r.valuation+'</td><td>'+r.returns+'</td><td>'+r.trend+'</td><td>'+esc(r.moat||'n/a')+'</td><td>'+esc(r.safety||'n/a')+'</td><td>'+esc(r.sector||'n/a')+'</td><td>'+(r.price?num(r.price,2):'n/a')+'</td><td>'+esc(fair)+'</td><td>'+esc(zone)+'</td><td class="tiny">'+esc(data)+'</td><td><div class="ltFinderNote">'+esc(r.reasons)+'</div></td><td><div class="actions">'+(added?'<span class="ltAddedNote">On board</span>':'<button class="good" data-ltf-add="'+esc(r.ticker)+'">Add to board</button>')+'<button class="secondary" data-ltf-fill="'+esc(r.ticker)+'">Edit raw data</button></div></td></tr>'}
@@ -2299,7 +2324,37 @@ function promptTrim(ticker){const list=stocks(), i=list.findIndex(x=>x.ticker===
 function deleteStock(ticker){if(!confirm('Remove '+ticker+' from the long term action board?'))return;saveStocks(stocks().filter(x=>x.ticker!==ticker));render()}
 function markReview(ticker){const list=stocks(), i=list.findIndex(x=>x.ticker===ticker);if(i<0)return;const note=prompt('Review note for '+ticker,'Thesis still intact.');if(note===null)return;list[i].reviewDate=addDays(settings().reviewDays);saveStocks(list);const a=analyse(list[i],totals(list));log('REVIEW',list[i],0,note,a);render()}
 function renderOverview(list,total){const el=$('ltOverview');if(el)el.innerHTML=[['Long term cash',gbp(total.cash),'Separate from fast trade cash'],['LT value',gbp(total.current),'Manual holding value'],['Invested cost',gbp(total.cost),'Cost basis'],['Unrealised P/L',gbp(total.pl),total.cost?pc(total.pl/total.cost*100):'No cost basis'],['Holdings',String(total.holdings),list.length+' on board'],['Concentration',total.concentration>20?'High':total.concentration>12?'Watch':'OK',pc(total.concentration)+' largest holding']].map(t=>'<div class="ltTile"><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b><small>'+esc(t[2])+'</small></div>').join('');const best=list.map(x=>({x,a:analyse(x,total)})).filter(o=>o.a.suggested>0&&(o.a.status==='Buy now'||o.a.status==='Accumulate')).sort((a,b)=>statusRank(a.a.status)-statusRank(b.a.status)||b.a.score-a.a.score)[0];if($('ltBestIdea'))$('ltBestIdea').innerHTML=best?'<b>'+esc(best.x.ticker)+' · '+esc(best.a.status)+' · '+gbp(best.a.suggested)+'</b><span class="tiny">'+esc(best.a.reason)+' Score '+best.a.score+'.</span>':'<b>No buy action yet</b><span class="tiny">Finder may find candidates, but the board only suggests cash when price, score, allocation and cash line up.</span>'}
-function renderTable(list,total){const body=$('ltBody');if(!body)return;const rows=list.map(x=>({x,a:analyse(x,total)}));const sort=localStorage.getItem(LT.sort)||'action';rows.sort((m,n)=>sort==='score'?n.a.score-m.a.score:statusRank(m.a.status)-statusRank(n.a.status)||n.a.score-m.a.score);if(!rows.length){body.innerHTML='<tr><td class="muted" colspan="15">No long term stocks yet. Run the finder and tap Add to board.</td></tr>';return}body.innerHTML=rows.map(({x,a})=>{const zone=(x.buyLow||x.buyHigh)?num(x.buyLow,2)+' to '+num(x.buyHigh,2):'n/a';const fair=(x.fairLow||x.fairHigh)?num(x.fairLow,2)+' to '+num(x.fairHigh,2):'n/a';return '<tr><td><b>'+esc(x.ticker)+'</b><div class="tiny">'+esc(x.name||'')+'</div></td><td>'+esc(x.type)+'</td><td><b>'+a.score+'</b></td><td><span class="ltStatus '+a.cls+'">'+esc(a.status)+'</span></td><td>'+(x.price?num(x.price,2):'n/a')+'</td><td>'+esc(zone)+'</td><td>'+esc(fair)+'</td><td>'+gbp(x.ownedGBP)+'</td><td>'+gbp(a.targetValue)+'<div class="tiny">'+pc(x.targetPct)+'</div></td><td>'+gbp(a.maxValue)+'<div class="tiny">'+pc(x.maxPct)+'</div></td><td><b class="'+(a.suggested>0?'goodText':'muted')+'">'+gbp(a.suggested)+'</b></td><td><span class="'+(a.pl>=0?'goodText':'badText')+'">'+gbp(a.pl)+'</span><div class="tiny">'+pc(a.plPct)+'</div></td><td>'+esc(x.reviewDate||'')+(reviewDue(x)?'<div class="warnText tiny">Due</div>':'')+'</td><td><div class="ltMiniReason">'+esc(a.reason)+'<br>'+esc((x.sector?'Sector: '+x.sector+'. ':'')+(x.thesis||'').slice(0,140))+'</div></td><td><div class="actions"><button class="good" data-lt-buy="'+esc(x.ticker)+'">Buy log</button><button class="secondary" data-lt-edit="'+esc(x.ticker)+'">Edit</button><button class="secondary" data-lt-review="'+esc(x.ticker)+'">Review</button><button class="warn" data-lt-trim="'+esc(x.ticker)+'">Trim</button><button class="bad" data-lt-delete="'+esc(x.ticker)+'">Delete</button></div></td></tr>'}).join('');document.querySelectorAll('[data-lt-edit]').forEach(b=>b.onclick=()=>fillForm(stocks().find(x=>x.ticker===b.dataset.ltEdit),true));document.querySelectorAll('[data-lt-buy]').forEach(b=>b.onclick=()=>promptBuy(b.dataset.ltBuy));document.querySelectorAll('[data-lt-trim]').forEach(b=>b.onclick=()=>promptTrim(b.dataset.ltTrim));document.querySelectorAll('[data-lt-delete]').forEach(b=>b.onclick=()=>deleteStock(b.dataset.ltDelete));document.querySelectorAll('[data-lt-review]').forEach(b=>b.onclick=()=>markReview(b.dataset.ltReview))}
+function renderTable(list,total){
+  const body=$('ltBody'), cards=$('ltBoardCards');
+  if(cards)cards.innerHTML='';
+  if(!body)return;
+  const rows=list.map(x=>({x,a:analyse(x,total)}));
+  const sort=localStorage.getItem(LT.sort)||'action';
+  rows.sort((m,n)=>sort==='score'?n.a.score-m.a.score:statusRank(m.a.status)-statusRank(n.a.status)||n.a.score-m.a.score);
+  if(!rows.length){
+    body.innerHTML='<tr><td class="muted" colspan="15">No long term stocks yet. Run the finder and tap Add to board.</td></tr>';
+    if(cards)cards.innerHTML='<div class="ltEmpty">No long term stocks yet. Run the finder and tap Add to board.</div>';
+    return;
+  }
+  const actionButtons=x=>'<button class="good" data-lt-buy="'+esc(x.ticker)+'">Buy log</button><button class="secondary" data-lt-edit="'+esc(x.ticker)+'">Edit</button><button class="secondary" data-lt-review="'+esc(x.ticker)+'">Review</button><button class="warn" data-lt-trim="'+esc(x.ticker)+'">Trim</button><button class="bad" data-lt-delete="'+esc(x.ticker)+'">Delete</button>';
+  if(cards){
+    cards.innerHTML=rows.map(({x,a})=>{
+      const zone=(x.buyLow||x.buyHigh)?num(x.buyLow,2)+' to '+num(x.buyHigh,2):'n/a';
+      const fair=(x.fairLow||x.fairHigh)?num(x.fairLow,2)+' to '+num(x.fairHigh,2):'n/a';
+      return '<div class="ltBoardCard '+esc(a.cls)+'"><div class="ltBoardHead"><div><div class="ltBoardSymbol">'+esc(x.ticker)+'</div><div class="ltBoardSub">'+esc(x.name||x.type||'')+(x.sector?' · '+esc(x.sector):'')+'</div></div><div class="ltBoardScore">'+a.score+'</div></div><div style="margin-top:8px"><span class="ltStatus '+esc(a.cls)+'">'+esc(a.status)+'</span></div><div class="ltBoardGrid"><div class="ltBoardMini"><span>Price</span><b>'+(x.price?num(x.price,2):'n/a')+'</b></div><div class="ltBoardMini"><span>Suggested</span><b class="'+(a.suggested>0?'goodText':'muted')+'">'+gbp(a.suggested)+'</b></div><div class="ltBoardMini"><span>Owned</span><b>'+gbp(x.ownedGBP)+'</b></div><div class="ltBoardMini"><span>Target</span><b>'+gbp(a.targetValue)+'</b></div><div class="ltBoardMini"><span>Buy zone</span><b>'+esc(zone)+'</b></div><div class="ltBoardMini"><span>Fair value</span><b>'+esc(fair)+'</b></div></div><div class="ltBoardReason">'+esc(a.reason)+'<br>'+esc((x.thesis||'').slice(0,180))+'</div><div class="ltBoardActions">'+actionButtons(x)+'</div></div>';
+    }).join('');
+  }
+  body.innerHTML=rows.map(({x,a})=>{
+    const zone=(x.buyLow||x.buyHigh)?num(x.buyLow,2)+' to '+num(x.buyHigh,2):'n/a';
+    const fair=(x.fairLow||x.fairHigh)?num(x.fairLow,2)+' to '+num(x.fairHigh,2):'n/a';
+    return '<tr><td data-label="Ticker"><b>'+esc(x.ticker)+'</b><div class="tiny">'+esc(x.name||'')+'</div></td><td data-label="Type">'+esc(x.type)+'</td><td data-label="Score"><b>'+a.score+'</b></td><td data-label="Status"><span class="ltStatus '+esc(a.cls)+'">'+esc(a.status)+'</span></td><td data-label="Price">'+(x.price?num(x.price,2):'n/a')+'</td><td data-label="Buy zone">'+esc(zone)+'</td><td data-label="Fair value">'+esc(fair)+'</td><td data-label="Owned">'+gbp(x.ownedGBP)+'</td><td data-label="Target">'+gbp(a.targetValue)+'<div class="tiny">'+pc(x.targetPct)+'</div></td><td data-label="Max">'+gbp(a.maxValue)+'<div class="tiny">'+pc(x.maxPct)+'</div></td><td data-label="Suggested"><b class="'+(a.suggested>0?'goodText':'muted')+'">'+gbp(a.suggested)+'</b></td><td data-label="P/L"><span class="'+(a.pl>=0?'goodText':'badText')+'">'+gbp(a.pl)+'</span><div class="tiny">'+pc(a.plPct)+'</div></td><td data-label="Review">'+esc(x.reviewDate||'')+(reviewDue(x)?'<div class="warnText tiny">Due</div>':'')+'</td><td data-label="Reason"><div class="ltMiniReason">'+esc(a.reason)+'<br>'+esc((x.sector?'Sector: '+x.sector+'. ':'')+(x.thesis||'').slice(0,140))+'</div></td><td data-label="Actions"><div class="actions">'+actionButtons(x)+'</div></td></tr>';
+  }).join('');
+  document.querySelectorAll('[data-lt-edit]').forEach(b=>b.onclick=()=>fillForm(stocks().find(x=>x.ticker===b.dataset.ltEdit),true));
+  document.querySelectorAll('[data-lt-buy]').forEach(b=>b.onclick=()=>promptBuy(b.dataset.ltBuy));
+  document.querySelectorAll('[data-lt-trim]').forEach(b=>b.onclick=()=>promptTrim(b.dataset.ltTrim));
+  document.querySelectorAll('[data-lt-delete]').forEach(b=>b.onclick=()=>deleteStock(b.dataset.ltDelete));
+  document.querySelectorAll('[data-lt-review]').forEach(b=>b.onclick=()=>markReview(b.dataset.ltReview));
+}
 function renderJournal(){const body=$('ltJournalBody');if(!body)return;const rows=journal();if(!rows.length){body.innerHTML='<tr><td class="muted" colspan="7">No long term journal entries yet.</td></tr>';return}body.innerHTML=rows.slice(0,100).map(r=>'<tr><td>'+esc(r.date)+'</td><td><b>'+esc(r.ticker)+'</b></td><td>'+esc(r.action)+'</td><td>'+gbp(r.amount)+'</td><td>'+esc(r.score)+'</td><td>'+esc(r.status)+'</td><td>'+esc(r.reason)+'</td></tr>').join('')}
 function updateCompact(list,total){const analysed=list.map(x=>({x,a:analyse(x,total)}));const best=analysed.sort((a,b)=>statusRank(a.a.status)-statusRank(b.a.status)||b.a.score-a.a.score)[0];const buys=analysed.filter(o=>o.a.status==='Buy now'||o.a.status==='Accumulate').length;if($('ltCompactAction'))$('ltCompactAction').textContent=best?best.x.ticker+' · '+best.a.status:'No stocks';if($('ltCompactHint'))$('ltCompactHint').textContent=best?'Score '+best.a.score+', '+gbp(best.a.suggested)+' suggested':'Open when needed.';if($('ltCompactCash'))$('ltCompactCash').textContent=gbp(total.cash);if($('ltCompactValue'))$('ltCompactValue').textContent=gbp(total.current);if($('ltCompactPL'))$('ltCompactPL').textContent='P/L '+gbp(total.pl);if($('ltCompactBuys'))$('ltCompactBuys').textContent=String(buys);if($('ltCompactReviews'))$('ltCompactReviews').textContent=String(list.filter(reviewDue).length)}
 function compactDefault(){return !!(window.matchMedia&&window.matchMedia('(max-width:780px)').matches)}
