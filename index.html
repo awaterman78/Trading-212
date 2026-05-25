@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v77, Deploy Control</title>
+<title>Trading 212 Manual God Mode v78, Deploy Control</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -874,11 +874,15 @@
     .ltFinanceLine span{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;text-align:right}
     @media(max-width:780px){.ltFinanceLine span{justify-content:flex-start;text-align:left}.ltPlanLog{width:100%;margin:6px 0 0 0!important}.ltTrackerReason{font-size:12px}}
 
+
+/* v78, single finance plan clarity */
+.ltFinanceLine{gap:10px}.ltFinanceLine button{flex:0 0 auto;padding:8px 10px;border-radius:10px;font-size:12px}.ltFinderPanel:not([open]){opacity:.88}.ltAutoPlanTitle::after{content:' ';}
+@media(max-width:780px){.ltFinanceLine{display:grid!important;grid-template-columns:1fr auto;align-items:center}.ltFinanceLine button{grid-column:1 / -1;width:100%}.ltFinderPanel{order:99!important}.ltAutoPanel{order:1!important}.ltTableWrap#ltActionBoard{order:2!important}}
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v77, Deploy Control</h1>
+<h1>Trading 212 Manual God Mode v78, Deploy Control</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.8 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD. v74 keeps the stable finder and mobile Long Term Tracker, then simplifies Auto Finance into one clear plan, a small shortlist and optional detailed checks.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -890,7 +894,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v77</span>
+<span class="mobileTitleText">Manual God Mode v78</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1185,7 +1189,7 @@ COIN"></textarea>
 <p class="tiny">Separate from Ignition Sniper. This is for building positions over months and years, using quality, valuation, allocation, buy zones and a calm journal. It still does not place orders.</p>
 </div>
 <div class="ltHeaderTools">
-<span class="ltBadge">v74 · simple finance</span>
+<span class="ltBadge">v78 · one finance plan</span>
 <button class="secondary ltToggleBtn" id="ltToggleCompact" type="button">Hide long term</button>
 </div>
 </div>
@@ -1275,9 +1279,9 @@ COIN"></textarea>
 <p class="tiny" style="margin-top:10px">Manual data still works, but v77 can scan a wider universe and estimate growth potential using cached history, base quality presets and live metrics when available. Treat it as a ranking radar, not a promise.</p>
 </section>
 </div>
-<details class="ltPanel ltFinderPanel" open="">
-<summary>Growth radar and long term finder <span>scans wider universes, estimates potential and filters risk</span></summary>
-<p class="tiny" style="margin-top:8px">This is the discovery engine. It can scan your watchlist or a broader preset universe, estimate annualised growth potential, then pass only the cleanest ideas to the finance plan and tracker.</p>
+<details class="ltPanel ltFinderPanel">
+<summary>Growth radar, discovery only <span>finds candidates, finance plan decides buys</span></summary>
+<p class="tiny" style="margin-top:8px">This is discovery only. It scans wider universes and estimates potential. It is not a buy list. The finance plan below is the only buy list.</p>
 <div class="ltUniverseNote">Use <b>Broad radar</b> when you are worried the opportunity is outside the current list. The growth estimate is a modelled range, not a promise. It blends cached price history, live metrics when available, quality, valuation and trend.</div>
 <div class="ltFinderControls">
 <div><label>Universe preset</label><select id="ltUniversePreset"><option value="watchlist">Watchlist only</option><option selected="" value="broad">Broad radar, US quality plus ETFs</option><option value="growth">Growth, AI, cloud and semis</option><option value="quality">Quality compounders</option><option value="etf">ETF and sector core</option></select></div>
@@ -1309,8 +1313,8 @@ COIN"></textarea>
 </details>
 
 <details class="ltPanel ltAutoPanel" id="ltAutoPanel" open="">
-<summary>Auto check and finance mode <span>fund the plan, not every idea</span></summary>
-<p class="tiny" style="margin-top:8px">This turns the Growth Radar and tracker into one clean funding plan. Choose how much of the finance pot to deploy now, keep the rest back, then manually buy and log. It still does not place orders.</p>
+<summary>Today's finance plan <span>single source of truth for what to buy</span></summary>
+<p class="tiny" style="margin-top:8px">This is the only section that tells you what to buy today. Growth Radar only finds ideas. Plan Tracker only manages what you have bought or are watching. This still does not place orders.</p>
 <div class="ltAutoControls">
 <div><label>Money to finance now, £</label><input id="ltFinanceNow" min="0" step="0.01" type="number" value="25"/></div>
 <div><label>Use this round, %</label><input id="ltFinanceDeployPct" max="100" min="5" step="5" type="number" value="60"/></div>
@@ -1331,14 +1335,14 @@ COIN"></textarea>
 
 <div class="ltTableWrap" id="ltActionBoard">
 <div class="ltJournalBar">
-<h2>Plan tracker</h2>
+<h2>Plan tracker, aftercare only</h2>
 <div class="ltActions" style="margin-top:0">
 <button class="secondary" id="ltSortAction" type="button">Sort by action</button>
 <button class="secondary" id="ltSortScore" type="button">Sort by score</button>
 </div>
 </div>
 <div class="ltBoardCards" id="ltBoardCards"><div class="ltEmpty">No tracked plan items yet. Run the finance plan and add candidates.</div></div>
-<div class="scroll"><table class="ltTable" id="ltTable"><thead><tr><th>Ticker</th><th>Role</th><th>Score</th><th>Status</th><th>Owned</th><th>Planned today</th><th>Target</th><th>P/L</th><th>Review</th><th>Expectation</th><th>Next action</th><th>Actions</th></tr></thead><tbody id="ltBody"><tr><td class="muted" colspan="12">No tracked plan items yet.</td></tr></tbody></table></div>
+<div class="scroll"><table class="ltTable" id="ltTable"><thead><tr><th>Ticker</th><th>Role</th><th>Fit</th><th>Status</th><th>Owned</th><th>Today's plan</th><th>Target</th><th>P/L</th><th>Review</th><th>Expectation</th><th>Next action</th><th>Actions</th></tr></thead><tbody id="ltBody"><tr><td class="muted" colspan="12">No tracked plan items yet.</td></tr></tbody></table></div>
 </div>
 <div class="ltTableWrap">
 <div class="ltJournalBar">
@@ -2459,7 +2463,7 @@ function promptTrim(ticker){const list=stocks(), i=list.findIndex(x=>x.ticker===
 function deleteStock(ticker){if(!confirm('Remove '+ticker+' from the long term action board?'))return;saveStocks(stocks().filter(x=>x.ticker!==ticker));render()}
 function markReview(ticker){const list=stocks(), i=list.findIndex(x=>x.ticker===ticker);if(i<0)return;const note=prompt('Review note for '+ticker,'Thesis still intact.');if(note===null)return;list[i].reviewDate=addDays(settings().reviewDays);saveStocks(list);const a=analyse(list[i],totals(list));log('REVIEW',list[i],0,note,a);render()}
 function renderOverview(list,total){const el=$('ltOverview');if(el)el.innerHTML=[['Long term cash',gbp(total.cash),'Separate from fast trade cash'],['LT value',gbp(total.current),'Manual holding value'],['Invested cost',gbp(total.cost),'Cost basis'],['Unrealised P/L',gbp(total.pl),total.cost?pc(total.pl/total.cost*100):'No cost basis'],['Holdings',String(total.holdings),list.length+' on board'],['Concentration',total.concentration>20?'High':total.concentration>12?'Watch':'OK',pc(total.concentration)+' largest holding']].map(t=>'<div class="ltTile"><span>'+esc(t[0])+'</span><b>'+esc(t[1])+'</b><small>'+esc(t[2])+'</small></div>').join('');const best=list.map(x=>({x,a:analyse(x,total)})).filter(o=>o.a.suggested>0&&(o.a.status==='Buy now'||o.a.status==='Accumulate')).sort((a,b)=>statusRank(a.a.status)-statusRank(b.a.status)||b.a.score-a.a.score)[0];if($('ltBestIdea'))$('ltBestIdea').innerHTML=best?'<b>'+esc(best.x.ticker)+' · '+esc(best.a.status)+' · '+gbp(best.a.suggested)+'</b><span class="tiny">'+esc(best.a.reason)+' Score '+best.a.score+'.</span>':'<b>No buy action yet</b><span class="tiny">Finder may find candidates, but the board only suggests cash when price, score, allocation and cash line up.</span>'}
-function planMap(){const raw=jget('t212gm75_lt_last_plan',null)||jget('t212gm74_lt_last_plan',null)||{};const map={};(raw.plan||[]).forEach(p=>{map[String(p.ticker||'').toUpperCase()]=+p.amount||0});return map}
+function planMap(){const raw=jget('t212gm78_lt_last_plan',null)||jget('t212gm77_lt_last_plan',null)||{};const map={};(raw.plan||[]).forEach(p=>{map[String(p.ticker||'').toUpperCase()]=+p.amount||0});return map}
 function trackerRole(x){if(isEtf(x.ticker)||String(x.type||'').toLowerCase().includes('etf'))return 'Core ETF';if(String(x.type||'').toLowerCase().includes('dividend'))return 'Dividend/income';if(String(x.type||'').toLowerCase().includes('growth'))return 'Growth satellite';return 'Quality compounder'}
 function trackerRead(x,a,planned){let tag='Watch',cls='review',next='Wait for the next finance plan.',expect='3 to 5 year hold. Review every '+settings().reviewDays+' days.';if((+x.ownedGBP||0)>0){tag=reviewDue(x)?'Review':'Bought, hold';cls=reviewDue(x)?'review':'hold';next=reviewDue(x)?'Review thesis, earnings, valuation and allocation.':'Hold. Add only if the finance plan selects it again.'}else if(planned>0){tag='Fund next';cls='fund';next='Buy '+gbp(planned)+' manually in Trading 212, then tap Log planned buy.'}else if(a.status==='Trim'){tag='Trim';cls='exit';next='Do not add. Trim only if you own above max allocation.'}else if(a.status==='Avoid'){tag='Block';cls='exit';next='Do not fund until score, data or thesis improves.'}else if(a.status==='Buy now'||a.status==='Accumulate'){tag='Watch';cls='review';next='Good candidate, but it is not in today\'s finance plan.'}if(isEtf(x.ticker)||String(x.type||'').toLowerCase().includes('etf'))expect='Core market exposure. Keep adding by plan unless the ETF role changes.';else if(String(x.sector||'').toLowerCase().includes('semiconductor'))expect='Higher cycle risk. Use smaller staged buys and review valuation, debt and demand cycle.';return {tag,cls,next,expect,role:trackerRole(x)}}
 function renderTable(list,total){
@@ -2499,9 +2503,9 @@ function setCompact(on,save){const sec=$('longTermSection');if(!sec)return;sec.c
 function goBoard(){const el=$('ltActionBoard')||$('ltTable');if(el){el.scrollIntoView({behavior:'smooth',block:'start'});el.classList.remove('ltBoardFlash');setTimeout(()=>el.classList.add('ltBoardFlash'),120)}}
 function exportCSV(name,rows){const blob=new Blob([rows],{type:'text/csv'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)}
 function csv(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
-function exportFinderCSV(){const header=['Ticker','Action','Score','Quality','Strength','Growth','Valuation','Returns','Trend','Sector','Price','FairLow','FairHigh','BuyLow','BuyHigh','Reasons'];const body=finderRows().map(r=>[r.ticker,r.action,r.score,r.quality,r.strength,r.growth,r.valuation,r.returns,r.trend,r.sector,r.price,r.fairLow,r.fairHigh,r.buyLow,r.buyHigh,r.reasons].map(csv).join(','));exportCSV('long_term_finder_v77.csv',[header.join(','),...body].join('\n'))}
-function exportJournalCSV(){const header=['Date','Ticker','Action','AmountGBP','Score','Status','Reason'];const body=journal().map(r=>[r.date,r.ticker,r.action,r.amount,r.score,r.status,r.reason].map(csv).join(','));exportCSV('long_term_journal_v77.csv',[header.join(','),...body].join('\n'))}
-function exportJSON(){const blob=new Blob([JSON.stringify({version:'v77 deploy control',settings:settings(),stocks:stocks(),journal:journal(),finder:finderRows()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='long_term_buyer_v77.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)}
+function exportFinderCSV(){const header=['Ticker','Action','Score','Quality','Strength','Growth','Valuation','Returns','Trend','Sector','Price','FairLow','FairHigh','BuyLow','BuyHigh','Reasons'];const body=finderRows().map(r=>[r.ticker,r.action,r.score,r.quality,r.strength,r.growth,r.valuation,r.returns,r.trend,r.sector,r.price,r.fairLow,r.fairHigh,r.buyLow,r.buyHigh,r.reasons].map(csv).join(','));exportCSV('long_term_finder_v78.csv',[header.join(','),...body].join('\n'))}
+function exportJournalCSV(){const header=['Date','Ticker','Action','AmountGBP','Score','Status','Reason'];const body=journal().map(r=>[r.date,r.ticker,r.action,r.amount,r.score,r.status,r.reason].map(csv).join(','));exportCSV('long_term_journal_v78.csv',[header.join(','),...body].join('\n'))}
+function exportJSON(){const blob=new Blob([JSON.stringify({version:'v78 single command',settings:settings(),stocks:stocks(),journal:journal(),finder:finderRows()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='long_term_buyer_v78.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500)}
 function importJSON(file){if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const d=JSON.parse(reader.result);if(d.settings)jset(LT.settings,d.settings);if(Array.isArray(d.stocks))saveStocks(d.stocks);if(Array.isArray(d.journal))saveJournal(d.journal);if(Array.isArray(d.finder))saveFinderRows(d.finder);applySettings(jget(LT.settings,{}));render();toast('Import complete','Long term data imported.','good')}catch(e){toast('Import failed','That JSON did not look right.','bad')}};reader.readAsText(file)}
 function buildReviewPack(){const list=stocks(),total=totals(list),analysed=list.map(x=>({x,a:analyse(x,total)}));const actions=analysed.filter(o=>o.a.status==='Buy now'||o.a.status==='Accumulate').map(o=>o.x.ticker+' '+o.a.status+' '+gbp(o.a.suggested)+' score '+o.a.score).join(' | ')||'None';const top=finderRows().slice(0,8).map(r=>r.ticker+' '+r.score+' '+r.action).join(' | ')||'Finder not run';return 'Trading 212 Long Term Buyer v77 review pack\nGenerated: '+new Date().toLocaleString('en-GB')+'\nCash: '+gbp(total.cash)+'\nValue: '+gbp(total.current)+'\nP/L: '+gbp(total.pl)+'\nBest actions: '+actions+'\nFinder top: '+top+'\nNext checks: business quality, debt, dilution, moat, earnings trend, valuation source, allocation and cash.'}
 async function copyReviewPack(){const pack=buildReviewPack();if($('ltReviewPack')){$('ltReviewPack').style.display='block';$('ltReviewPack').textContent=pack}try{await navigator.clipboard.writeText(pack);toast('Review pack copied','Paste it back here and we can tune the rules.','good')}catch(e){toast('Review pack shown','Clipboard was blocked, but the pack is visible.','warn')}}
@@ -2591,14 +2595,14 @@ if(!res.list.length){
 }
 const financeable=res.analysed.filter(o=>o.c.cls==='finance').length;
 const used=res.plan.reduce((a,p)=>a+p.amount,0);
-try{localStorage.setItem('t212gm77_lt_last_plan',JSON.stringify({generatedAt:new Date().toISOString(),funding:res.cfg.amount,plan:res.plan,remaining:res.remaining}));if(window.LT_RENDER)setTimeout(window.LT_RENDER,20)}catch(e){}
+try{const planPayload={generatedAt:new Date().toISOString(),funding:res.cfg.amount,plan:res.plan,remaining:res.remaining,deployTarget:res.deployTarget};localStorage.setItem('t212gm78_lt_last_plan',JSON.stringify(planPayload));localStorage.setItem('t212gm77_lt_last_plan',JSON.stringify(planPayload));if(window.LT_RENDER)setTimeout(window.LT_RENDER,20)}catch(e){}
 const main=res.plan.slice(0,3).map(p=>p.ticker).join(', ');
 status.className='ltAutoStatus '+(res.plan.length?'':'warn');
-status.textContent=res.plan.length?('Simple plan ready: buy '+res.plan.length+' staged position(s), deploy '+gbp(used)+' of '+gbp(res.cfg.amount)+' now, keep '+gbp(res.remaining)+' cash. Main focus: '+main+'.'):'No clean automatic allocation. Keep cash or review the flagged names first.';
+status.textContent=res.plan.length?('Single plan ready: buy '+res.plan.length+' staged position(s), deploy '+gbp(used)+' of '+gbp(res.cfg.amount)+' now, keep '+gbp(res.remaining)+' cash. Only these rows are buys today: '+main+'.'):'No clean automatic allocation. Keep cash or review the flagged names first.';
 if(planEl){
   planEl.style.display='block';
   if(res.plan.length){
-    planEl.innerHTML='<div class="ltAutoPlanTitle">Today\'s finance plan</div>'+res.plan.map((p,i)=>'<div class="ltFinanceLine"><b>'+(i+1)+'. '+esc(p.ticker)+'</b><span>'+gbp(p.amount)+' · '+esc(p.why)+'</span></div>').join('')+(res.remaining>=1?'<div class="ltFinanceLine"><b>Hold cash</b><span>'+gbp(res.remaining)+' kept back for cleaner prices or next month.</span></div>':'')+'<div class="ltAutoCommand"><b>What you do</b><span>Buy these manually in Trading 212, then tap Log bought. The plan tracker below manages hold, review, trim and expectations.</span></div>';
+    planEl.innerHTML='<div class="ltAutoPlanTitle">Today\'s finance plan, only buy list</div>'+res.plan.map((p,i)=>'<div class="ltFinanceLine"><b>'+(i+1)+'. '+esc(p.ticker)+'</b><span>'+gbp(p.amount)+' · '+esc(p.why)+'</span><button class="good" data-lt-plan-log="'+esc(p.ticker)+'" data-lt-plan-amount="'+esc(p.amount)+'" type="button">Log bought</button></div>').join('')+(res.remaining>=1?'<div class="ltFinanceLine"><b>Hold cash</b><span>'+gbp(res.remaining)+' kept back for cleaner prices or next month.</span></div>':'')+'<div class="ltAutoCommand"><b>What you do</b><span>Buy only these rows manually in Trading 212, then tap Log bought on the same row. Ignore radar candidates unless they appear here.</span></div>';
   }else{
     planEl.innerHTML='<div class="ltAutoPlanTitle">Today\'s finance plan</div><div class="ltFinanceLine"><b>Wait</b><span>No clean staged allocation. Keep cash and review flagged names.</span></div>';
   }
