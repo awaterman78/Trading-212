@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v70.2, Ignition Sniper plus Condensed Long Term Buyer</title>
+<title>Trading 212 Manual God Mode v70.3, Ignition Sniper plus Ultimate Long Term Finder</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -731,23 +731,45 @@
   .longTermSection.ltCollapsed{min-height:0!important;padding:10px!important}
 }
 
+
+/* v70.3 Ultimate Long Term Finder */
+.ltFinderPanel{border-color:rgba(94,231,255,.24);background:linear-gradient(180deg,rgba(94,231,255,.065),rgba(7,17,31,.96));margin-top:12px}
+.ltFinderControls{display:grid;grid-template-columns:1.2fr repeat(3,minmax(0,.55fr));gap:8px;align-items:end;margin-top:10px}
+.ltFinderControls textarea{min-height:94px}
+.ltFinderStatus{margin-top:10px;border:1px solid rgba(94,231,255,.22);background:rgba(94,231,255,.07);border-radius:13px;padding:9px;color:#d7fbff;font-size:12px;line-height:1.35}
+.ltFinderCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
+.ltFinderCard{background:#07111f;border:1px solid rgba(141,162,187,.16);border-radius:14px;padding:10px;min-height:112px}
+.ltFinderCard.buy{border-color:rgba(46,229,137,.35);background:linear-gradient(180deg,rgba(46,229,137,.09),#07111f)}
+.ltFinderCard.wait{border-color:rgba(255,209,102,.30);background:linear-gradient(180deg,rgba(255,209,102,.07),#07111f)}
+.ltFinderCard.avoid{opacity:.82}
+.ltFinderTop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.ltFinderTop b{font-size:18px;letter-spacing:-.03em}
+.ltFinderScore{font-size:20px;font-weight:1000}
+.ltFinderTags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.ltFinderTag{border:1px solid rgba(141,162,187,.22);background:rgba(16,35,60,.54);border-radius:999px;padding:3px 7px;font-size:10px;color:var(--muted)}
+.ltFinderTable{min-width:1480px}
+.ltFinderNote{max-width:430px;color:var(--muted);line-height:1.35}
+.longTermSection.ltCollapsed .ltFinderPanel{display:none!important}
+@media(max-width:1120px){.ltFinderCards{grid-template-columns:1fr 1fr}.ltFinderControls{grid-template-columns:1fr 1fr}}
+@media(max-width:780px){.ltFinderPanel{padding:10px!important}.ltFinderCards{grid-template-columns:1fr}.ltFinderControls{grid-template-columns:1fr!important}.ltFinderControls textarea{min-height:78px}.ltFinderStatus{font-size:11px}.ltFinderTable{min-width:1320px}.ltFinderPanel .scroll{max-height:360px!important;overflow:auto!important}}
+
 </style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v70.2, Ignition Sniper plus Condensed Long Term Buyer</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.2 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
+<h1>Trading 212 Manual God Mode v70.3, Ignition Sniper plus Ultimate Long Term Finder</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v70.3 is US-only, manual execution, with Ignition Sniper mode plus a separate Long Term Buyer and Ultimate Finder, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
 <span class="pill">Market: <strong id="marketGate">unknown</strong></span>
 <span class="pill">History: <strong id="historyState">not primed</strong></span>
-<span class="pill">Mode: <strong id="modeLabel">US manual v70.2</strong></span>
+<span class="pill">Mode: <strong id="modeLabel">US manual v70.3</strong></span>
 </div>
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v70.1</span>
+<span class="mobileTitleText">Manual God Mode v70.3</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1043,7 +1065,7 @@ COIN"></textarea>
       <p class="tiny">Separate from Ignition Sniper. This is for building positions over months and years, using quality, valuation, allocation, buy zones and a calm journal. It still does not place orders.</p>
     </div>
     <div class="ltHeaderTools">
-      <span class="ltBadge">v70.2 · adult money screen</span>
+      <span class="ltBadge">v70.3 · finder + adult money screen</span>
       <button class="secondary ltToggleBtn" id="ltToggleCompact" type="button">Hide long term</button>
     </div>
   </div>
@@ -1133,9 +1155,31 @@ COIN"></textarea>
         <div class="rule warn"><div class="led"></div><div><b>Journal every decision</b><span>Buys, trims and thesis changes are logged for proper review.</span></div></div>
       </div>
       <div class="ltCommand" id="ltBestIdea"><b>No long term idea yet</b><span class="tiny">Seed starters or add your first stock.</span></div>
-      <p class="tiny" style="margin-top:10px">Manual data for v70. Live fundamentals can come later. First we make the decision engine clean, useful and hard to fool with hype.</p>
+      <p class="tiny" style="margin-top:10px">Manual data still works, but v70.3 can also auto-rank a universe using live quotes, Finnhub metrics and cached history. Treat it as a decision assistant, not a magic money printer.</p>
     </section>
   </div>
+
+
+  <details class="ltPanel ltFinderPanel" open>
+    <summary>Ultimate long term finder <span>scans quality, valuation, trend, cash and allocation</span></summary>
+    <p class="tiny" style="margin-top:8px">This is the discovery engine. It uses your main watchlist or a custom universe, Finnhub quote and metric data where available, plus cached Massive daily history if you have primed it. It ranks candidates for multi-month and multi-year buying, not quick trades.</p>
+    <div class="ltFinderControls">
+      <div><label>Finder universe, optional</label><textarea id="ltFinderUniverse" placeholder="Leave blank to use the main Watchlist. Or paste tickers here, one per line, for the long term scan."></textarea></div>
+      <div><label>Minimum finder score</label><input id="ltFinderMinScore" min="40" max="95" step="1" type="number" value="70" /></div>
+      <div><label>Max results</label><input id="ltFinderMaxResults" min="5" max="60" step="1" type="number" value="20" /></div>
+      <div><label>Price discipline</label><select id="ltFinderPriceBias"><option selected value="balanced">Balanced</option><option value="strict">Value strict</option><option value="growth">Quality growth</option></select></div>
+    </div>
+    <div class="ltActions">
+      <button class="good" id="ltRunFinder" type="button">Find long term ideas</button>
+      <button class="secondary" id="ltAddFinderBuys" type="button">Add top buy list</button>
+      <button class="secondary" id="ltExportFinderCSV" type="button">Export finder CSV</button>
+    </div>
+    <div class="ltFinderStatus" id="ltFinderStatus">Finder ready. Prime history first for best trend and drawdown scores, then tap Find long term ideas.</div>
+    <div class="ltFinderCards" id="ltFinderCards"></div>
+    <div class="ltTableWrap">
+      <div class="scroll"><table class="ltFinderTable" id="ltFinderTable"><thead><tr><th>Action</th><th>Ticker</th><th>Score</th><th>Quality</th><th>Strength</th><th>Growth</th><th>Valuation</th><th>Returns</th><th>Trend</th><th>Price</th><th>Fair value</th><th>Buy zone</th><th>Data</th><th>Reasons</th><th>Actions</th></tr></thead><tbody id="ltFinderBody"><tr><td class="muted" colspan="15">Run the finder to rank long term candidates.</td></tr></tbody></table></div>
+    </div>
+  </details>
 
   <div class="ltTableWrap">
     <div class="ltJournalBar">
@@ -2154,7 +2198,7 @@ loadSettings();bind();syncCashDisplay();renderHistoryState();renderPositions();r
 <script>
 (function(){
 'use strict';
-const LT={settings:'t212gm70_lt_settings',stocks:'t212gm70_lt_stocks',journal:'t212gm70_lt_journal',sort:'t212gm70_lt_sort',compact:'t212gm70_2_lt_compact'};
+const LT={settings:'t212gm70_lt_settings',stocks:'t212gm70_lt_stocks',journal:'t212gm70_lt_journal',sort:'t212gm70_lt_sort',compact:'t212gm70_2_lt_compact',finder:'t212gm70_3_lt_finder'};
 const $=id=>document.getElementById(id);
 function jget(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
 function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
@@ -2175,7 +2219,11 @@ function settings(){
     defaultMaxStock:+(($('ltDefaultMaxStock')&&$('ltDefaultMaxStock').value)||8),
     defaultMaxEtf:+(($('ltDefaultMaxEtf')&&$('ltDefaultMaxEtf').value)||35),
     reviewDays:+(($('ltReviewDays')&&$('ltReviewDays').value)||90),
-    currency:(($('ltCurrency')&&$('ltCurrency').value)||'GBP')
+    currency:(($('ltCurrency')&&$('ltCurrency').value)||'GBP'),
+    finderUniverse:String(($('ltFinderUniverse')&&$('ltFinderUniverse').value)||''),
+    finderMinScore:+(($('ltFinderMinScore')&&$('ltFinderMinScore').value)||70),
+    finderMaxResults:+(($('ltFinderMaxResults')&&$('ltFinderMaxResults').value)||20),
+    finderPriceBias:(($('ltFinderPriceBias')&&$('ltFinderPriceBias').value)||'balanced')
   };
 }
 function saveSettings(){jset(LT.settings,settings())}
@@ -2392,6 +2440,48 @@ function importJSON(file){
   };
   reader.readAsText(file);
 }
+
+function parseSymbols(text){return [...new Set(String(text||'').toUpperCase().split(/[\s,]+/).map(s=>s.trim()).filter(Boolean))]}
+function keys(){return jget('t212gm36_us_keys',{})||{}}
+function cachedHistory(sym){const h=jget('t212gm36_us_history',{})||{};return h[sym]&&Array.isArray(h[sym].data)?h[sym].data:[]}
+function mainUniverse(){const custom=parseSymbols(settings().finderUniverse);if(custom.length)return custom.slice(0,90);const w=$('watchlist')?$('watchlist').value:(localStorage.getItem('t212gm36_us_watchlist')||'');const m=$('momentumList')?$('momentumList').value:(localStorage.getItem('t212gm67_us_momentum_watchlist')||'');return parseSymbols(w+'\n'+m).slice(0,90)}
+async function fetchLTJSON(url,timeoutMs=14000){const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),timeoutMs);let res,data=null;try{res=await fetch(url,{signal:ctrl.signal});try{data=await res.json()}catch(e){}}finally{clearTimeout(timer)}if(!res||!res.ok){throw new Error('HTTP '+(res?res.status:'network'))}if(data&&data.error)throw new Error(data.error);return data}
+async function ltQuote(sym,token){const d=await fetchLTJSON('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(token));return d&&isFinite(+d.c)&&+d.c>0?{price:+d.c,changePct:+d.dp,open:+d.o,high:+d.h,low:+d.l,prev:+d.pc}:null}
+async function ltMetrics(sym,token){try{const d=await fetchLTJSON('https://finnhub.io/api/v1/stock/metric?symbol='+encodeURIComponent(sym)+'&metric=all&token='+encodeURIComponent(token));return (d&&d.metric)||{}}catch(e){return {}}
+}
+function pick(o,names){for(const k of names){const v=o&&o[k];if(isFinite(+v))return +v}return null}
+function avg(vals){return vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null}
+function sma(vals,n){return vals.length>=n?avg(vals.slice(-n)):null}
+function histStats(sym,price){const h=cachedHistory(sym);if(!h.length)return {ready:false};const closes=h.map(x=>+x.c).filter(isFinite);if(closes.length<30)return {ready:false};const last=price||closes[closes.length-1], hi=Math.max(...closes.slice(-252)), lo=Math.min(...closes.slice(-252));const cAgo=d=>closes.length>d?closes[closes.length-1-d]:null;const ret=(d)=>{const b=cAgo(d);return b?((last/b-1)*100):null};const s50=sma(closes,50),s200=sma(closes,200)||sma(closes,120);const dd=hi?((last/hi-1)*100):0;return {ready:true,bars:closes.length,last,hi,lo,s50,s200,ret3m:ret(63),ret6m:ret(126),ret1y:ret(252)||ret(Math.min(180,closes.length-2)),drawdown:dd,above50:s50?last>s50:false,above200:s200?last>s200:false}}
+function scoreRange(v,good,bad,invert){if(v===null||!isFinite(v))return 50;let x=invert?(bad-v)/(bad-good):(v-bad)/(good-bad);return Math.round(clamp(x*100,0,100))}
+function scoreFinder(sym,q,m){const price=q&&q.price?q.price:0, h=histStats(sym,price);const pe=pick(m,['peNormalizedAnnual','peTTM','peBasicExclExtraTTM','peInclExtraTTM','peExclExtraAnnual','peAnnual']);const fpe=pick(m,['forwardPE','peForwardAnnual','peForward']);const ps=pick(m,['psTTM','psAnnual','priceToSalesTTM']);const pfcf=pick(m,['pfcfShareTTM','pfcfShareAnnual','priceToFreeCashFlowTTM']);const rev=pick(m,['revenueGrowthTTMYoy','revenueGrowth5Y','revenueGrowthQuarterlyYoy','revenueGrowthAnnualYoy']);const eps=pick(m,['epsGrowthTTMYoy','epsGrowth5Y','epsGrowthQuarterlyYoy','epsGrowthAnnualYoy']);const gross=pick(m,['grossMarginTTM','grossMarginAnnual']);const op=pick(m,['operatingMarginTTM','operatingMarginAnnual']);const net=pick(m,['netProfitMarginTTM','netProfitMarginAnnual']);const roe=pick(m,['roeTTM','roeAnnual','returnOnEquityTTM']);const roa=pick(m,['roaTTM','roaAnnual']);const debtEq=pick(m,['totalDebt/totalEquityAnnual','totalDebt/totalEquityQuarterly','debtEquityRatioAnnual']);const current=pick(m,['currentRatioAnnual','currentRatioQuarterly']);const div=pick(m,['dividendYieldIndicatedAnnual','dividendYield5Y','currentDividendYieldTTM']);const payout=pick(m,['payoutRatioTTM','payoutRatioAnnual']);
+  let quality=Math.round(avg([scoreRange(gross,65,20,false),scoreRange(op,28,3,false),scoreRange(net,22,0,false),scoreRange(roe,25,5,false),scoreRange(roa,12,1,false)].filter(isFinite))||50);
+  let strength=Math.round(avg([scoreRange(current,2.2,.7,false),scoreRange(debtEq,.2,2.2,true),scoreRange(net,18,0,false),scoreRange(roa,10,0,false)].filter(isFinite))||50);
+  let growth=Math.round(avg([scoreRange(rev,18,-5,false),scoreRange(eps,20,-10,false),h.ready?scoreRange(h.ret1y,25,-25,false):50,h.ready?scoreRange(h.ret6m,15,-15,false):50].filter(isFinite))||50);
+  const fairPE=clamp(12+(growth/100)*18+(quality/100)*10,12,38);const usePE=fpe||pe;let valuation=50;if(usePE&&usePE>0){valuation=scoreRange(usePE,fairPE*.65,fairPE*1.55,true)}else if(ps&&ps>0){valuation=scoreRange(ps,2,12,true)}else if(pfcf&&pfcf>0){valuation=scoreRange(pfcf,14,42,true)}if(settings().finderPriceBias==='strict')valuation=Math.max(0,valuation-8);if(settings().finderPriceBias==='growth'&&quality>=75&&growth>=75)valuation=Math.min(100,valuation+6);
+  let returns=Math.round(avg([scoreRange(div,3.5,0,false),scoreRange(payout,35,95,true),scoreRange(pfcf,16,42,true)].filter(isFinite))||50);
+  let trend=50;if(h.ready){trend=Math.round(avg([h.above50?75:35,h.above200?78:38,scoreRange(h.ret6m,18,-18,false),scoreRange(h.ret1y,28,-28,false),scoreRange(h.drawdown,-8,-45,false)].filter(isFinite)))}
+  quality=clamp(quality,0,100);strength=clamp(strength,0,100);growth=clamp(growth,0,100);valuation=clamp(Math.round(valuation),0,100);returns=clamp(returns,0,100);trend=clamp(trend,0,100);
+  let score=Math.round(quality*.25+strength*.20+growth*.15+valuation*.20+returns*.10+trend*.10);
+  let fairValue=0;if(price&&usePE&&usePE>0)fairValue=price*(fairPE/usePE);else if(price&&valuation>=70)fairValue=price*1.10;else if(price)fairValue=price*.92;
+  const fairLow=fairValue?fairValue*.85:0, fairHigh=fairValue?fairValue*1.05:0, buyLow=fairValue?fairValue*.72:0, buyHigh=fairValue?fairValue*.90:0;
+  let action='Watch', cls='wait';if(score>=85&&price&&buyHigh&&price<=buyHigh){action='Buy now';cls='buy'}else if(score>=75&&price&&fairHigh&&price<=fairHigh){action='Accumulate';cls='buy'}else if(score<65){action='Avoid';cls='avoid'}
+  const reasons=[];if(quality>=75)reasons.push('quality');if(strength>=70)reasons.push('balance sheet');if(growth>=70)reasons.push('growth');if(valuation>=70)reasons.push('valuation');if(trend>=70)reasons.push('trend');if(h.ready&&h.drawdown<-25)reasons.push('drawdown warning');if(!Object.keys(m||{}).length)reasons.push('metrics missing');if(!h.ready)reasons.push('history missing');
+  return {ticker:sym,name:sym,type:isEtf(sym)?'Core ETF':'Quality compounder',price,quality,strength,growth,valuation,returns,trend,score,fairLow,fairHigh,buyLow,buyHigh,action,cls,reasons:reasons.join(', ')||'mixed evidence',metrics:!!Object.keys(m||{}).length,history:h.ready,pe:usePE,fairPE,changePct:q&&isFinite(q.changePct)?q.changePct:null};
+}
+function isEtf(sym){return ['SPY','QQQ','IWM','DIA','VUSA','VUAG','EQQQ','VWRL','VWRP','VEVE','VHVG','SWDA','CSP1'].includes(String(sym).toUpperCase())}
+function finderRows(){return jget(LT.finder,[])}
+function saveFinderRows(rows){jset(LT.finder,rows)}
+function finderToStock(r){const s=settings();return {id:r.ticker,ticker:r.ticker,name:r.name||r.ticker,type:r.type||'Quality compounder',price:r.price||0,fairLow:r.fairLow||0,fairHigh:r.fairHigh||0,buyLow:r.buyLow||0,buyHigh:r.buyHigh||0,reviewDate:addDays(s.reviewDays),ownedGBP:0,costGBP:0,targetPct:isEtf(r.ticker)?10:5,maxPct:isEtf(r.ticker)?Math.min(35,s.defaultMaxEtf):s.defaultMaxStock,quality:r.quality,strength:r.strength,growth:r.growth,valuation:r.valuation,returns:r.returns,trend:r.trend,thesis:'Finder candidate. Score '+r.score+'. Evidence: '+r.reasons+'. Red flags to check manually: valuation source, debt, earnings trend, moat, dilution, sector risk.',updatedAt:new Date().toISOString()}}
+function addFinderRow(ticker,fillOnly){const r=finderRows().find(x=>x.ticker===ticker);if(!r)return;const x=finderToStock(r);if(fillOnly){fillForm(x);return}const list=stocks();const i=list.findIndex(a=>a.ticker===x.ticker);if(i>=0)list[i]={...list[i],...x};else list.push(x);saveStocks(list);render();safeToast('Finder idea added',x.ticker+' added to the Long Term Buyer board. Check the thesis before buying.','good')}
+async function runFinder(){const k=keys(), token=k.finnhubKey||($('finnhubKey')&&$('finnhubKey').value)||'';if(!token)return safeToast('Finnhub key needed','Add your Finnhub key in Data first. The finder uses quotes and metrics, not vibes.','warn');saveSettings();setCompact(false,true);const uni=mainUniverse().slice(0,90);if(!uni.length)return safeToast('Finder universe empty','Add tickers to the main watchlist or Finder universe.','warn');const min=+settings().finderMinScore||70, max=+settings().finderMaxResults||20;const out=[];if($('ltFinderStatus'))$('ltFinderStatus').textContent='Scanning '+uni.length+' long term candidates. This can take a moment because it checks quotes and metrics.';for(let i=0;i<uni.length;i++){const sym=uni[i];try{if($('ltFinderStatus'))$('ltFinderStatus').textContent='Scanning '+sym+' · '+(i+1)+' of '+uni.length;const q=await ltQuote(sym,token);const m=await ltMetrics(sym,token);const row=scoreFinder(sym,q,m);if(row.score>=min||row.action==='Buy now'||row.action==='Accumulate')out.push(row)}catch(e){out.push({ticker:sym,name:sym,score:0,quality:0,strength:0,growth:0,valuation:0,returns:0,trend:0,price:0,fairLow:0,fairHigh:0,buyLow:0,buyHigh:0,action:'Data issue',cls:'avoid',reasons:'quote or metric fetch failed',metrics:false,history:cachedHistory(sym).length>0})}await new Promise(r=>setTimeout(r,120))}
+  out.sort((a,b)=>(b.action==='Buy now')-(a.action==='Buy now')||b.score-a.score).splice(max);saveFinderRows(out);renderFinder();safeToast('Finder scan complete',out.length+' candidates passed the finder threshold.','good')}
+function renderFinder(){const rows=finderRows();if(!$('ltFinderBody'))return;if(!rows.length){$('ltFinderBody').innerHTML='<tr><td class="muted" colspan="15">Run the finder to rank long term candidates.</td></tr>';if($('ltFinderCards'))$('ltFinderCards').innerHTML='';return}if($('ltFinderStatus'))$('ltFinderStatus').textContent='Finder has '+rows.length+' ranked candidates. Add ideas to the board, then do the human thesis check before buying.';if($('ltFinderCards'))$('ltFinderCards').innerHTML=rows.slice(0,6).map(r=>'<div class="ltFinderCard '+esc(r.cls||'wait')+'"><div class="ltFinderTop"><b>'+esc(r.ticker)+'</b><span class="ltFinderScore">'+esc(r.score)+'</span></div><div class="tiny">'+esc(r.action)+' · '+(r.price?num(r.price,2):'n/a')+'</div><div class="ltFinderTags"><span class="ltFinderTag">Q '+esc(r.quality)+'</span><span class="ltFinderTag">V '+esc(r.valuation)+'</span><span class="ltFinderTag">T '+esc(r.trend)+'</span></div><div class="tiny" style="margin-top:7px">'+esc(r.reasons)+'</div></div>').join('');
+  $('ltFinderBody').innerHTML=rows.map(r=>{const fair=(r.fairLow||r.fairHigh)?num(r.fairLow,2)+' to '+num(r.fairHigh,2):'n/a';const zone=(r.buyLow||r.buyHigh)?num(r.buyLow,2)+' to '+num(r.buyHigh,2):'n/a';const data=(r.metrics?'Metrics':'No metrics')+' · '+(r.history?'History':'No history');return '<tr><td><span class="ltStatus '+esc(r.cls||'wait')+'">'+esc(r.action)+'</span></td><td><b>'+esc(r.ticker)+'</b></td><td><b>'+esc(r.score)+'</b></td><td>'+esc(r.quality)+'</td><td>'+esc(r.strength)+'</td><td>'+esc(r.growth)+'</td><td>'+esc(r.valuation)+'</td><td>'+esc(r.returns)+'</td><td>'+esc(r.trend)+'</td><td>'+((r.price)?num(r.price,2):'n/a')+'</td><td>'+esc(fair)+'</td><td>'+esc(zone)+'</td><td class="tiny">'+esc(data)+'</td><td><div class="ltFinderNote">'+esc(r.reasons)+'</div></td><td><div class="actions"><button class="good" data-ltf-add="'+esc(r.ticker)+'">Add</button><button class="secondary" data-ltf-fill="'+esc(r.ticker)+'">Fill form</button></div></td></tr>'}).join('');
+  document.querySelectorAll('[data-ltf-add]').forEach(b=>b.onclick=()=>addFinderRow(b.dataset.ltfAdd,false));document.querySelectorAll('[data-ltf-fill]').forEach(b=>b.onclick=()=>addFinderRow(b.dataset.ltfFill,true));}
+function addTopFinderBuys(){const rows=finderRows().filter(r=>r.action==='Buy now'||r.action==='Accumulate').slice(0,8);if(!rows.length)return safeToast('No buy list yet','Run the finder, then only add candidates marked Buy now or Accumulate.','warn');rows.forEach(r=>addFinderRow(r.ticker,false));safeToast('Top finder ideas added',rows.length+' long term candidates added to the board.','good')}
+function exportFinderCSV(){const rows=finderRows();const header=['Ticker','Action','Score','Quality','Strength','Growth','Valuation','Returns','Trend','Price','FairLow','FairHigh','BuyLow','BuyHigh','Data','Reasons'];const body=rows.map(r=>[r.ticker,r.action,r.score,r.quality,r.strength,r.growth,r.valuation,r.returns,r.trend,r.price,r.fairLow,r.fairHigh,r.buyLow,r.buyHigh,(r.metrics?'metrics ':'')+(r.history?'history':''),r.reasons].map(csv).join(','));download('long_term_finder_v70_3.csv',[header.join(','),...body].join('\n'),'text/csv')}
+
 function renderOverview(list,total){
   const best=list.map(x=>({x,a:analyse(x,total)})).filter(o=>o.a.suggested>0&&(o.a.status==='Buy now'||o.a.status==='Accumulate')).sort((a,b)=>statusRank(a.a.status)-statusRank(b.a.status)||b.a.score-a.a.score)[0];
   const due=list.filter(reviewDue).length;
@@ -2456,7 +2546,7 @@ function updateCompactSummary(list,total){
 function render(){
   if(!$('longTermSection'))return;
   const list=stocks(), total=totals(list);
-  renderOverview(list,total);renderTable(list,total);renderJournal();updateCompactSummary(list,total);setCompact(compactEnabled(),false);
+  renderOverview(list,total);renderTable(list,total);renderJournal();renderFinder();updateCompactSummary(list,total);setCompact(compactEnabled(),false);
 }
 function bind(){
   if(!$('longTermSection'))return;
@@ -2475,7 +2565,10 @@ function bind(){
   if($('ltCompactSummary'))$('ltCompactSummary').onclick=e=>{if(e.target&&e.target.id==='ltOpenCompact')return;setCompact(false,true)};
   if($('ltSortAction'))$('ltSortAction').onclick=()=>{localStorage.setItem(LT.sort,'action');render()};
   if($('ltSortScore'))$('ltSortScore').onclick=()=>{localStorage.setItem(LT.sort,'score');render()};
-  ['ltCash','ltStagePct','ltMinBuyScore','ltStrongBuyScore','ltDefaultMaxStock','ltDefaultMaxEtf','ltReviewDays','ltCurrency'].forEach(id=>{if($(id))$(id).addEventListener('change',()=>{saveSettings();render()})});
+  if($('ltRunFinder'))$('ltRunFinder').onclick=runFinder;
+  if($('ltAddFinderBuys'))$('ltAddFinderBuys').onclick=addTopFinderBuys;
+  if($('ltExportFinderCSV'))$('ltExportFinderCSV').onclick=exportFinderCSV;
+  ['ltCash','ltStagePct','ltMinBuyScore','ltStrongBuyScore','ltDefaultMaxStock','ltDefaultMaxEtf','ltReviewDays','ltCurrency','ltFinderUniverse','ltFinderMinScore','ltFinderMaxResults','ltFinderPriceBias'].forEach(id=>{if($(id))$(id).addEventListener('change',()=>{saveSettings();render()})});
   render();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
