@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v108, Full Detail Restored</title>
+<title>Trading 212 Manual God Mode v109, Trade Frequency Engine</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -697,7 +697,7 @@
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v108, Full Detail Restored</h1>
+<h1>Trading 212 Manual God Mode v109, Trade Frequency Engine</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -709,7 +709,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v108</span>
+<span class="mobileTitleText">Manual God Mode v109</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -787,8 +787,8 @@
 <div class="setupBody">
 <label>Minimum buyable signal</label><select id="minBuySignal"><option value="APEX">APEX only</option><option selected="" value="A_PLUS">A+ or better</option><option value="BUY">BUY or better</option></select>
 <label>Entry sensitivity</label><select id="entrySensitivity"><option value="early">Sniper early</option><option value="balanced">Balanced</option><option selected="" value="strict">Strict</option></select>
-<label>Opportunity mode</label><select id="opportunityMode"><option selected="" value="balanced">Balanced edge</option><option value="growth">Growth</option><option value="max">Max opportunity</option></select><p class="tiny">Signal strictness only. Position size stays controlled by Risk settings.</p>
-<div class="row"><div><label>Scan breadth</label><select id="scanBreadth"><option value="14">Sniper, 14 live quotes</option><option selected="" value="24">Balanced, 24 live quotes</option><option value="36">Wide, 36 live quotes</option><option value="50">Maximum, 50 live quotes</option></select></div><div><label>Rotation style</label><select id="scanRotation"><option selected="" value="yes">Rotate wider watchlist</option><option value="no">Top ranked only</option></select></div></div><p class="tiny">v108 broadens the short-term scanner without going back to the old 75 quote firehose. More breadth means more candidates, but Action still needs confirmation.</p>
+<label>Opportunity mode</label><select id="opportunityMode"><option selected="" value="balanced">Balanced edge</option><option value="growth">Growth</option><option value="max">Max opportunity</option></select><label>Trade frequency</label><select id="tradeFrequency"><option value="quality">Quality only, fewer buys</option><option selected="" value="balanced">Balanced</option><option value="active">Active, more confirmed trades</option><option value="micro">Micro test mode, tiny scout buys</option></select><p class="tiny">v109 frequency changes how quickly the app moves from scanner to manual ticket. Micro mode caps size and labels the row clearly, it does not remove stops or cash controls.</p>
+<div class="row"><div><label>Scan breadth</label><select id="scanBreadth"><option value="14">Sniper, 14 live quotes</option><option selected="" value="24">Balanced, 24 live quotes</option><option value="36">Wide, 36 live quotes</option><option value="50">Maximum, 50 live quotes</option></select></div><div><label>Rotation style</label><select id="scanRotation"><option selected="" value="yes">Rotate wider watchlist</option><option value="no">Top ranked only</option></select></div></div><p class="tiny">v109 adds Trade Frequency control. More trades still require live movement, no hard vetoes and tiny controlled sizing, not random button-mashing.</p>
 <div class="row"><div><label>No chase, %</label><input id="noChasePct" max="3" min="0.1" step="0.05" type="number" value="0.35"/></div><div><label>Buy zone, %</label><input id="buyZonePct" max="2" min="0.1" step="0.05" type="number" value="0.30"/></div></div>
 <div class="row"><div><label>Min confidence, %</label><input id="minWinProb" max="80" min="45" step="1" type="number" value="70"/></div><div><label>Min expected R</label><input id="minExpectedR" max="1" min="-0.5" step="0.01" type="number" value="0.65"/></div></div>
 <div class="row"><div><label>Min BT trades</label><input id="minBtTrades" max="30" min="0" step="1" type="number" value="5"/></div><div><label>Min BT win, %</label><input id="minBtWin" max="80" min="40" step="1" type="number" value="52"/></div></div>
@@ -1153,8 +1153,8 @@ async function enableTradeAlerts(){localStorage.setItem(TRADE_ALERTS_KEY,'on');u
 function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function beep(freq=650,dur=0.09){const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const ctx=new A();const o=ctx.createOscillator();const g=ctx.createGain();o.frequency.value=freq;o.type='sine';g.gain.value=.035;o.connect(g);g.connect(ctx.destination);o.start();setTimeout(()=>{o.stop();ctx.close()},dur*1000)}
 function pctSetting(id,def){let v=+$(id).value;if(!isFinite(v)||v<=0)return def;if(v>0&&v<0.1)return v*100;if((id==='maxAllocPct'||id==='maxExposurePct')&&v>0&&v<=1)return v*100;if((id==='dailyLossPct'||id==='dailyTargetPct'||id==='dailyStretchPct')&&v>10)return def;return v}
-function settings(){return {t212AccountType:$('t212AccountType')?$('t212AccountType').value:'ISA',executionMode:$('executionMode')?$('executionMode').value:'MANUAL',finnhubKey:$('finnhubKey').value.trim(),massiveKey:$('massiveKey')?$('massiveKey').value.trim():'',fmpKey:$('fmpKey')?$('fmpKey').value.trim():'',avKey:$('avKey').value.trim(),historyProvider:$('historyProvider')?$('historyProvider').value:'massive',pollSeconds:+$('pollSeconds').value||10,useWebSocket:$('useWebSocket').value,pot:+$('pot').value||100,cash:+$('cash').value||0,cashMode:($('cashMode')?$('cashMode').value:'auto'),riskPct:pctSetting('riskPct',2),maxAllocPct:pctSetting('maxAllocPct',70),minOrderGBP:+(($('minOrderGBP')&&$('minOrderGBP').value)||5),microSizing:($('microSizing')?$('microSizing').value:'auto'),gbpUsd:+$('gbpUsd').value||1.27,fxFeePct:+$('fxFeePct').value||0.1,targetR:+$('targetR').value||1.45,maxOpenPositions:+$('maxOpenPositions').value||2,dailyLossPct:pctSetting('dailyLossPct',1),dailyTargetPct:pctSetting('dailyTargetPct',1),dailyStretchPct:pctSetting('dailyStretchPct',2),lockAfterTarget:($('lockAfterTarget')?$('lockAfterTarget').value:'lock'),maxExposurePct:pctSetting('maxExposurePct',90),avBudget:+$('avBudget').value||120,maxPrimeSymbols:+$('maxPrimeSymbols').value||10,historyDelay:+$('historyDelay').value||8,cacheDays:+$('cacheDays').value||3,autoPrimeDaily:$('autoPrimeDaily')?$('autoPrimeDaily').checked:true,checkEarnings:$('checkEarnings').checked,premarketWatchOnly:$('premarketWatchOnly')?$('premarketWatchOnly').checked:true,buyConfirmSeconds:+($('buyConfirmSeconds')&&$('buyConfirmSeconds').value)||30,confirmAlertHoldSeconds:+($('confirmAlertHoldSeconds')&&$('confirmAlertHoldSeconds').value)||120,min5DriftPct:+(($('min5DriftPct')&&$('min5DriftPct').value)||0.08),min15DriftPct:+(($('min15DriftPct')&&$('min15DriftPct').value)||0.15),blockFlatSetups:($('blockFlatSetups')?$('blockFlatSetups').checked:true),minIgnitionScore:+(($('minIgnitionScore')&&$('minIgnitionScore').value)||8),scalpProfitTargetPct:+(($('scalpProfitTargetPct')&&$('scalpProfitTargetPct').value)||0.85),scalpProtectPct:+(($('scalpProtectPct')&&$('scalpProtectPct').value)||0.35),scalpKillMinutes:+(($('scalpKillMinutes')&&$('scalpKillMinutes').value)||7),scalpMaxMinutes:+(($('scalpMaxMinutes')&&$('scalpMaxMinutes').value)||12),learnTargetPct10:+(($('learnTargetPct10')&&$('learnTargetPct10').value)||1.0),minBuySignal:$('minBuySignal').value,entrySensitivity:$('entrySensitivity').value,opportunityMode:$('opportunityMode').value,scanBreadth:+(($('scanBreadth')&&$('scanBreadth').value)||24),scanRotation:($('scanRotation')?$('scanRotation').value:'yes'),noChasePct:+$('noChasePct').value||0.55,buyZonePct:+$('buyZonePct').value||0.45,minWinProb:+$('minWinProb').value||56,minExpectedR:+$('minExpectedR').value||0.14,minBtTrades:+$('minBtTrades').value||5,minBtWin:+$('minBtWin').value||55,btMode:$('btMode')?$('btMode').value:'advisory',rsiLow:+$('rsiLow').value||45,rsiHigh:+$('rsiHigh').value||68,atrLow:+$('atrLow').value||0.8,atrHigh:+$('atrHigh').value||6.5}}
-function saveSettings(){const s=settings();saveJSON(LS.settings,{t212AccountType:s.t212AccountType,executionMode:s.executionMode,pollSeconds:s.pollSeconds,useWebSocket:s.useWebSocket,pot:s.pot,cash:s.cash,cashMode:s.cashMode,riskPct:s.riskPct,maxAllocPct:s.maxAllocPct,minOrderGBP:s.minOrderGBP,microSizing:s.microSizing,gbpUsd:s.gbpUsd,fxFeePct:s.fxFeePct,targetR:s.targetR,maxOpenPositions:s.maxOpenPositions,dailyLossPct:s.dailyLossPct,dailyTargetPct:s.dailyTargetPct,dailyStretchPct:s.dailyStretchPct,lockAfterTarget:s.lockAfterTarget,maxExposurePct:s.maxExposurePct,historyProvider:s.historyProvider,avBudget:s.avBudget,maxPrimeSymbols:s.maxPrimeSymbols,historyDelay:s.historyDelay,cacheDays:s.cacheDays,autoPrimeDaily:s.autoPrimeDaily,checkEarnings:s.checkEarnings,premarketWatchOnly:s.premarketWatchOnly,buyConfirmSeconds:s.buyConfirmSeconds,confirmAlertHoldSeconds:s.confirmAlertHoldSeconds,min5DriftPct:s.min5DriftPct,min15DriftPct:s.min15DriftPct,blockFlatSetups:s.blockFlatSetups,minIgnitionScore:s.minIgnitionScore,scalpProfitTargetPct:s.scalpProfitTargetPct,scalpProtectPct:s.scalpProtectPct,scalpKillMinutes:s.scalpKillMinutes,scalpMaxMinutes:s.scalpMaxMinutes,learnTargetPct10:s.learnTargetPct10,minBuySignal:s.minBuySignal,entrySensitivity:s.entrySensitivity,opportunityMode:s.opportunityMode,scanBreadth:s.scanBreadth,scanRotation:s.scanRotation,noChasePct:s.noChasePct,buyZonePct:s.buyZonePct,minWinProb:s.minWinProb,minExpectedR:s.minExpectedR,minBtTrades:s.minBtTrades,minBtWin:s.minBtWin,btMode:s.btMode,rsiLow:s.rsiLow,rsiHigh:s.rsiHigh,atrLow:s.atrLow,atrHigh:s.atrHigh,marketSymbols:$('marketSymbols').value})}
+function settings(){return {t212AccountType:$('t212AccountType')?$('t212AccountType').value:'ISA',executionMode:$('executionMode')?$('executionMode').value:'MANUAL',finnhubKey:$('finnhubKey').value.trim(),massiveKey:$('massiveKey')?$('massiveKey').value.trim():'',fmpKey:$('fmpKey')?$('fmpKey').value.trim():'',avKey:$('avKey').value.trim(),historyProvider:$('historyProvider')?$('historyProvider').value:'massive',pollSeconds:+$('pollSeconds').value||10,useWebSocket:$('useWebSocket').value,pot:+$('pot').value||100,cash:+$('cash').value||0,cashMode:($('cashMode')?$('cashMode').value:'auto'),riskPct:pctSetting('riskPct',2),maxAllocPct:pctSetting('maxAllocPct',70),minOrderGBP:+(($('minOrderGBP')&&$('minOrderGBP').value)||5),microSizing:($('microSizing')?$('microSizing').value:'auto'),gbpUsd:+$('gbpUsd').value||1.27,fxFeePct:+$('fxFeePct').value||0.1,targetR:+$('targetR').value||1.45,maxOpenPositions:+$('maxOpenPositions').value||2,dailyLossPct:pctSetting('dailyLossPct',1),dailyTargetPct:pctSetting('dailyTargetPct',1),dailyStretchPct:pctSetting('dailyStretchPct',2),lockAfterTarget:($('lockAfterTarget')?$('lockAfterTarget').value:'lock'),maxExposurePct:pctSetting('maxExposurePct',90),avBudget:+$('avBudget').value||120,maxPrimeSymbols:+$('maxPrimeSymbols').value||10,historyDelay:+$('historyDelay').value||8,cacheDays:+$('cacheDays').value||3,autoPrimeDaily:$('autoPrimeDaily')?$('autoPrimeDaily').checked:true,checkEarnings:$('checkEarnings').checked,premarketWatchOnly:$('premarketWatchOnly')?$('premarketWatchOnly').checked:true,buyConfirmSeconds:+($('buyConfirmSeconds')&&$('buyConfirmSeconds').value)||30,confirmAlertHoldSeconds:+($('confirmAlertHoldSeconds')&&$('confirmAlertHoldSeconds').value)||120,min5DriftPct:+(($('min5DriftPct')&&$('min5DriftPct').value)||0.08),min15DriftPct:+(($('min15DriftPct')&&$('min15DriftPct').value)||0.15),blockFlatSetups:($('blockFlatSetups')?$('blockFlatSetups').checked:true),minIgnitionScore:+(($('minIgnitionScore')&&$('minIgnitionScore').value)||8),scalpProfitTargetPct:+(($('scalpProfitTargetPct')&&$('scalpProfitTargetPct').value)||0.85),scalpProtectPct:+(($('scalpProtectPct')&&$('scalpProtectPct').value)||0.35),scalpKillMinutes:+(($('scalpKillMinutes')&&$('scalpKillMinutes').value)||7),scalpMaxMinutes:+(($('scalpMaxMinutes')&&$('scalpMaxMinutes').value)||12),learnTargetPct10:+(($('learnTargetPct10')&&$('learnTargetPct10').value)||1.0),minBuySignal:$('minBuySignal').value,entrySensitivity:$('entrySensitivity').value,opportunityMode:$('opportunityMode').value,tradeFrequency:($('tradeFrequency')?$('tradeFrequency').value:'balanced'),scanBreadth:+(($('scanBreadth')&&$('scanBreadth').value)||24),scanRotation:($('scanRotation')?$('scanRotation').value:'yes'),noChasePct:+$('noChasePct').value||0.55,buyZonePct:+$('buyZonePct').value||0.45,minWinProb:+$('minWinProb').value||56,minExpectedR:+$('minExpectedR').value||0.14,minBtTrades:+$('minBtTrades').value||5,minBtWin:+$('minBtWin').value||55,btMode:$('btMode')?$('btMode').value:'advisory',rsiLow:+$('rsiLow').value||45,rsiHigh:+$('rsiHigh').value||68,atrLow:+$('atrLow').value||0.8,atrHigh:+$('atrHigh').value||6.5}}
+function saveSettings(){const s=settings();saveJSON(LS.settings,{t212AccountType:s.t212AccountType,executionMode:s.executionMode,pollSeconds:s.pollSeconds,useWebSocket:s.useWebSocket,pot:s.pot,cash:s.cash,cashMode:s.cashMode,riskPct:s.riskPct,maxAllocPct:s.maxAllocPct,minOrderGBP:s.minOrderGBP,microSizing:s.microSizing,gbpUsd:s.gbpUsd,fxFeePct:s.fxFeePct,targetR:s.targetR,maxOpenPositions:s.maxOpenPositions,dailyLossPct:s.dailyLossPct,dailyTargetPct:s.dailyTargetPct,dailyStretchPct:s.dailyStretchPct,lockAfterTarget:s.lockAfterTarget,maxExposurePct:s.maxExposurePct,historyProvider:s.historyProvider,avBudget:s.avBudget,maxPrimeSymbols:s.maxPrimeSymbols,historyDelay:s.historyDelay,cacheDays:s.cacheDays,autoPrimeDaily:s.autoPrimeDaily,checkEarnings:s.checkEarnings,premarketWatchOnly:s.premarketWatchOnly,buyConfirmSeconds:s.buyConfirmSeconds,confirmAlertHoldSeconds:s.confirmAlertHoldSeconds,min5DriftPct:s.min5DriftPct,min15DriftPct:s.min15DriftPct,blockFlatSetups:s.blockFlatSetups,minIgnitionScore:s.minIgnitionScore,scalpProfitTargetPct:s.scalpProfitTargetPct,scalpProtectPct:s.scalpProtectPct,scalpKillMinutes:s.scalpKillMinutes,scalpMaxMinutes:s.scalpMaxMinutes,learnTargetPct10:s.learnTargetPct10,minBuySignal:s.minBuySignal,entrySensitivity:s.entrySensitivity,opportunityMode:s.opportunityMode,tradeFrequency:s.tradeFrequency,scanBreadth:s.scanBreadth,scanRotation:s.scanRotation,noChasePct:s.noChasePct,buyZonePct:s.buyZonePct,minWinProb:s.minWinProb,minExpectedR:s.minExpectedR,minBtTrades:s.minBtTrades,minBtWin:s.minBtWin,btMode:s.btMode,rsiLow:s.rsiLow,rsiHigh:s.rsiHigh,atrLow:s.atrLow,atrHigh:s.atrHigh,marketSymbols:$('marketSymbols').value})}
 function loadSettings(){const k=loadJSON(LS.keys,{});$('finnhubKey').value=k.finnhubKey||'';if($('massiveKey'))$('massiveKey').value=k.massiveKey||'';if($('fmpKey'))$('fmpKey').value=k.fmpKey||'';$('avKey').value=k.avKey||'';const s=loadJSON(LS.settings,{});Object.entries(s).forEach(([key,val])=>{if($(key)){if($(key).type==='checkbox')$(key).checked=!!val;else $(key).value=val}});if($('btMode')&&!s.btMode)$('btMode').value='advisory';const v43DefaultKey='t212gm42_behaviour_learning_defaults';if(!localStorage.getItem(v43DefaultKey)){if($('btMode'))$('btMode').value='advisory';if($('minBuySignal'))$('minBuySignal').value='A_PLUS';localStorage.setItem(v43DefaultKey,'yes')}const v63DefaultKey='t212gm63_cash_filter_defaults';if(!localStorage.getItem(v63DefaultKey)){if($('minBuySignal'))$('minBuySignal').value='A_PLUS';if($('entrySensitivity'))$('entrySensitivity').value='strict';if($('opportunityMode'))$('opportunityMode').value='balanced';if($('noChasePct'))$('noChasePct').value='0.35';if($('buyZonePct'))$('buyZonePct').value='0.30';if($('minWinProb'))$('minWinProb').value='70';if($('minExpectedR'))$('minExpectedR').value='0.65';if($('minBtTrades'))$('minBtTrades').value='5';if($('minBtWin'))$('minBtWin').value='52';if($('btMode'))$('btMode').value='advisory';if($('rsiLow'))$('rsiLow').value='42';if($('rsiHigh'))$('rsiHigh').value='72';if($('atrLow'))$('atrLow').value='0.8';if($('atrHigh'))$('atrHigh').value='4.5';if($('buyConfirmSeconds'))$('buyConfirmSeconds').value='45';if($('confirmAlertHoldSeconds'))$('confirmAlertHoldSeconds').value='180';if($('min5DriftPct'))$('min5DriftPct').value='0.08';if($('min15DriftPct'))$('min15DriftPct').value='0.15';if($('blockFlatSetups'))$('blockFlatSetups').checked=true;if($('cashMode'))$('cashMode').value='auto';localStorage.setItem(v63DefaultKey,'yes');}
 const v65FixKey='t212gm64_cash_daily_fix';
 if(!localStorage.getItem(v65FixKey)){
@@ -1522,6 +1522,58 @@ function confirmationStableKey(r,s){
     s.btMode||'advisory'
   ].join('|');
 }
+
+function opportunityTestMode(s){return (s&&s.tradeFrequency)||'balanced'}
+function isMicroTestRow(r,s){
+  if(!r||!r.quote||r.error||isOwnedSymbol(r.symbol))return false;
+  s=s||activeSettings();
+  const mode=opportunityTestMode(s);
+  if(mode!=='micro'&&mode!=='active')return false;
+  const sess=usSessionState();
+  if(!sess.regular)return false;
+  if(hasHardTradeBlock(r))return false;
+  if((r.buyTrigger||'').match(/CHASE|WATCH ONLY|RED LOCK|TARGET LOCK|NO CASH|NO ROOM|EXPOSURE|ORDER TOO SMALL/i))return false;
+  const mover=freshMoverScore(r);
+  const ign=scalpIgnitionScore(r).score;
+  const day=isFinite(r.quote.changePct)?r.quote.changePct:0;
+  const priceOk=day>=0.10 && r.quote.open && r.quote.price>=r.quote.open;
+  const activeOk=mode==='active' && r.score>=70 && ign>=6 && mover.score>=4;
+  const microOk=mode==='micro' && r.score>=58 && ign>=5 && mover.score>=3;
+  return !!(priceOk&&(activeOk||microOk));
+}
+function capMicroTradeSize(r,s){
+  if(!r||!r.quote)return;
+  s=s||activeSettings();
+  const mode=opportunityTestMode(s);
+  if(mode!=='micro'&&mode!=='active')return;
+  const available=(portfolioState(s).cashAvailable||s.cash||0);
+  const cap=mode==='micro'?Math.min(5,Math.max(2,available*0.35)):Math.min(8,Math.max(3,available*0.45));
+  if(!isFinite(cap)||cap<=0)return;
+  const feeMult=1+(+s.fxFeePct||0)/100;
+  const capped=Math.max(Math.min(+r.valueGBP||cap,cap),Math.min(cap,+s.minOrderGBP||2));
+  const qty=t212Qty((capped*s.gbpUsd)/(r.quote.price*feeMult));
+  if(qty>0){r.qty=qty;r.valueGBP=qty*r.quote.price/s.gbpUsd*feeMult;r.riskGBP=Math.max(0,(r.quote.price-(r.stop||r.quote.price))*qty/s.gbpUsd);r.sizingNote=(r.sizingNote? r.sizingNote+' ':'')+'v109 '+(mode==='micro'?'micro':'active')+' frequency capped this to a tiny controlled size.';}
+}
+function applyOpportunityTestActions(rows,market){
+  const s=activeSettings();
+  const mode=opportunityTestMode(s);
+  if(mode!=='micro'&&mode!=='active')return;
+  (rows||[]).forEach(r=>{
+    if(isConfirmedBuy(r,s))return;
+    if(isMicroTestRow(r,s)){
+      capMicroTradeSize(r,s);
+      r.signal = r.signal==='WAIT' ? 'BUY' : r.signal;
+      r.buyTrigger='MICRO TEST';
+      r.actionNow='MICRO BUY';
+      r.confirmedBuyZone=true;
+      r.confirmingBuyZone=false;
+      r.buyNote='v109 '+(mode==='micro'?'micro test':'active test')+' candidate. Tiny size only, live price must still be strong, stop required, log behaviour honestly.';
+      r.reasons=r.reasons||[];
+      r.reasons.push('v109 controlled frequency allowed tiny test trade');
+    }
+  });
+}
+
 function applyBuyConfirmation(rows,market){
   const s=activeSettings(), sess=usSessionState(), now=Date.now();
   const need=Math.max(5, +s.buyConfirmSeconds || 30);
@@ -1596,7 +1648,7 @@ function applyBuyConfirmation(rows,market){
   Object.keys(state.buyConfirmations||{}).forEach(sym=>{if(!seen[sym])delete state.buyConfirmations[sym]});
 }
 
-function isConfirmedBuy(r,s){return !!(r&&r.quote&&!r.error&&isSignalBuyable(r.signal,s)&&r.buyTrigger==='BUY ZONE'&&r.confirmedBuyZone)}
+function isConfirmedBuy(r,s){return !!(r&&r.quote&&!r.error&&((isSignalBuyable(r.signal,s)&&r.buyTrigger==='BUY ZONE'&&r.confirmedBuyZone)||(r.buyTrigger==='MICRO TEST'&&r.confirmedBuyZone&&isMicroTestRow(r,s))))}
 function isArmedLike(r){return !!(r&&r.quote&&!r.error&&(r.buyTrigger==='ARMED'||r.buyTrigger==='CHASE BLOCKED'||r.buyTrigger==='CONFIRMING'||r.buyTrigger==='WATCH ONLY'||r.buyTrigger==='IGNITION WAIT'||r.signal==='WATCH'))}
 function ownedPositionFor(sym){sym=String(sym||'').toUpperCase();return (state.positions||[]).find(p=>String(p.symbol||'').toUpperCase()===sym)||null}
 function isOwnedSymbol(sym){return !!ownedPositionFor(sym)}
@@ -1800,6 +1852,7 @@ async function scan(){
     let rows=buildScannerRowsFromQuotes(syms,market,earnings);
     rows.forEach(r=>{if(r&&r.quote&&r.quote.stale){r.veto=r.veto||[];r.veto.push('history-only quote, no live trade');r.signal='WAIT';r.score=Math.min(r.score||0,55)}});
     applyBuyConfirmation(rows,market);
+    applyOpportunityTestActions(rows,market);
     rows=rows.sort((a,b)=>(b.score||0)-(a.score||0));
     state.lastRows=rows;state.scanDiag.rows=rows.length;
     captureLearning(rows,market);renderResults(rows);renderRuleBoard(rows,market);renderPositions(rows);
@@ -1844,6 +1897,37 @@ function activeSettings(){
     s.scalpKillMinutes=Math.max(3,Math.min(15,+s.scalpKillMinutes||7));
     s.scalpMaxMinutes=Math.max(s.scalpKillMinutes+1,Math.min(30,+s.scalpMaxMinutes||12));
     s.learnTargetPct10=Math.max(0.3,Math.min(2.0,+s.learnTargetPct10||1.0));
+  }
+  if((s.tradeFrequency||'balanced')==='active'){
+    s.minBuySignal='BUY';
+    s.entrySensitivity='early';
+    s.opportunityMode='max';
+    s.minWinProb=Math.min(+s.minWinProb||70,54);
+    s.minExpectedR=Math.min(+s.minExpectedR||0.65,0.05);
+    s.buyConfirmSeconds=Math.min(+s.buyConfirmSeconds||30,8);
+    s.confirmAlertHoldSeconds=Math.min(+s.confirmAlertHoldSeconds||120,60);
+    s.min5DriftPct=Math.min(+s.min5DriftPct||0.08,0.04);
+    s.min15DriftPct=Math.min(+s.min15DriftPct||0.15,0.08);
+    s.minIgnitionScore=Math.min(+s.minIgnitionScore||8,6);
+    s.noChasePct=Math.max(+s.noChasePct||0.35,0.35);
+    s.buyZonePct=Math.max(+s.buyZonePct||0.30,0.30);
+    s.btMode='advisory';
+  }
+  if((s.tradeFrequency||'balanced')==='micro'){
+    s.minBuySignal='BUY';
+    s.entrySensitivity='early';
+    s.opportunityMode='max';
+    s.minWinProb=Math.min(+s.minWinProb||70,50);
+    s.minExpectedR=Math.min(+s.minExpectedR||0.65,0.00);
+    s.buyConfirmSeconds=Math.min(+s.buyConfirmSeconds||30,5);
+    s.confirmAlertHoldSeconds=Math.min(+s.confirmAlertHoldSeconds||120,45);
+    s.min5DriftPct=Math.min(+s.min5DriftPct||0.08,0.02);
+    s.min15DriftPct=Math.min(+s.min15DriftPct||0.15,0.04);
+    s.minIgnitionScore=Math.min(+s.minIgnitionScore||8,5);
+    s.noChasePct=Math.max(+s.noChasePct||0.35,0.45);
+    s.buyZonePct=Math.max(+s.buyZonePct||0.30,0.40);
+    s.btMode='advisory';
+    s.maxOpenPositions=Math.max(+s.maxOpenPositions||2,2);
   }
   if(state.unstickMode){
     s.minBuySignal='BUY';
@@ -1930,7 +2014,7 @@ function scannerCounts(rows){const s=activeSettings();const c={action:0,confirmi
 function renderScannerControls(rows){const tabs=$('scannerTabs'),sum=$('scannerSummary'),toggle=$('scannerShowToggle');if(!tabs||!sum)return;const c=scannerCounts(rows||[]);const labels={action:'Action',confirming:'Confirming',armed:'Armed',scout:'Scout',paper:'Paper',blocked:'Blocked',all:'All'};tabs.querySelectorAll('[data-scanner-filter]').forEach(btn=>{const f=btn.dataset.scannerFilter;const count=f==='action'?c.action:(c[f]??0);btn.className='scannerTab '+(state.scannerFilter===f?'active':'');btn.innerHTML=escapeHTML(labels[f]||f)+' <span class="scannerCount">'+count+'</span>'});const filtered=scannerFilteredRows(rows||[]);const visible=scannerVisibleRows(rows||[]);const ownedNote=c.owned?(' '+c.owned+' owned hidden from action views, visible in All.'):'';sum.textContent=(labels[state.scannerFilter]||state.scannerFilter)+' view, showing '+visible.length+' of '+filtered.length+' row(s). '+(state.scannerShowAll?'Full list visible.':'Top 5 visible.')+ownedNote;if(toggle)toggle.textContent=state.scannerShowAll?'Top 5 only':'Show all'}
 function scannerCardClass(r){const s=activeSettings();const b=scannerBucket(r,s);return b==='buy'?'buy':b==='confirming'?'confirming':b==='armed'?'armed':b==='scout'?'armed':b==='paper'?'blocked':b==='blocked'?'blocked':b==='owned'?'owned':''}
 function scannerStatusText(r){if(!r||r.error)return 'Data issue';if(isOwnedSymbol(r.symbol))return 'OWNED';if(isConfirmedBuy(r,settings()))return 'BUY ZONE';return r.buyTrigger||r.signal||'WAIT'}
-function compactWhy(r){if(r&&isOwnedSymbol(r.symbol))return manageOwnedText(ownedPositionFor(r.symbol));return whyNotGreenText(r).replace(/\s+/g,' ').trim()}
+function compactWhy(r){if(r&&isOwnedSymbol(r.symbol))return manageOwnedText(ownedPositionFor(r.symbol));if(r&&r.buyTrigger==='MICRO TEST')return 'Controlled micro test only: live mover, tiny capped size, manual execution, stop required. This is for more trade volume without full-size risk.';return whyNotGreenText(r).replace(/\s+/g,' ').trim()}
 function renderOwnedScannerCard(r,p){const s=settings();const ev=evaluatePosition(p);const advice=positionManagementAdvice(p,ev);const pl=(p.last-p.entry)*p.qty/s.gbpUsd;const rNow=ev.gainR;const badgeCls=ev.signal==='SELL'?'bad':(pl>=0?'good':'warn');return '<div class="scannerCard owned"><div class="scannerHead"><div><div class="scannerSymbol">'+escapeHTML(r.symbol)+'</div><div class="tiny">Already tracked · manage in Open positions</div></div><span class="badge '+badgeCls+'">OWNED '+escapeHTML(ev.signal)+'</span></div><div class="scannerMeta"><div class="scannerMini"><span>Last</span><b>$'+n(p.last,2)+'</b></div><div class="scannerMini"><span>P/L</span><b class="'+(pl>=0?'goodText':'badText')+'">'+moneyGBP(pl)+'</b></div><div class="scannerMini"><span>R</span><b class="'+(rNow>=0?'goodText':'badText')+'">'+n(rNow,2)+'R</b></div></div><div class="scannerPrimaryLine"><b>Manage position:</b> '+escapeHTML(advice)+' <span class="tiny">Reason: '+escapeHTML(ev.reason)+'.</span></div><div class="scannerMeta"><div class="scannerMini"><span>Entry</span><b>$'+n(p.entry,2)+'</b></div><div class="scannerMini"><span>Stop</span><b>$'+n(p.stop,2)+'</b></div><div class="scannerMini"><span>Qty</span><b>'+qtyText(p.qty)+'</b></div></div><div class="actions"><button class="secondary" data-copy-qty="'+qtyText(p.qty)+'">Copy qty</button><button class="secondary" data-breakeven="'+p.id+'">B/E stop</button><button class="secondary" data-stop="'+p.id+'">Stop</button><button class="bad" data-close="'+p.id+'">Sold, close here</button></div><details><summary>More position detail</summary><div class="scannerDetail">'+levelMapForPosition(p,ev)+'<div class="tiny" style="margin-top:8px">This scanner row is no longer a fresh buy. It is your existing position. Use Open positions above for the main controls.</div></div></details></div>'}
 
 function scannerDiagText(rows){
@@ -1940,7 +2024,7 @@ function scannerDiagText(rows){
   const quoteCount=Object.keys(state.quotes||{}).length;
   if(state.scanning){
     const done=d.done||0,total=d.symbols||all.length,ok=d.quotes||0,err=d.errors||0;
-    return '<b>Scanning now.</b><br>Checked '+done+'/'+total+' safe-list symbols, quotes '+ok+', errors '+err+'.<br><span class="tiny">v108 scans a wider rotating shortlist while keeping quote calls controlled.</span>';
+    return '<b>Scanning now.</b><br>Checked '+done+'/'+total+' safe-list symbols, quotes '+ok+', errors '+err+'.<br><span class="tiny">v109 scans a wider rotating shortlist while keeping quote calls controlled.</span>';
   }
   if(d.finishedAt){
     const secs=Math.max(1,Math.round((d.finishedAt-(d.startedAt||d.finishedAt))/1000));
