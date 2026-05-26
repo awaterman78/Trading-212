@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v105, Long Term Clarity</title>
+<title>Trading 212 Manual God Mode v107, Full Detail Restored</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -654,11 +654,51 @@
 .ltDataTruth{border:1px solid rgba(94,231,255,.28);background:rgba(94,231,255,.07);border-radius:15px;padding:12px;margin:10px 0;color:#d9fbff}.ltDataTruth b{display:block;font-size:15px;margin-bottom:4px}.ltButtons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}.ltEPill.pass{border-color:rgba(46,229,137,.4);color:var(--good);background:rgba(46,229,137,.09)}.ltEPill.check{border-color:rgba(255,209,102,.42);color:var(--warn);background:rgba(255,209,102,.08)}.ltEPill.block{border-color:rgba(255,97,113,.42);color:var(--bad);background:rgba(255,97,113,.08)}
 @media(max-width:780px){.ltButtons{grid-template-columns:1fr}.ltDataTruth{font-size:12px}}
 </style>
+
+<style id="v106-value-restore-css">
+/* v106, restore value panels hidden by earlier compact mobile rules */
+#scannerSection .scannerMeta{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;margin:10px 0!important;}
+#scannerSection .scannerMini{display:block!important;}
+#scannerSection .scannerMini b{font-size:14px!important;}
+.ltTrackMetrics.valuesRestored{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+.ltTrackMini .goodText{color:var(--good)!important}.ltTrackMini .badText{color:var(--bad)!important}
+@media(max-width:780px){#scannerSection .scannerMeta{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}.ltTrackMetrics.valuesRestored{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+</style>
+
+
+<style id="v107-full-detail-css">
+/* v107, full detail restored, phone cards show the money view and the old deeper detail again */
+#scannerSection .scannerSummary{display:block!important;}
+#scannerSection .scannerMeta{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;margin:10px 0!important;}
+#scannerSection .scannerMini{display:block!important;}
+#scannerSection .scannerCard details{display:block!important;}
+#scannerSection .scannerCard .levelMap{display:block!important;}
+#scannerSection .scannerCard .actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin-top:9px!important;}
+#scannerSection .scannerCard .actions button{display:block!important;width:100%!important;font-size:12px!important;padding:9px 7px!important;border-radius:10px!important;}
+#scannerSection .scannerCard summary::after{content:' tap for stop, target, backtest, reasons';font-weight:700;color:var(--muted);}
+#scannerSection .scannerDetail{display:block!important;}
+#scannerSection .scannerPrimaryLine{display:block!important;}
+#scannerSection .scannerSignal,#scannerSection .badge{display:inline-flex!important;}
+#longSimpleSection .ltTrackerBox{display:block!important;}
+#longSimpleSection .ltTrackerBox[open] .ltTrackerCards{display:grid!important;}
+#longSimpleSection .ltTrackMetrics{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+#longSimpleSection .ltTrackMini{display:block!important;}
+#longSimpleSection .ltTrackNote{display:block!important;}
+#longSimpleSection .ltTrackActions{display:grid!important;}
+@media(max-width:780px){
+  #scannerSection .scannerSummary{display:block!important;font-size:11px!important;}
+  #scannerSection .scannerMeta{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #scannerSection .scannerCard details{display:block!important;}
+  #scannerSection .scannerCard .levelMap{display:block!important;}
+  #scannerSection .scannerCard .actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  #longSimpleSection .ltTrackMetrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+</style>
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v105, Long Term Clarity</h1>
-<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v96 is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
+<h1>Trading 212 Manual God Mode v107, Full Detail Restored</h1>
+<div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
 <span class="pill">Last scan: <strong id="lastScan">never</strong></span>
@@ -669,7 +709,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v105</span>
+<span class="mobileTitleText">Manual God Mode v107</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1003,7 +1043,7 @@ COIN"></textarea>
     <details class="ltEvidenceReport" id="ltsEvidenceReport"><summary><span>Why this plan?</span><span class="muted">data source and decision summary</span></summary><div class="ltEvidenceBody" id="ltsEvidenceBody"><div class="ltEmpty">No evidence summary yet.</div></div></details>
   </div>
 
-  <details class="ltTrackerBox" id="ltsTrackerBox">
+  <details class="ltTrackerBox" id="ltsTrackerBox" open>
     <summary><span>Tracker, after buying</span><span class="muted">hold, add, review, remove</span></summary>
     <div id="ltsTrackerCards" class="ltTrackerCards"><div class="ltEmpty">Nothing to track yet. Buy and log a plan row first.</div></div>
   </details>
@@ -2322,6 +2362,25 @@ function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){re
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function getKeys(){try{return JSON.parse(localStorage.getItem('t212gm36_us_keys')||'{}')}catch(e){return {}}}
+function getFX(){try{const st=JSON.parse(localStorage.getItem('t212gm36_us_settings')||'{}'); return Number.isFinite(+st.gbpUsd)&&+st.gbpUsd>0?+st.gbpUsd:1.27}catch(e){return 1.27}}
+function valueFromPrices(cost,buyPx,currentPx){cost=+cost;buyPx=+buyPx;currentPx=+currentPx; if(Number.isFinite(cost)&&cost>0&&Number.isFinite(buyPx)&&buyPx>0&&Number.isFinite(currentPx)&&currentPx>0)return cost*(currentPx/buyPx); return Number.isFinite(cost)?cost:0}
+function pct(v){return Number.isFinite(+v)?((+v)>=0?'+':'')+(+v).toFixed(1)+'%':'n/a'}
+async function ltsLiveQuote(sym){
+ const key=(getKeys().finnhubKey||'').trim(); if(!key||!sym)return null;
+ try{const r=await fetch('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(key),{cache:'no-store'}); const j=await r.json(); const c=+j.c; if(Number.isFinite(c)&&c>0)return c;}catch(e){}
+ return null;
+}
+async function refreshTrackerPrices(){
+ const t=load(KEY.tracker,[]); let changed=false; const now=Date.now();
+ for(const x of t){
+   if(!x||!(+x.owned>0))continue;
+   if(x.currentTs&&now-(+x.currentTs)<90000)continue;
+   const q=await ltsLiveQuote(x.sym);
+   if(q){x.currentPrice=q; x.currentTs=now; changed=true;}
+ }
+ if(changed)save(KEY.tracker,t);
+ return changed;
+}
 const BASE=[
 {sym:'SPY',name:'S&P 500 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:82,pot:10,risk:'low',expect:'Core market holding. Baseline evidence is acceptable because it is diversified.'},
 {sym:'QQQ',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:84,pot:14,risk:'medium',expect:'Growth ETF. Strong long-term engine, expect larger drawdowns.'},
@@ -2668,9 +2727,17 @@ function renderTracker(){
   box.innerHTML=all.map(x=>{
     const p=planned.get(x.sym);
     const owned=+x.owned||0;
+    const buyPx=Number.isFinite(+x.buyPrice)?+x.buyPrice:(Number.isFinite(+x.price)?+x.price:null);
+    const curPx=Number.isFinite(+x.currentPrice)?+x.currentPrice:null;
+    const currentVal=valueFromPrices(owned,buyPx,curPx);
+    const pl=currentVal-owned;
+    const plPct=owned?pl/owned*100:null;
     const status=p?(owned>0?'Add today':'Buy today'):(owned>0?'Hold':'Watch');
     const next=p?`Buy remaining ${gbp(p.amount)} manually in Trading 212, then tap Log bought above.`:(owned>0?'Hold and review on the review date.':'No action.');
-    return `<div class="ltTrackCard ${p?'plan':''}"><div class="ltTrackHead"><div><b>${escapeHTML(x.sym)}</b><div class="muted">${escapeHTML(x.role||'Candidate')} · ${escapeHTML(x.sector||'')}</div></div><div class="ltTrackScore">${Math.round(+x.score||0)}</div></div><span class="ltStatus ${p?'plan':'hold'}">${status}</span><div class="ltTrackMetrics"><div class="ltTrackMini"><span>Owned</span><b>${gbp(owned)}</b></div><div class="ltTrackMini"><span>Today</span><b>${gbp(p?p.amount:0)}</b></div><div class="ltTrackMini"><span>Target</span><b>${gbp(+x.target||0)}</b></div><div class="ltTrackMini"><span>Review</span><b>${x.review||future(90)}</b></div></div><div class="ltTrackNote"><b>Expectation:</b> ${escapeHTML(x.expect||'3 to 5 year hold. Review every 90 days.')}<br/><b>Next action:</b> ${escapeHTML(next)}</div><div class="ltTrackActions"><button class="secondary" data-lts-review="${escapeHTML(x.sym)}">Review</button><button class="secondary" data-lts-edit="${escapeHTML(x.sym)}">Edit</button><button class="bad" data-lts-delete="${escapeHTML(x.sym)}">Delete</button></div></div>`;
+    const currentLabel=curPx?fmt(curPx,2):(owned?'tap Update':'n/a');
+    const costLabel=buyPx?fmt(buyPx,2):'n/a';
+    const plClass=pl>=0?'goodText':'badText';
+    return `<div class="ltTrackCard ${p?'plan':''}"><div class="ltTrackHead"><div><b>${escapeHTML(x.sym)}</b><div class="muted">${escapeHTML(x.role||'Candidate')} · ${escapeHTML(x.sector||'')}</div></div><div class="ltTrackScore">${Math.round(+x.score||0)}</div></div><span class="ltStatus ${p?'plan':'hold'}">${status}</span><div class="ltTrackMetrics valuesRestored"><div class="ltTrackMini"><span>Cost / owned</span><b>${gbp(owned)}</b></div><div class="ltTrackMini"><span>Bought price</span><b>${costLabel}</b></div><div class="ltTrackMini"><span>Current price</span><b>${currentLabel}</b></div><div class="ltTrackMini"><span>Value now</span><b>${gbp(currentVal)}</b></div><div class="ltTrackMini"><span>P/L</span><b class="${plClass}">${gbp(pl)}</b></div><div class="ltTrackMini"><span>P/L %</span><b class="${plClass}">${pct(plPct)}</b></div><div class="ltTrackMini"><span>Today</span><b>${gbp(p?p.amount:0)}</b></div><div class="ltTrackMini"><span>Target</span><b>${gbp(+x.target||0)}</b></div><div class="ltTrackMini"><span>Review</span><b>${x.review||future(90)}</b></div></div><div class="ltTrackNote"><b>Expectation:</b> ${escapeHTML(x.expect||'3 to 5 year hold. Review every 90 days.')}<br/><b>Next action:</b> ${escapeHTML(next)}${curPx?'<br/><span class="tiny">Current value is estimated from live/proxy price versus your logged bought price. For UK ETF proxies, update price manually if the app ticker differs from Trading 212.</span>':''}</div><div class="ltTrackActions"><button class="secondary" data-lts-price="${escapeHTML(x.sym)}">Update price</button><button class="secondary" data-lts-review="${escapeHTML(x.sym)}">Review</button><button class="secondary" data-lts-edit="${escapeHTML(x.sym)}">Edit</button><button class="bad" data-lts-delete="${escapeHTML(x.sym)}">Delete</button></div></div>`;
   }).join('');
 }
 function renderJournal(){const j=load(KEY.journal,[]), el=$('ltsJournalRows'); if(!el)return; el.innerHTML=j.length?j.slice().reverse().map(x=>`<div class="ltJournalItem"><b>${escapeHTML(x.date)} · ${escapeHTML(x.sym)}</b><br/>${escapeHTML(x.action)} · ${gbp(x.amount)}${x.note?' · '+escapeHTML(x.note):''}</div>`).join(''):'<div class="ltEmpty">No long term journal entries yet.</div>';}
@@ -2683,26 +2750,42 @@ function logBought(sym){
   if(!r)return alert('That row is already logged or is not in the remaining buy list. Build a new plan if you want another buy.');
   const amount=parseFloat(prompt('Amount actually bought in £', r.amount));
   if(!Number.isFinite(amount)||amount<=0)return;
-  const price=parseFloat(prompt('Actual share price, optional', ''));
+  const price=parseFloat(prompt('Actual bought share price, as shown in Trading 212. Leave blank if unknown.', ''));
+  const qty=parseFloat(prompt('Quantity bought, optional. Leave blank if unknown.', ''));
   const t=load(KEY.tracker,[]);
   let ex=t.find(x=>x.sym===sym);
   if(!ex){ex={sym:r.sym,name:r.name,role:r.role,sector:r.sector,score:r.score,owned:0,target:Math.max((r.originalAmount||amount)*2,5),expect:r.expect,review:future(90)};t.push(ex)}
-  ex.owned=(+ex.owned||0)+amount;
-  if(Number.isFinite(price)&&price>0)ex.price=price;
+  const prevOwned=+ex.owned||0;
+  const oldBuy=Number.isFinite(+ex.buyPrice)?+ex.buyPrice:null;
+  ex.owned=prevOwned+amount;
+  if(Number.isFinite(price)&&price>0){
+    ex.lastBuyPrice=price;
+    ex.buyPrice=oldBuy&&prevOwned>0?((oldBuy*prevOwned)+(price*amount))/(prevOwned+amount):price;
+    ex.currentPrice=price;
+    ex.currentTs=Date.now();
+    ex.price=price;
+  }
+  if(Number.isFinite(qty)&&qty>0)ex.qty=(+ex.qty||0)+qty;
   ex.review=ex.review||future(90);
   save(KEY.tracker,t);
   const j=load(KEY.journal,[]);
-  j.push({date:today(),sym,action:'Bought',amount,note:'Logged from v104 clear remaining buy list'});
+  j.push({date:today(),sym,action:'Bought',amount,price:Number.isFinite(price)?price:null,qty:Number.isFinite(qty)?qty:null,note:'Logged from v106 values restored'});
   save(KEY.journal,j);
   renderAll();
+  refreshTrackerPrices().then(changed=>{if(changed)renderTracker();});
 }
 function addToTracker(sym){const x=BASE.find(a=>a.sym===sym); if(!x)return; const t=load(KEY.tracker,[]); if(!t.find(a=>a.sym===sym)){t.push({sym:x.sym,name:x.name,role:x.role,sector:x.sector,score:x.score,owned:0,target:5,expect:x.expect,review:future(90),created:today()}); save(KEY.tracker,t)} renderAll(); renderRadar();}
 function editItem(sym){const t=load(KEY.tracker,[]), x=t.find(a=>a.sym===sym); if(!x)return; const target=parseFloat(prompt('Target value £', +x.target||5)); if(Number.isFinite(target)&&target>=0)x.target=target; const owned=parseFloat(prompt('Owned value £', +x.owned||0)); if(Number.isFinite(owned)&&owned>=0)x.owned=owned; save(KEY.tracker,t); renderAll();}
 function reviewItem(sym){const t=load(KEY.tracker,[]), x=t.find(a=>a.sym===sym); if(!x)return; x.review=future(90); const j=load(KEY.journal,[]); j.push({date:today(),sym,action:'Reviewed',amount:0,note:'Review date moved 90 days'}); save(KEY.tracker,t); save(KEY.journal,j); renderAll();}
+function updatePrice(sym){
+  const t=load(KEY.tracker,[]), x=t.find(a=>a.sym===sym); if(!x)return;
+  const px=parseFloat(prompt('Current share price for '+sym, Number.isFinite(+x.currentPrice)?+x.currentPrice:(Number.isFinite(+x.buyPrice)?+x.buyPrice:'')));
+  if(Number.isFinite(px)&&px>0){x.currentPrice=px; x.currentTs=Date.now(); save(KEY.tracker,t); renderAll();}
+}
 function deleteItem(sym){if(!confirm('Remove '+sym+' from long term tracker?'))return; save(KEY.tracker,load(KEY.tracker,[]).filter(x=>x.sym!==sym)); renderAll();}
 async function testData(){const box=$('ltsDataTruth'); if(box)box.innerHTML='<b>Data truth and allocation check</b><div class="tiny">Testing fundamentals with GOOGL. FMP is tried first, then Finnhub fallback if FMP is out of quota...</div>'; localStorage.removeItem(KEY.cache); localStorage.removeItem(KEY.fhcache); const f=await getFmp('GOOGL'); const out=f&&f.status==='ok'?f:await getFinnhubFund('GOOGL'); if(box){if(out.status==='ok')box.innerHTML=`<b>Fundamentals working via ${escapeHTML(out.source)}</b><div class="tiny">GOOGL returned usable real data. Revenue ${fmtPct(out.revCagr)}, EPS ${fmtPct(out.epsCagr)}, FCF ${fmtPct(out.fcfCagr)}, PE ${fmt(out.pe)}. Source: ${escapeHTML(out.sourceDetail||out.source)}. ${f&&f.status!=='ok'?'FMP did not work, so the app will use Finnhub fallback where available.':''}</div>`; else box.innerHTML=`<b>Fundamentals not working</b><div class="tiny">FMP: ${escapeHTML(f&&f.error?f.error:'not available')}. Finnhub: ${escapeHTML(out.error||out.source)}. Until one works, the verified plan will avoid individual company buys and favour ETFs.</div>`;}}
-function exportCSV(){const j=load(KEY.journal,[]); const rows=['date,symbol,action,amount,note',...j.map(x=>[x.date,x.sym,x.action,x.amount,'"'+String(x.note||'').replace(/"/g,'""')+'"'].join(','))]; const blob=new Blob([rows.join('\n')],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='long-term-journal-v104.csv'; a.click(); URL.revokeObjectURL(a.href);}
-function init(){const root=$('longSimpleSection'); if(!root)return; root.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; if(b.id==='ltsBuildPlan')buildPlan(); else if(b.id==='ltsTestData')testData(); else if(b.id==='ltsClearPlan'){save(KEY.plan,null);renderAll()} else if(b.id==='ltsGoTracker')$('ltsTrackerBox')?.scrollIntoView({behavior:'smooth',block:'start'}); else if(b.id==='ltsRunRadar')renderRadar(); else if(b.id==='ltsExportJournal')exportCSV(); else if(b.id==='ltsClearJournal'){if(confirm('Clear long term journal?')){save(KEY.journal,[]);renderAll()}} else if(b.dataset.ltsLog)logBought(b.dataset.ltsLog); else if(b.dataset.ltsAdd)addToTracker(b.dataset.ltsAdd); else if(b.dataset.ltsEdit)editItem(b.dataset.ltsEdit); else if(b.dataset.ltsReview)reviewItem(b.dataset.ltsReview); else if(b.dataset.ltsDelete)deleteItem(b.dataset.ltsDelete);}); renderAll();}
+function exportCSV(){const j=load(KEY.journal,[]); const rows=['date,symbol,action,amount,note',...j.map(x=>[x.date,x.sym,x.action,x.amount,'"'+String(x.note||'').replace(/"/g,'""')+'"'].join(','))]; const blob=new Blob([rows.join('\n')],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='long-term-journal-v106.csv'; a.click(); URL.revokeObjectURL(a.href);}
+function init(){const root=$('longSimpleSection'); if(!root)return; root.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; if(b.id==='ltsBuildPlan')buildPlan(); else if(b.id==='ltsTestData')testData(); else if(b.id==='ltsClearPlan'){save(KEY.plan,null);renderAll()} else if(b.id==='ltsGoTracker')$('ltsTrackerBox')?.scrollIntoView({behavior:'smooth',block:'start'}); else if(b.id==='ltsRunRadar')renderRadar(); else if(b.id==='ltsExportJournal')exportCSV(); else if(b.id==='ltsClearJournal'){if(confirm('Clear long term journal?')){save(KEY.journal,[]);renderAll()}} else if(b.dataset.ltsLog)logBought(b.dataset.ltsLog); else if(b.dataset.ltsAdd)addToTracker(b.dataset.ltsAdd); else if(b.dataset.ltsEdit)editItem(b.dataset.ltsEdit); else if(b.dataset.ltsReview)reviewItem(b.dataset.ltsReview); else if(b.dataset.ltsPrice)updatePrice(b.dataset.ltsPrice); else if(b.dataset.ltsDelete)deleteItem(b.dataset.ltsDelete);}); renderAll(); refreshTrackerPrices().then(changed=>{if(changed)renderTracker();});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init); else init();
 }catch(err){console.error('v104 clear plan long term failed',err);}
 })();
