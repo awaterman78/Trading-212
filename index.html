@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v109, Trade Frequency Engine</title>
+<title>Trading 212 Manual God Mode v110, iPhone 16 Pro Max Cockpit</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -694,10 +694,401 @@
   #longSimpleSection .ltTrackMetrics{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
 }
 </style>
+
+
+<style id="v110-iphone16-pro-max-redesign">
+/* v110, iPhone 16 Pro Max cockpit redesign, visual layer only, IDs and trading logic preserved */
+:root{
+  --ios-bg:#020713;
+  --ios-card:rgba(10,23,42,.82);
+  --ios-card-2:rgba(13,34,60,.74);
+  --ios-stroke:rgba(151,181,220,.18);
+  --ios-stroke-strong:rgba(121,173,255,.36);
+  --ios-glow:0 18px 48px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.04);
+  --ios-radius:24px;
+  --ios-radius-sm:17px;
+  --ios-nav-h:88px;
+}
+html{scroll-behavior:smooth;background:#020713;}
+button,input,select,textarea,summary{-webkit-tap-highlight-color:transparent;}
+button,summary{touch-action:manipulation;}
+.iphoneDock{display:none;}
+.iphoneFloatingPulse{display:none;}
+@media(max-width:780px){
+  body.iphoneProMaxRedesign{
+    background:
+      radial-gradient(circle at 18% -6%,rgba(94,231,255,.18),transparent 34%),
+      radial-gradient(circle at 88% 8%,rgba(187,156,255,.15),transparent 34%),
+      linear-gradient(180deg,#071526 0%,#030915 44%,#01040a 100%)!important;
+    color:#f4f8ff!important;
+    overflow-x:hidden!important;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.iphoneProMaxRedesign:before{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(180deg,rgba(255,255,255,.035),transparent 18%),
+      radial-gradient(circle at 50% 0,rgba(121,173,255,.08),transparent 36%);
+    z-index:0;
+  }
+  body.iphoneProMaxRedesign header,
+  body.iphoneProMaxRedesign main,
+  body.iphoneProMaxRedesign .toast{position:relative;z-index:1;}
+  body.iphoneProMaxRedesign header{
+    position:sticky!important;
+    top:0!important;
+    z-index:90!important;
+    padding:calc(8px + env(safe-area-inset-top,0px)) 10px 9px!important;
+    background:linear-gradient(180deg,rgba(2,7,19,.96),rgba(2,7,19,.82))!important;
+    border-bottom:1px solid rgba(121,173,255,.12)!important;
+    box-shadow:0 18px 44px rgba(0,0,0,.32)!important;
+    backdrop-filter:blur(22px) saturate(1.3)!important;
+    -webkit-backdrop-filter:blur(22px) saturate(1.3)!important;
+  }
+  body.iphoneProMaxRedesign header h1,
+  body.iphoneProMaxRedesign header .sub,
+  body.iphoneProMaxRedesign header .topbar{display:none!important;}
+  body.iphoneProMaxRedesign .mobileShell{display:block!important;}
+  body.iphoneProMaxRedesign .mobileTitleBar{
+    display:grid!important;
+    grid-template-columns:34px minmax(0,1fr) auto 34px!important;
+    align-items:center!important;
+    gap:8px!important;
+    min-height:42px!important;
+    padding:5px 7px!important;
+    border:1px solid rgba(151,181,220,.16)!important;
+    border-radius:999px!important;
+    background:linear-gradient(180deg,rgba(8,20,37,.96),rgba(5,13,25,.88))!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 24px rgba(0,0,0,.28)!important;
+  }
+  body.iphoneProMaxRedesign .mobileIcon{
+    width:30px!important;height:30px!important;display:grid!important;place-items:center!important;
+    border-radius:50%!important;background:rgba(121,173,255,.10)!important;
+    border:1px solid rgba(151,181,220,.14)!important;font-size:15px!important;color:#dcecff!important;
+  }
+  body.iphoneProMaxRedesign .mobileIcon.sliders{background:rgba(187,156,255,.10)!important;color:#d8caff!important;}
+  body.iphoneProMaxRedesign .mobileTitleText{
+    font-size:17px!important;line-height:1.05!important;font-weight:1000!important;letter-spacing:-.045em!important;
+    white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  }
+  body.iphoneProMaxRedesign .mobileTitleText:after{
+    content:' 16 Pro Max';
+    color:var(--cyan);
+    font-size:11px;
+    letter-spacing:-.01em;
+    font-weight:900;
+  }
+  body.iphoneProMaxRedesign .mobileLiveSmall{
+    display:inline-flex!important;align-items:center!important;gap:5px!important;
+    font-size:11px!important;font-weight:1000!important;color:var(--good)!important;
+    background:rgba(46,229,137,.10)!important;border:1px solid rgba(46,229,137,.24)!important;
+    border-radius:999px!important;padding:6px 9px!important;white-space:nowrap!important;
+  }
+  body.iphoneProMaxRedesign .mobileStatStrip{
+    display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:6px!important;
+    margin-top:8px!important;overflow:visible!important;
+  }
+  body.iphoneProMaxRedesign .mobileStat{
+    min-height:52px!important;padding:8px 5px!important;border-radius:15px!important;
+    background:linear-gradient(180deg,rgba(16,35,60,.82),rgba(7,17,31,.78))!important;
+    border:1px solid rgba(151,181,220,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  }
+  body.iphoneProMaxRedesign .mobileStat span{
+    font-size:7.6px!important;letter-spacing:.08em!important;font-weight:1000!important;color:#7f96b5!important;
+  }
+  body.iphoneProMaxRedesign .mobileStat b{
+    font-size:12px!important;line-height:1.05!important;font-weight:1000!important;color:#f4f8ff!important;margin-top:5px!important;
+  }
+  body.iphoneProMaxRedesign main{
+    width:100%!important;max-width:500px!important;margin:0 auto!important;
+    padding:10px 10px calc(var(--ios-nav-h) + 26px + env(safe-area-inset-bottom,0px))!important;
+  }
+  body.iphoneProMaxRedesign .grid{display:flex!important;flex-direction:column!important;gap:10px!important;}
+  body.iphoneProMaxRedesign .grid>section,
+  body.iphoneProMaxRedesign .grid>#longSimpleSection{order:40!important;}
+  body.iphoneProMaxRedesign #commandSection{order:1!important;}
+  body.iphoneProMaxRedesign #positionsSection{order:2!important;}
+  body.iphoneProMaxRedesign #ticketSection{order:3!important;}
+  body.iphoneProMaxRedesign #scannerSection{order:4!important;}
+  body.iphoneProMaxRedesign #blockerSection{order:5!important;}
+  body.iphoneProMaxRedesign #longSimpleSection{order:6!important;}
+  body.iphoneProMaxRedesign #setupSection{order:7!important;}
+  body.iphoneProMaxRedesign #ruleBoardSection{order:8!important;}
+  body.iphoneProMaxRedesign #journalSection{order:9!important;}
+  body.iphoneProMaxRedesign #feedbackSection{order:10!important;}
+  body.iphoneProMaxRedesign #learningSection{order:11!important;}
+  body.iphoneProMaxRedesign #edgeVerdictSection,
+  body.iphoneProMaxRedesign #decisionEngineSection,
+  body.iphoneProMaxRedesign #actionCockpitSection,
+  body.iphoneProMaxRedesign #checklistSection{display:none!important;}
+  body.iphoneProMaxRedesign .card,
+  body.iphoneProMaxRedesign .longSimpleSection{
+    border-radius:var(--ios-radius)!important;
+    padding:14px!important;
+    border:1px solid var(--ios-stroke)!important;
+    background:linear-gradient(180deg,rgba(14,32,56,.86),rgba(6,15,29,.92))!important;
+    box-shadow:var(--ios-glow)!important;
+    overflow:hidden;
+  }
+  body.iphoneProMaxRedesign .card h2,
+  body.iphoneProMaxRedesign .longSimpleSection h2{
+    font-size:20px!important;line-height:1.05!important;letter-spacing:-.045em!important;margin:0 0 10px!important;
+  }
+  body.iphoneProMaxRedesign .tiny{font-size:12px!important;line-height:1.38!important;color:#91a6c2!important;}
+  body.iphoneProMaxRedesign button{
+    min-height:44px!important;border-radius:15px!important;padding:10px 12px!important;
+    font-weight:1000!important;letter-spacing:-.01em!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;
+  }
+  body.iphoneProMaxRedesign button.good{background:linear-gradient(180deg,#57f0a4,#25ca78)!important;color:#02110a!important;}
+  body.iphoneProMaxRedesign button.warn{background:linear-gradient(180deg,#ffe08a,#f1b640)!important;color:#1a1200!important;}
+  body.iphoneProMaxRedesign button.bad{background:linear-gradient(180deg,#ff7f8e,#ee4358)!important;color:white!important;}
+  body.iphoneProMaxRedesign button.secondary{
+    background:linear-gradient(180deg,rgba(28,55,91,.96),rgba(13,29,50,.96))!important;
+    color:#eaf3ff!important;border:1px solid rgba(151,181,220,.18)!important;
+  }
+  body.iphoneProMaxRedesign input,
+  body.iphoneProMaxRedesign select,
+  body.iphoneProMaxRedesign textarea{
+    min-height:48px!important;font-size:16px!important;border-radius:16px!important;
+    background:rgba(3,10,20,.92)!important;border:1px solid rgba(151,181,220,.2)!important;
+    color:#f3f8ff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  }
+  body.iphoneProMaxRedesign label{font-size:12px!important;color:#95a9c4!important;font-weight:800!important;}
+  body.iphoneProMaxRedesign #commandSection{
+    border-color:rgba(94,231,255,.30)!important;
+    background:
+      radial-gradient(circle at 20% 0,rgba(94,231,255,.16),transparent 34%),
+      linear-gradient(180deg,rgba(14,34,63,.94),rgba(5,14,28,.96))!important;
+  }
+  body.iphoneProMaxRedesign #commandSection h2{display:flex!important;align-items:center!important;justify-content:space-between!important;}
+  body.iphoneProMaxRedesign #commandSection h2:after{
+    content:'LIVE COCKPIT';font-size:10px!important;letter-spacing:.09em!important;color:#d7fbff!important;
+    border:1px solid rgba(94,231,255,.26)!important;background:rgba(94,231,255,.09)!important;border-radius:999px!important;padding:6px 8px!important;
+  }
+  body.iphoneProMaxRedesign #commandSection .row.tight{
+    display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:0 0 9px!important;
+  }
+  body.iphoneProMaxRedesign #commandSection .row.tight>*{min-width:0!important;width:100%!important;}
+  body.iphoneProMaxRedesign #commandSection .opportunityControls{
+    display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:9px 0!important;
+  }
+  body.iphoneProMaxRedesign #commandSection .opportunityControls button{width:100%!important;font-size:12px!important;min-height:42px!important;}
+  body.iphoneProMaxRedesign #commandSection .sessionGrid{display:block!important;}
+  body.iphoneProMaxRedesign #commandSection .sessionCommand{
+    display:block!important;padding:17px!important;border-radius:22px!important;
+    background:
+      radial-gradient(circle at 84% 18%,rgba(255,209,102,.12),transparent 30%),
+      linear-gradient(180deg,rgba(4,12,25,.98),rgba(5,16,31,.96))!important;
+    border:1px solid rgba(151,181,220,.16)!important;
+    min-height:156px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+  }
+  body.iphoneProMaxRedesign #commandSection .sessionCommand b{
+    display:block!important;font-size:clamp(42px,12vw,56px)!important;line-height:.9!important;letter-spacing:-.07em!important;margin-bottom:10px!important;
+  }
+  body.iphoneProMaxRedesign #commandSection .sessionCommand span{font-size:13px!important;line-height:1.38!important;color:#a6b7cf!important;}
+  body.iphoneProMaxRedesign #commandSection .sessionMetric{display:none!important;}
+  body.iphoneProMaxRedesign .mobileCommandCounts{
+    display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;
+    margin-top:10px!important;border-radius:18px!important;overflow:hidden!important;
+    border:1px solid rgba(151,181,220,.16)!important;background:rgba(5,13,25,.72)!important;
+  }
+  body.iphoneProMaxRedesign .mobileCommandCount{min-height:58px!important;padding:10px 4px!important;text-align:center!important;}
+  body.iphoneProMaxRedesign .mobileCommandCount span{font-size:8px!important;color:#8399b8!important;letter-spacing:.08em!important;}
+  body.iphoneProMaxRedesign .mobileCommandCount b{font-size:24px!important;line-height:1!important;color:#f4f8ff!important;}
+  body.iphoneProMaxRedesign #dailyChecklist{display:grid!important;grid-template-columns:1fr 1fr 1fr!important;gap:6px!important;margin-top:9px!important;}
+  body.iphoneProMaxRedesign .checkItem{border-radius:14px!important;padding:9px!important;background:rgba(3,10,20,.68)!important;font-size:10.5px!important;}
+  body.iphoneProMaxRedesign #positionsSection,
+  body.iphoneProMaxRedesign #ticketSection,
+  body.iphoneProMaxRedesign #scannerSection{border-color:rgba(121,173,255,.22)!important;}
+  body.iphoneProMaxRedesign #positionsSection h2,
+  body.iphoneProMaxRedesign #scannerSection h2,
+  body.iphoneProMaxRedesign #ticketSection h2{display:flex!important;align-items:center!important;justify-content:space-between!important;}
+  body.iphoneProMaxRedesign #positionsSection h2:after{content:'Exits first';font-size:11px;color:var(--bad);border:1px solid rgba(255,97,113,.24);background:rgba(255,97,113,.08);border-radius:999px;padding:5px 8px;}
+  body.iphoneProMaxRedesign #ticketSection h2:after{content:'Manual only';font-size:11px;color:var(--warn);border:1px solid rgba(255,209,102,.25);background:rgba(255,209,102,.08);border-radius:999px;padding:5px 8px;}
+  body.iphoneProMaxRedesign #scannerSection h2:after{content:'Live list';font-size:11px;color:var(--cyan);border:1px solid rgba(94,231,255,.25);background:rgba(94,231,255,.08);border-radius:999px;padding:5px 8px;}
+  body.iphoneProMaxRedesign .positionCard,
+  body.iphoneProMaxRedesign .scannerCard,
+  body.iphoneProMaxRedesign .ltTrackCard{
+    border-radius:21px!important;padding:13px!important;margin:9px 0!important;
+    background:linear-gradient(180deg,rgba(6,16,31,.96),rgba(3,10,20,.96))!important;
+    border:1px solid rgba(151,181,220,.18)!important;box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.04)!important;
+  }
+  body.iphoneProMaxRedesign .positionCard.sellNow,
+  body.iphoneProMaxRedesign .scannerCard.buy{border-color:rgba(46,229,137,.42)!important;}
+  body.iphoneProMaxRedesign .positionSymbol,
+  body.iphoneProMaxRedesign .scannerSymbol,
+  body.iphoneProMaxRedesign .ltTrackHead b{font-size:24px!important;letter-spacing:-.055em!important;font-weight:1000!important;}
+  body.iphoneProMaxRedesign .positionMeta,
+  body.iphoneProMaxRedesign .scannerMeta,
+  body.iphoneProMaxRedesign .ltTrackMetrics{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin:10px 0!important;
+  }
+  body.iphoneProMaxRedesign .positionMini,
+  body.iphoneProMaxRedesign .scannerMini,
+  body.iphoneProMaxRedesign .ltTrackMini,
+  body.iphoneProMaxRedesign .dailyMissionMini,
+  body.iphoneProMaxRedesign .cashMini,
+  body.iphoneProMaxRedesign .ltSimpleGrid .mini,
+  body.iphoneProMaxRedesign .ltEvidenceMini{
+    border-radius:15px!important;padding:9px!important;min-height:56px!important;
+    background:rgba(11,25,45,.76)!important;border:1px solid rgba(151,181,220,.14)!important;
+  }
+  body.iphoneProMaxRedesign .positionMini span,
+  body.iphoneProMaxRedesign .scannerMini span,
+  body.iphoneProMaxRedesign .ltTrackMini span{font-size:8.5px!important;letter-spacing:.08em!important;color:#8198b7!important;}
+  body.iphoneProMaxRedesign .positionMini b,
+  body.iphoneProMaxRedesign .scannerMini b,
+  body.iphoneProMaxRedesign .ltTrackMini b{font-size:14px!important;color:#f4f8ff!important;}
+  body.iphoneProMaxRedesign .positionCoach,
+  body.iphoneProMaxRedesign .exitForecast,
+  body.iphoneProMaxRedesign .scannerReason,
+  body.iphoneProMaxRedesign .whyBox,
+  body.iphoneProMaxRedesign #ticketBox,
+  body.iphoneProMaxRedesign .warnBox,
+  body.iphoneProMaxRedesign .okBox,
+  body.iphoneProMaxRedesign .dangerBox,
+  body.iphoneProMaxRedesign .ltDataTruth,
+  body.iphoneProMaxRedesign .ltPlanSummary,
+  body.iphoneProMaxRedesign .ltWhat{
+    border-radius:17px!important;padding:11px!important;
+    background:rgba(4,12,24,.72)!important;border:1px solid rgba(151,181,220,.16)!important;
+    max-height:none!important;overflow:visible!important;
+  }
+  body.iphoneProMaxRedesign .positionActions,
+  body.iphoneProMaxRedesign .scannerCard .actions,
+  body.iphoneProMaxRedesign .ltTrackActions{
+    display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important;margin-top:10px!important;
+  }
+  body.iphoneProMaxRedesign .positionActions button,
+  body.iphoneProMaxRedesign .scannerCard .actions button,
+  body.iphoneProMaxRedesign .ltTrackActions button{font-size:12px!important;min-height:42px!important;width:100%!important;}
+  body.iphoneProMaxRedesign .positionActions button.bad{grid-column:span 2!important;}
+  body.iphoneProMaxRedesign #scannerSection .scannerControls{
+    position:sticky!important;top:calc(104px + env(safe-area-inset-top,0px))!important;z-index:30!important;
+    padding:8px!important;margin:9px 0!important;border-radius:20px!important;
+    background:rgba(4,12,24,.86)!important;border:1px solid rgba(151,181,220,.18)!important;
+    box-shadow:0 12px 26px rgba(0,0,0,.30)!important;
+    backdrop-filter:blur(18px) saturate(1.2)!important;-webkit-backdrop-filter:blur(18px) saturate(1.2)!important;
+  }
+  body.iphoneProMaxRedesign .scannerTabs{display:flex!important;gap:6px!important;overflow-x:auto!important;flex-wrap:nowrap!important;padding-bottom:2px!important;scrollbar-width:none!important;}
+  body.iphoneProMaxRedesign .scannerTabs::-webkit-scrollbar{display:none!important;}
+  body.iphoneProMaxRedesign .scannerTab{
+    flex:0 0 auto!important;white-space:nowrap!important;min-height:38px!important;border-radius:999px!important;
+    padding:8px 11px!important;font-size:11px!important;color:#b3c6df!important;
+    background:rgba(9,23,41,.88)!important;border:1px solid rgba(151,181,220,.17)!important;
+  }
+  body.iphoneProMaxRedesign .scannerTab.active{background:linear-gradient(180deg,#88bdff,#66a4ff)!important;color:#04101f!important;border-color:transparent!important;}
+  body.iphoneProMaxRedesign .scannerTools{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;width:100%!important;margin-top:7px!important;}
+  body.iphoneProMaxRedesign .scannerTools button{width:100%!important;}
+  body.iphoneProMaxRedesign .scannerSummary{font-size:11px!important;color:#92a7c4!important;margin:8px 0!important;}
+  body.iphoneProMaxRedesign .scannerCard .levelMap{display:block!important;margin:10px 0!important;border-radius:16px!important;padding:10px!important;background:rgba(4,12,24,.66)!important;border:1px solid rgba(151,181,220,.13)!important;}
+  body.iphoneProMaxRedesign .levelTrack{height:38px!important;border-radius:999px!important;}
+  body.iphoneProMaxRedesign .scannerCard details{display:block!important;margin-top:10px!important;}
+  body.iphoneProMaxRedesign .scannerCard summary{
+    border-radius:15px!important;padding:10px 12px!important;background:rgba(17,36,62,.82)!important;border:1px solid rgba(151,181,220,.14)!important;
+  }
+  body.iphoneProMaxRedesign .scannerCard summary:after{content:' details'!important;color:#8fa5c2!important;font-weight:800!important;}
+  body.iphoneProMaxRedesign .ltSimpleGrid,
+  body.iphoneProMaxRedesign .ltEvidenceGrid,
+  body.iphoneProMaxRedesign .cashLedgerGrid,
+  body.iphoneProMaxRedesign .dailyMissionGrid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;}
+  body.iphoneProMaxRedesign .ltButtons,
+  body.iphoneProMaxRedesign .ltAutopilotControls,
+  body.iphoneProMaxRedesign .ltControls{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;}
+  body.iphoneProMaxRedesign .ltPlanRow{grid-template-columns:32px minmax(0,1fr) auto!important;border-radius:16px!important;padding:11px!important;background:rgba(3,10,20,.58)!important;border:1px solid rgba(151,181,220,.12)!important;margin-bottom:8px!important;}
+  body.iphoneProMaxRedesign .ltPlanRow button{grid-column:1 / -1!important;width:100%!important;}
+  body.iphoneProMaxRedesign .setupStrip{display:flex!important;flex-direction:column!important;gap:8px!important;width:100%!important;}
+  body.iphoneProMaxRedesign .setupCard{padding:0!important;border-radius:20px!important;}
+  body.iphoneProMaxRedesign .setupDetails summary,
+  body.iphoneProMaxRedesign .ruleDetails summary,
+  body.iphoneProMaxRedesign .ltAdvancedSettings summary,
+  body.iphoneProMaxRedesign .ltTrackerBox summary,
+  body.iphoneProMaxRedesign .ltAdvanced summary,
+  body.iphoneProMaxRedesign .ltJournalBox summary,
+  body.iphoneProMaxRedesign .ltEvidenceReport summary{
+    min-height:54px!important;border-radius:18px!important;padding:14px!important;
+    background:rgba(4,12,24,.74)!important;border:1px solid rgba(151,181,220,.14)!important;
+  }
+  body.iphoneProMaxRedesign .setupDetails .summaryTitle{font-size:16px!important;font-weight:1000!important;letter-spacing:-.025em!important;}
+  body.iphoneProMaxRedesign .setupBody{padding:0 12px 12px!important;}
+  body.iphoneProMaxRedesign .reviewPanel{
+    display:block!important;max-height:62px!important;min-height:62px!important;overflow:hidden!important;
+    padding:14px 116px 14px 14px!important;position:relative!important;cursor:pointer!important;
+  }
+  body.iphoneProMaxRedesign .reviewPanel>*:not(h2){display:none!important;}
+  body.iphoneProMaxRedesign .reviewPanel h2{font-size:17px!important;margin:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+  body.iphoneProMaxRedesign .reviewPanel:after{
+    content:'Open'!important;position:absolute!important;right:14px!important;top:50%!important;transform:translateY(-50%)!important;
+    border:1px solid rgba(151,181,220,.18)!important;background:rgba(4,12,24,.78)!important;color:#9eb2ce!important;
+    border-radius:999px!important;padding:7px 10px!important;font-size:11px!important;font-weight:1000!important;
+  }
+  body.iphoneProMaxRedesign .reviewPanel.reviewOpen{max-height:none!important;overflow:visible!important;padding:14px!important;}
+  body.iphoneProMaxRedesign .reviewPanel.reviewOpen>*:not(h2){display:revert!important;}
+  body.iphoneProMaxRedesign .reviewPanel.reviewOpen h2{margin-bottom:10px!important;padding-right:110px!important;white-space:normal!important;}
+  body.iphoneProMaxRedesign .reviewPanel.reviewOpen:after{content:'Close'!important;top:14px!important;transform:none!important;}
+  body.iphoneProMaxRedesign .scroll{border-radius:18px!important;border:1px solid rgba(151,181,220,.14)!important;background:rgba(3,10,20,.58)!important;max-height:360px!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important;}
+  body.iphoneProMaxRedesign table{font-size:13px!important;}
+  body.iphoneProMaxRedesign td{padding:11px 10px!important;}
+  body.iphoneProMaxRedesign .toast{
+    left:10px!important;right:10px!important;bottom:calc(var(--ios-nav-h) + 10px + env(safe-area-inset-bottom,0px))!important;
+    max-width:none!important;border-radius:20px!important;background:rgba(7,18,34,.96)!important;
+    backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;
+  }
+  body.iphoneProMaxRedesign .footerNote{font-size:11px!important;line-height:1.45!important;margin:12px 4px 0!important;color:#7f94b0!important;}
+  body.iphoneProMaxRedesign .iphoneDock{
+    display:block!important;position:fixed!important;left:0!important;right:0!important;bottom:0!important;z-index:120!important;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px))!important;
+    background:linear-gradient(180deg,rgba(2,7,19,0),rgba(2,7,19,.72) 16%,rgba(2,7,19,.96) 100%)!important;
+    pointer-events:none;
+  }
+  body.iphoneProMaxRedesign .iphoneDockInner{
+    max-width:500px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;
+    padding:7px;border-radius:26px;border:1px solid rgba(151,181,220,.18);
+    background:rgba(5,13,25,.88);box-shadow:0 18px 48px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25);pointer-events:auto;
+  }
+  body.iphoneProMaxRedesign .iphoneDock button{
+    min-height:56px!important;padding:6px 3px!important;border-radius:19px!important;border:1px solid transparent!important;
+    background:transparent!important;color:#91a6c2!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;font-size:10px!important;
+  }
+  body.iphoneProMaxRedesign .iphoneDock button .ico{font-size:18px;line-height:1;}
+  body.iphoneProMaxRedesign .iphoneDock button .txt{font-size:9px;font-weight:1000;letter-spacing:.02em;}
+  body.iphoneProMaxRedesign .iphoneDock button.active{
+    color:#eaf4ff!important;background:linear-gradient(180deg,rgba(121,173,255,.20),rgba(121,173,255,.08))!important;
+    border-color:rgba(121,173,255,.22)!important;
+  }
+  body.iphoneProMaxRedesign .iphoneDock button[data-action="scan"]{
+    color:#02110a!important;background:linear-gradient(180deg,#5ff0a7,#2ddb84)!important;border-color:transparent!important;
+    transform:translateY(-8px)!important;box-shadow:0 13px 26px rgba(46,229,137,.20),inset 0 1px 0 rgba(255,255,255,.18)!important;
+  }
+  body.iphoneProMaxRedesign .iphoneFloatingPulse{
+    display:block;position:fixed;right:14px;bottom:calc(var(--ios-nav-h) + 18px + env(safe-area-inset-bottom,0px));z-index:110;
+    width:48px;height:48px;border-radius:50%;border:1px solid rgba(94,231,255,.24);
+    background:radial-gradient(circle at 32% 25%,rgba(255,255,255,.28),transparent 20%),linear-gradient(180deg,rgba(94,231,255,.25),rgba(7,17,31,.94));
+    box-shadow:0 14px 32px rgba(0,0,0,.34),0 0 0 6px rgba(94,231,255,.06);
+    color:#e9fbff;font-size:20px;place-items:center;
+  }
+}
+@media(max-width:430px){
+  body.iphoneProMaxRedesign .mobileTitleText{font-size:16px!important;}
+  body.iphoneProMaxRedesign .mobileLiveSmall{font-size:10px!important;padding:6px 7px!important;}
+  body.iphoneProMaxRedesign .mobileStat b{font-size:11px!important;}
+  body.iphoneProMaxRedesign #commandSection .sessionCommand b{font-size:43px!important;}
+  body.iphoneProMaxRedesign .positionSymbol,
+  body.iphoneProMaxRedesign .scannerSymbol{font-size:22px!important;}
+}
+@media(min-width:781px){
+  .iphoneDock,.iphoneFloatingPulse{display:none!important;}
+}
+</style>
+
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v109, Trade Frequency Engine</h1>
+<h1>Trading 212 Manual God Mode v110, iPhone 16 Pro Max Cockpit</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -709,7 +1100,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v109</span>
+<span class="mobileTitleText">Manual God Mode v110</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -2886,6 +3277,102 @@ function exportCSV(){const j=load(KEY.journal,[]); const rows=['date,symbol,acti
 function init(){const root=$('longSimpleSection'); if(!root)return; root.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return; if(b.id==='ltsBuildPlan')buildPlan(); else if(b.id==='ltsTestData')testData(); else if(b.id==='ltsClearPlan'){save(KEY.plan,null);renderAll()} else if(b.id==='ltsGoTracker')$('ltsTrackerBox')?.scrollIntoView({behavior:'smooth',block:'start'}); else if(b.id==='ltsRunRadar')renderRadar(); else if(b.id==='ltsExportJournal')exportCSV(); else if(b.id==='ltsClearJournal'){if(confirm('Clear long term journal?')){save(KEY.journal,[]);renderAll()}} else if(b.dataset.ltsLog)logBought(b.dataset.ltsLog); else if(b.dataset.ltsAdd)addToTracker(b.dataset.ltsAdd); else if(b.dataset.ltsEdit)editItem(b.dataset.ltsEdit); else if(b.dataset.ltsReview)reviewItem(b.dataset.ltsReview); else if(b.dataset.ltsPrice)updatePrice(b.dataset.ltsPrice); else if(b.dataset.ltsDelete)deleteItem(b.dataset.ltsDelete);}); renderAll(); refreshTrackerPrices().then(changed=>{if(changed)renderTracker();});}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init); else init();
 }catch(err){console.error('v104 clear plan long term failed',err);}
+})();
+</script>
+
+
+
+<script id="v110-iphone16-pro-max-redesign-js">
+(function(){
+  'use strict';
+  function ready(fn){
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, {once:true});
+    else fn();
+  }
+  function byId(id){return document.getElementById(id);}
+  function vibrate(){try{if(navigator.vibrate) navigator.vibrate(8);}catch(e){}}
+  function scrollToPanel(id){
+    var el = byId(id);
+    if(!el) return;
+    vibrate();
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  function clickFirst(ids){
+    for(var i=0;i<ids.length;i++){
+      var el = byId(ids[i]);
+      if(el){el.click();return true;}
+    }
+    return false;
+  }
+  function makeDock(){
+    if(byId('iphoneDock')) return;
+    document.body.classList.add('iphoneProMaxRedesign');
+    var nav = document.createElement('nav');
+    nav.className = 'iphoneDock';
+    nav.id = 'iphoneDock';
+    nav.setAttribute('aria-label','iPhone command dock');
+    nav.innerHTML = '<div class="iphoneDockInner">' +
+      '<button type="button" data-target="commandSection" class="active"><span class="ico">⚡</span><span class="txt">Now</span></button>' +
+      '<button type="button" data-target="positionsSection"><span class="ico">🛡️</span><span class="txt">Exits</span></button>' +
+      '<button type="button" data-action="scan"><span class="ico">🔎</span><span class="txt">Scan</span></button>' +
+      '<button type="button" data-target="ticketSection"><span class="ico">🎫</span><span class="txt">Ticket</span></button>' +
+      '<button type="button" data-target="longSimpleSection"><span class="ico">🌱</span><span class="txt">Long</span></button>' +
+    '</div>';
+    document.body.appendChild(nav);
+    var pulse = document.createElement('button');
+    pulse.className = 'iphoneFloatingPulse';
+    pulse.type = 'button';
+    pulse.title = 'Back to live command';
+    pulse.setAttribute('aria-label','Back to live command');
+    pulse.textContent = '⌃';
+    document.body.appendChild(pulse);
+    pulse.addEventListener('click', function(){scrollToPanel('commandSection');});
+    nav.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if(!btn) return;
+      if(btn.dataset.action === 'scan'){
+        vibrate();
+        clickFirst(['scannerScanNow','scanNow']);
+        scrollToPanel('scannerSection');
+        return;
+      }
+      if(btn.dataset.target) scrollToPanel(btn.dataset.target);
+    });
+    var targetIds = ['commandSection','positionsSection','scannerSection','ticketSection','longSimpleSection'];
+    var dockButtons = Array.prototype.slice.call(nav.querySelectorAll('button[data-target]'));
+    if('IntersectionObserver' in window){
+      var observer = new IntersectionObserver(function(entries){
+        var visible = entries.filter(function(x){return x.isIntersecting;}).sort(function(a,b){return b.intersectionRatio - a.intersectionRatio;})[0];
+        if(!visible) return;
+        dockButtons.forEach(function(b){b.classList.toggle('active', b.dataset.target === visible.target.id);});
+      }, {root:null, rootMargin:'-22% 0px -58% 0px', threshold:[0.1,0.35,0.6]});
+      targetIds.forEach(function(id){var el = byId(id); if(el) observer.observe(el);});
+    }
+  }
+  function polishMobileLabels(){
+    var title = document.querySelector('.mobileTitleText');
+    if(title) title.textContent = 'God Mode v110';
+    document.title = 'Trading 212 God Mode v110, iPhone 16 Pro Max';
+    var metaTheme = document.querySelector('meta[name="theme-color"]');
+    if(!metaTheme){metaTheme = document.createElement('meta'); metaTheme.name = 'theme-color'; document.head.appendChild(metaTheme);}
+    metaTheme.content = '#020713';
+    if(!document.querySelector('meta[name="apple-mobile-web-app-capable"]')){
+      var apple = document.createElement('meta'); apple.name = 'apple-mobile-web-app-capable'; apple.content = 'yes'; document.head.appendChild(apple);
+    }
+    if(!document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')){
+      var bar = document.createElement('meta'); bar.name = 'apple-mobile-web-app-status-bar-style'; bar.content = 'black-translucent'; document.head.appendChild(bar);
+    }
+  }
+  function wireBigTouchFeedback(){
+    document.addEventListener('click', function(e){
+      if(e.target.closest('button,summary,.scannerTab')) vibrate();
+    }, {passive:true});
+  }
+  ready(function(){
+    polishMobileLabels();
+    makeDock();
+    wireBigTouchFeedback();
+  });
 })();
 </script>
 
