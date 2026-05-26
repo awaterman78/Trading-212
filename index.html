@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Trading 212 Manual God Mode v104, Long Term Clarity</title>
+<title>Trading 212 Manual God Mode v105, Long Term Clarity</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -657,7 +657,7 @@
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v104, Long Term Clarity</h1>
+<h1>Trading 212 Manual God Mode v105, Long Term Clarity</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v96 is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -669,7 +669,7 @@
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v104</span>
+<span class="mobileTitleText">Manual God Mode v105</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -1651,6 +1651,38 @@ function startWSShortlist(symbols,token){
     return true;
   }catch(e){return false}
 }
+
+function fallbackScannerRow(sym,market,note){
+  sym=String(sym||'').toUpperCase().trim();
+  const q=(state.quotes&&state.quotes[sym])?state.quotes[sym]:null;
+  if(!q||!isFinite(q.price)||q.price<=0)return {symbol:sym,error:'no usable quote',score:0,signal:'WAIT'};
+  const tb=trendBrain(sym);
+  const price=+q.price;
+  const baseScore=(market&&isFinite(market.score))?+market.score:0;
+  let score=baseScore+25;
+  const reasons=['live quote received'];
+  const veto=['no confirmed action setup yet'];
+  if(isFinite(q.changePct)&&q.changePct>0){score+=8;reasons.push('positive day')}
+  if(isFinite(q.changePct)&&q.changePct>1){score+=4;reasons.push('moving')}
+  if(tb&&tb.ready){score+=10;reasons.push('history loaded');if(tb.trend){score+=8;reasons.push('daily trend aligned')}else veto.push('daily trend not ideal')}
+  else veto.push('history missing or not ready');
+  if(note)reasons.push(String(note).slice(0,80));
+  const stop=price*0.99,target=price*1.012;
+  return {symbol:sym,quote:q,tb:tb||{},bt:{trades:0,winRate:null,expectancy:null,profitFactor:null,maxDD:null,label:'not tested this cycle'},score:clamp(Math.round(score),0,70),prob:50,expR:0,signal:'WAIT',buyTrigger:'SCANNED',reasons,veto,buyZoneLow:price*0.997,buyZoneHigh:price*1.002,maxChase:price*1.004,stop,target,qty:0,valueGBP:0,riskGBP:0,sizingMode:'watch only',sizingNote:'No order size because this is not a confirmed buy.',sizingWarning:'Watch only. Wait for Action/Confirming/Armed.',sellPlan:'No buy plan. Watch only.'};
+}
+function buildScannerRowsFromQuotes(syms,market,earnings){
+  const rows=[];
+  (syms||[]).forEach(sym=>{
+    try{
+      const r=scoreSymbol(sym,market,earnings||{});
+      if(r&&r.quote)rows.push(r);else rows.push(fallbackScannerRow(sym,market,(r&&r.error)||'score returned no row'));
+    }catch(e){
+      rows.push(fallbackScannerRow(sym,market,'scorer fallback: '+sanitizeError(e&&e.message?e.message:e)));
+    }
+  });
+  return rows.filter(Boolean);
+}
+
 async function scan(){
   if(state.scanning)return;
   state.scanning=true;
@@ -1711,7 +1743,7 @@ async function scan(){
     try{earnings=okQuotes>0?await fetchEarnings(s.finnhubKey):{};}catch(e){errors.push('earnings: '+sanitizeError(e&&e.message?e.message:e));}
     const market=marketRegime();state.lastMarket=market;
     if($('marketGate')){$('marketGate').textContent=market.label+', score '+market.score;$('marketGate').className=market.open?'goodText':'badText'}
-    let rows=syms.map(sym=>scoreSymbol(sym,market,earnings));
+    let rows=buildScannerRowsFromQuotes(syms,market,earnings);
     rows.forEach(r=>{if(r&&r.quote&&r.quote.stale){r.veto=r.veto||[];r.veto.push('history-only quote, no live trade');r.signal='WAIT';r.score=Math.min(r.score||0,55)}});
     applyBuyConfirmation(rows,market);
     rows=rows.sort((a,b)=>(b.score||0)-(a.score||0));
@@ -1859,7 +1891,7 @@ function scannerDiagText(rows){
   if(d.finishedAt){
     const secs=Math.max(1,Math.round((d.finishedAt-(d.startedAt||d.finishedAt))/1000));
     const rowsCount=(rows||state.lastRows||[]).length;
-    return '<b>Last scan complete.</b><br>Rows '+rowsCount+', quotes '+(d.quotes||0)+'/'+(d.symbols||0)+' safe-list, errors '+(d.errors||0)+', history '+readyHist+'/'+all.length+', took '+secs+'s.<br><span class="tiny">If Action is empty, tap Show all. If quotes are 0, Finnhub REST and stream are unavailable, so do not short-term trade.</span>';
+    return '<b>Last scan complete.</b><br>Rows '+rowsCount+', quotes '+(d.quotes||0)+'/'+(d.symbols||0)+' safe-list, errors '+(d.errors||0)+', history '+readyHist+'/'+all.length+', took '+secs+'s.<br><span class="tiny">Rows are the scored candidates. Action may still be 0 if nothing is buyable. If rows are 0 but quotes are above 0, fallback scoring is broken.</span>';
   }
   return '<b>No completed scan yet.</b><br>Tap Scan now or Load history + go live. History ready '+readyHist+'/'+all.length+', quotes stored '+quoteCount+'.';
 }
@@ -1885,7 +1917,7 @@ function updateScannerLiveStatus(){
   }
 }
 
-function renderScannerCards(rows){if(!$('scannerCards'))return;const s=activeSettings();const visible=scannerVisibleRows(rows||[]);if(!visible.length){const sess=usSessionState();if(sess.holiday||sess.weekend){$('scannerCards').innerHTML='<div class="scannerEmpty"><b>US market closed.</b><br>'+escapeHTML(sess.label)+'. Short-term scanner is locked. Long-term planning is still fine.<br><span class="tiny">'+escapeHTML(sess.next)+'</span></div>';return}if(sess.phase==='closed'){const armed=state.live?'Standby armed':'Not armed';$('scannerCards').innerHTML='<div class="scannerEmpty"><b>'+armed+'. No live scan rows yet.</b><br>The short-term scanner waits while the US session is closed, then scans when pre-market or regular trading begins.<br><span class="tiny">'+escapeHTML(sess.next)+' Current ET time: '+escapeHTML(sess.et)+'.</span></div>';return}$('scannerCards').innerHTML='<div class="scannerEmpty">'+scannerDiagText(rows||[])+'<br><br><b>No rows in this view.</b><br>That usually means the current tab has no candidates. Tap Show all or Blocked to inspect what the scanner rejected.</div>';return}const html=visible.map(r=>{if(!r||r.error)return '<div class="scannerCard blocked"><div class="scannerHead"><div><div class="scannerSymbol">'+escapeHTML(r&&r.symbol?r.symbol:'Unknown')+'</div><div class="tiny badText">'+escapeHTML(r&&r.error?r.error:'No data')+'</div></div><span class="badge bad">Blocked</span></div></div>';const owned=ownedPositionFor(r.symbol);if(owned)return renderOwnedScannerCard(r,owned);const status=scannerStatusText(r);const cls=scannerCardClass(r);const tierHtml=tierBadge(r);const canTrack=isFreshConfirmedBuy(r,s);const trackBtn=canTrack?'<button class="good" data-track="'+r.symbol+'">Track after buy</button>':'<button class="secondary" disabled>Track locked</button>';const tier=greenTierBadge(r);return '<div class="scannerCard '+cls+'"><div class="scannerHead"><div><div class="scannerSymbol">'+escapeHTML(r.symbol)+'</div><div class="tiny">'+escapeHTML(r.signal)+' · '+escapeHTML(status)+'</div></div><span class="badge '+(canTrack?'good':(status==='CONFIRMING'?'warn':(cls==='blocked'?'bad':'wait')))+'">'+escapeHTML(status)+'</span></div><div style="margin-top:8px">'+tierHtml+' '+tier+'</div><div class="scannerMeta"><div class="scannerMini"><span>Price</span><b>$'+n(r.quote.price,2)+'</b></div><div class="scannerMini"><span>Score</span><b>'+n(r.score,0)+'</b></div><div class="scannerMini"><span>Prob</span><b>'+n(r.prob,0)+'%</b></div></div><div class="scannerPrimaryLine"><b>'+(canTrack?'Why green:':'Why not green:')+'</b> '+escapeHTML(compactWhy(r))+'</div><div class="scannerMeta"><div class="scannerMini"><span>Buy zone</span><b>$'+n(r.buyZoneLow,2)+' to $'+n(r.buyZoneHigh,2)+'</b></div><div class="scannerMini"><span>Qty</span><b>'+qtyText(r.qty)+'</b></div><div class="scannerMini"><span>Order</span><b>'+moneyGBP(r.valueGBP)+'</b></div></div><div class="actions"><button class="secondary" data-copy-qty="'+qtyText(r.qty)+'">Copy qty</button><button class="secondary" data-ticket="'+r.symbol+'">Ticket</button>'+trackBtn+'<button class="warn" data-own="'+r.symbol+'">Own</button></div><details><summary>More detail</summary><div class="scannerDetail">'+levelMapForRow(r)+'<div class="tiny" style="margin-top:8px"><b>Backtest:</b> '+escapeHTML(r.bt&&r.bt.label?r.bt.label:'n/a')+'<br><b>Expected R:</b> '+n(r.expR,2)+'R<br><b>Stop:</b> $'+n(r.stop,2)+' · <b>Target:</b> $'+n(r.target,2)+'<br><b>Sell ladder:</b> '+escapeHTML(r.sellPlan||'')+'<br><b>Size:</b> '+escapeHTML((r.sizingMode||'')+' '+(r.sizingNote||'')+' '+(r.sizingWarning||''))+'<br><b>Reasons:</b> '+escapeHTML([...(r.reasons||[]),...(r.veto||[]).map(v=>'VETO '+v)].join(', '))+'</div></div></details></div>'}).join('');$('scannerCards').innerHTML=html}
+function renderScannerCards(rows){if(!$('scannerCards'))return;const s=activeSettings();const visible=scannerVisibleRows(rows||[]);if(!visible.length){const sess=usSessionState();if(sess.holiday||sess.weekend){$('scannerCards').innerHTML='<div class="scannerEmpty"><b>US market closed.</b><br>'+escapeHTML(sess.label)+'. Short-term scanner is locked. Long-term planning is still fine.<br><span class="tiny">'+escapeHTML(sess.next)+'</span></div>';return}if(sess.phase==='closed'){const armed=state.live?'Standby armed':'Not armed';$('scannerCards').innerHTML='<div class="scannerEmpty"><b>'+armed+'. No live scan rows yet.</b><br>The short-term scanner waits while the US session is closed, then scans when pre-market or regular trading begins.<br><span class="tiny">'+escapeHTML(sess.next)+' Current ET time: '+escapeHTML(sess.et)+'.</span></div>';return}$('scannerCards').innerHTML='<div class="scannerEmpty">'+scannerDiagText(rows||[])+'<br><br><b>No rows in this view.</b><br>No candidates match this tab. Tap Show all, Scout or Blocked to inspect the scanned names. If this message says Rows 0, the app did not build scored rows.</div>';return}const html=visible.map(r=>{if(!r||r.error)return '<div class="scannerCard blocked"><div class="scannerHead"><div><div class="scannerSymbol">'+escapeHTML(r&&r.symbol?r.symbol:'Unknown')+'</div><div class="tiny badText">'+escapeHTML(r&&r.error?r.error:'No data')+'</div></div><span class="badge bad">Blocked</span></div></div>';const owned=ownedPositionFor(r.symbol);if(owned)return renderOwnedScannerCard(r,owned);const status=scannerStatusText(r);const cls=scannerCardClass(r);const tierHtml=tierBadge(r);const canTrack=isFreshConfirmedBuy(r,s);const trackBtn=canTrack?'<button class="good" data-track="'+r.symbol+'">Track after buy</button>':'<button class="secondary" disabled>Track locked</button>';const tier=greenTierBadge(r);return '<div class="scannerCard '+cls+'"><div class="scannerHead"><div><div class="scannerSymbol">'+escapeHTML(r.symbol)+'</div><div class="tiny">'+escapeHTML(r.signal)+' · '+escapeHTML(status)+'</div></div><span class="badge '+(canTrack?'good':(status==='CONFIRMING'?'warn':(cls==='blocked'?'bad':'wait')))+'">'+escapeHTML(status)+'</span></div><div style="margin-top:8px">'+tierHtml+' '+tier+'</div><div class="scannerMeta"><div class="scannerMini"><span>Price</span><b>$'+n(r.quote.price,2)+'</b></div><div class="scannerMini"><span>Score</span><b>'+n(r.score,0)+'</b></div><div class="scannerMini"><span>Prob</span><b>'+n(r.prob,0)+'%</b></div></div><div class="scannerPrimaryLine"><b>'+(canTrack?'Why green:':'Why not green:')+'</b> '+escapeHTML(compactWhy(r))+'</div><div class="scannerMeta"><div class="scannerMini"><span>Buy zone</span><b>$'+n(r.buyZoneLow,2)+' to $'+n(r.buyZoneHigh,2)+'</b></div><div class="scannerMini"><span>Qty</span><b>'+qtyText(r.qty)+'</b></div><div class="scannerMini"><span>Order</span><b>'+moneyGBP(r.valueGBP)+'</b></div></div><div class="actions"><button class="secondary" data-copy-qty="'+qtyText(r.qty)+'">Copy qty</button><button class="secondary" data-ticket="'+r.symbol+'">Ticket</button>'+trackBtn+'<button class="warn" data-own="'+r.symbol+'">Own</button></div><details><summary>More detail</summary><div class="scannerDetail">'+levelMapForRow(r)+'<div class="tiny" style="margin-top:8px"><b>Backtest:</b> '+escapeHTML(r.bt&&r.bt.label?r.bt.label:'n/a')+'<br><b>Expected R:</b> '+n(r.expR,2)+'R<br><b>Stop:</b> $'+n(r.stop,2)+' · <b>Target:</b> $'+n(r.target,2)+'<br><b>Sell ladder:</b> '+escapeHTML(r.sellPlan||'')+'<br><b>Size:</b> '+escapeHTML((r.sizingMode||'')+' '+(r.sizingNote||'')+' '+(r.sizingWarning||''))+'<br><b>Reasons:</b> '+escapeHTML([...(r.reasons||[]),...(r.veto||[]).map(v=>'VETO '+v)].join(', '))+'</div></div></details></div>'}).join('');$('scannerCards').innerHTML=html}
 function wireScannerControls(){document.querySelectorAll('[data-scanner-filter]').forEach(b=>b.onclick=()=>{state.scannerFilter=b.dataset.scannerFilter||'action';state.scannerShowAll=false;renderResults(state.lastRows||[])});document.querySelectorAll('[data-scanner-toggle]').forEach(b=>b.onclick=()=>{state.scannerShowAll=!state.scannerShowAll;renderResults(state.lastRows||[])});document.querySelectorAll('[data-scan-now-card]').forEach(b=>b.onclick=()=>scan())}
 
 function signalClass(sig){return sig==='APEX'?'aplus':sig==='A_PLUS'?'buy':sig==='BUY'?'smallbuy':sig==='WATCH'?'watch':sig==='BLOCK'?'block':sig==='SELL'?'sell':'wait'}
