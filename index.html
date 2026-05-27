@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 God Mode, iPhone 16 Pro Max Dark Edition</title>
+<title>Trading 212 Manual God Mode v119, Sniper Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -1913,10 +1913,297 @@ body.t212-v112-app .goodText{color:#0b8f63!important;}body.t212-v112-app .badTex
 .ltPriceDiag b{display:block;margin-bottom:4px}.ltPriceDiag .tiny{color:var(--v112-muted,#64748b)!important}
 .ltEditPanel .quoteField{border:1px solid rgba(53,104,255,.18);border-radius:14px;padding:8px;background:rgba(53,104,255,.06)}
 </style>
+
+
+<style id="v119-sniper-dark-css">
+/* v119, Sniper Dark. The engine keeps every detail, the live short room only shows the next action first. */
+:root{
+  --v119-bg:#050914;
+  --v119-panel:#0d1728;
+  --v119-panel2:#121f35;
+  --v119-panel3:#162742;
+  --v119-text:#f4f8ff;
+  --v119-muted:#a7b6cd;
+  --v119-soft:#1b2c49;
+  --v119-line:rgba(195,215,255,.16);
+  --v119-blue:#7ab0ff;
+  --v119-green:#35e49b;
+  --v119-amber:#ffd166;
+  --v119-red:#ff6178;
+  --v119-purple:#c8b6ff;
+  --v119-cyan:#72eaff;
+  --v119-shadow:0 22px 62px rgba(0,0,0,.42);
+}
+html.v119-sniper-dark,html.t212-v112-app.v119-sniper-dark{background:#050914!important;color-scheme:dark!important;}
+html.v119-sniper-dark body.t212-v112-app,
+body.t212-v112-app.v119-sniper-dark{
+  color:var(--v119-text)!important;
+  background:
+    radial-gradient(circle at 0% -8%,rgba(122,176,255,.28),transparent 31%),
+    radial-gradient(circle at 100% 0%,rgba(53,228,155,.13),transparent 29%),
+    radial-gradient(circle at 50% 120%,rgba(200,182,255,.13),transparent 34%),
+    linear-gradient(180deg,#07111f 0%,#081526 46%,#04070f 100%)!important;
+  text-shadow:none!important;
+}
+body.v119-sniper-dark *{text-shadow:none!important;}
+body.v119-sniper-dark header{
+  background:rgba(5,9,20,.88)!important;
+  border-bottom:1px solid rgba(195,215,255,.12)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.44)!important;
+}
+body.v119-sniper-dark #t212V112AppBar,
+body.v119-sniper-dark .t212ViewHeader,
+body.v119-sniper-dark .scannerControls,
+body.v119-sniper-dark #t212V112TabBar,
+body.v119-sniper-dark .iphoneBottomNav{
+  background:rgba(8,15,28,.90)!important;
+  color:var(--v119-text)!important;
+  border:1px solid var(--v119-line)!important;
+  box-shadow:0 20px 52px rgba(0,0,0,.40)!important;
+  backdrop-filter:blur(22px) saturate(1.15)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.15)!important;
+}
+body.v119-sniper-dark .card,
+body.v119-sniper-dark .setupCard,
+body.v119-sniper-dark .positionCard,
+body.v119-sniper-dark .scannerCard,
+body.v119-sniper-dark #longSimpleSection,
+body.v119-sniper-dark .whyBox,
+body.v119-sniper-dark .orderSize,
+body.v119-sniper-dark .orderCallout,
+body.v119-sniper-dark .dailyMission,
+body.v119-sniper-dark .cashLedger,
+body.v119-sniper-dark .ltDataTruth,
+body.v119-sniper-dark .ltPlanBox,
+body.v119-sniper-dark .ltTrackerBox,
+body.v119-sniper-dark .ltAdvanced,
+body.v119-sniper-dark .ltJournalBox,
+body.v119-sniper-dark .ltEvidenceReport,
+body.v119-sniper-dark .warnBox,
+body.v119-sniper-dark .okBox,
+body.v119-sniper-dark .dangerBox,
+body.v119-sniper-dark .t212HomeCard,
+body.v119-sniper-dark .v112PageHero,
+body.v119-sniper-dark .t212Hero,
+body.v119-sniper-dark .shortSignalDashboard,
+body.v119-sniper-dark .ltValueMonitor{
+  background:linear-gradient(180deg,rgba(17,28,46,.97),rgba(10,18,32,.97))!important;
+  color:var(--v119-text)!important;
+  border:1px solid var(--v119-line)!important;
+  box-shadow:var(--v119-shadow)!important;
+}
+body.v119-sniper-dark #longSimpleSection,
+body.v119-sniper-dark .v112PageHero.long,
+body.v119-sniper-dark .t212HomeCard.long,
+body.v119-sniper-dark .ltValueMonitor{
+  background:radial-gradient(circle at 0% 0%,rgba(53,228,155,.17),transparent 38%),linear-gradient(150deg,rgba(17,39,39,.98),rgba(9,18,31,.98))!important;
+  border-color:rgba(53,228,155,.22)!important;
+}
+body.v119-sniper-dark .v112PageHero.short,
+body.v119-sniper-dark .t212HomeCard.short,
+body.v119-sniper-dark #commandSection{
+  background:radial-gradient(circle at 0% 0%,rgba(122,176,255,.21),transparent 40%),linear-gradient(150deg,rgba(18,31,53,.98),rgba(9,17,31,.98))!important;
+  border-color:rgba(122,176,255,.22)!important;
+}
+body.v119-sniper-dark .v112PageHero.options,
+body.v119-sniper-dark .t212HomeCard.options{
+  background:radial-gradient(circle at 0% 0%,rgba(255,209,102,.15),transparent 38%),linear-gradient(150deg,rgba(42,33,18,.98),rgba(9,17,31,.98))!important;
+  border-color:rgba(255,209,102,.18)!important;
+}
+body.v119-sniper-dark h1,
+body.v119-sniper-dark h2,
+body.v119-sniper-dark h3,
+body.v119-sniper-dark b,
+body.v119-sniper-dark strong,
+body.v119-sniper-dark .big,
+body.v119-sniper-dark .val,
+body.v119-sniper-dark .scannerSymbol,
+body.v119-sniper-dark .positionSymbol,
+body.v119-sniper-dark .ltTrackHead b,
+body.v119-sniper-dark .ltPlanRow .sym,
+body.v119-sniper-dark .v112BrandText b,
+body.v119-sniper-dark .v112AppTitle b,
+body.v119-sniper-dark .t212HomeCard b,
+body.v119-sniper-dark .t212Hero h2,
+body.v119-sniper-dark .v112PageHero h2,
+body.v119-sniper-dark .shortDashHead b,
+body.v119-sniper-dark .ltValueHero b{
+  color:var(--v119-text)!important;
+}
+body.v119-sniper-dark .tiny,
+body.v119-sniper-dark .muted,
+body.v119-sniper-dark .label,
+body.v119-sniper-dark label,
+body.v119-sniper-dark .sub,
+body.v119-sniper-dark .scannerPrimaryLine,
+body.v119-sniper-dark .forecastNote,
+body.v119-sniper-dark .positionCoach,
+body.v119-sniper-dark .v112BrandText span,
+body.v119-sniper-dark .v112AppTitle span,
+body.v119-sniper-dark .t212HomeCard span,
+body.v119-sniper-dark .t212Hero p,
+body.v119-sniper-dark .v112PageHero p,
+body.v119-sniper-dark .shortDashHead span,
+body.v119-sniper-dark .shortDashTile small,
+body.v119-sniper-dark .ltValueHero small{
+  color:var(--v119-muted)!important;
+}
+body.v119-sniper-dark input,
+body.v119-sniper-dark textarea,
+body.v119-sniper-dark select{
+  background:rgba(4,9,18,.86)!important;
+  color:var(--v119-text)!important;
+  border:1px solid rgba(195,215,255,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+body.v119-sniper-dark input::placeholder,body.v119-sniper-dark textarea::placeholder{color:#7f8ea6!important;}
+body.v119-sniper-dark .scannerMini,
+body.v119-sniper-dark .positionMini,
+body.v119-sniper-dark .forecastMini,
+body.v119-sniper-dark .metric,
+body.v119-sniper-dark .scorebox,
+body.v119-sniper-dark .decisionBox,
+body.v119-sniper-dark .rule,
+body.v119-sniper-dark .commandItem,
+body.v119-sniper-dark .ltTrackMini,
+body.v119-sniper-dark .cashMini,
+body.v119-sniper-dark .dailyMissionMini,
+body.v119-sniper-dark .mini,
+body.v119-sniper-dark .ltEvidenceMini,
+body.v119-sniper-dark .ltEvidenceCard,
+body.v119-sniper-dark .ltRadarCard,
+body.v119-sniper-dark .shortDashTile,
+body.v119-sniper-dark .ltValueGrid div,
+body.v119-sniper-dark .v112PageHero .quickFacts div,
+body.v119-sniper-dark .t212MiniStats div{
+  background:rgba(255,255,255,.055)!important;
+  color:var(--v119-text)!important;
+  border:1px solid rgba(195,215,255,.13)!important;
+}
+body.v119-sniper-dark .scannerMini span,
+body.v119-sniper-dark .positionMini span,
+body.v119-sniper-dark .forecastMini span,
+body.v119-sniper-dark .ltTrackMini span,
+body.v119-sniper-dark .mini span,
+body.v119-sniper-dark .cashMini span,
+body.v119-sniper-dark .dailyMissionMini span,
+body.v119-sniper-dark .shortDashTile span,
+body.v119-sniper-dark .ltValueGrid span,
+body.v119-sniper-dark .v112PageHero .quickFacts span{
+  color:#97a8c0!important;
+}
+body.v119-sniper-dark .scannerMini b,
+body.v119-sniper-dark .positionMini b,
+body.v119-sniper-dark .forecastMini b,
+body.v119-sniper-dark .ltTrackMini b,
+body.v119-sniper-dark .mini b,
+body.v119-sniper-dark .cashMini b,
+body.v119-sniper-dark .dailyMissionMini b,
+body.v119-sniper-dark .shortDashTile b,
+body.v119-sniper-dark .ltValueGrid b,
+body.v119-sniper-dark .v112PageHero .quickFacts b{
+  color:var(--v119-text)!important;
+}
+body.v119-sniper-dark table{background:#0a1220!important;color:var(--v119-text)!important;}
+body.v119-sniper-dark th{background:#111d31!important;color:#a9b7cc!important;}
+body.v119-sniper-dark td{background:#0a1220!important;color:#eef6ff!important;border-bottom:1px solid rgba(195,215,255,.10)!important;}
+body.v119-sniper-dark tr:hover td{background:rgba(122,176,255,.08)!important;}
+body.v119-sniper-dark .goodText,body.v119-sniper-dark .buy{color:#65f0b4!important;}
+body.v119-sniper-dark .badText,body.v119-sniper-dark .sell{color:#ff8ca0!important;}
+body.v119-sniper-dark .warnText,body.v119-sniper-dark .watch{color:#ffdc86!important;}
+body.v119-sniper-dark .cyanText,body.v119-sniper-dark .aplus{color:#72eaff!important;}
+body.v119-sniper-dark .purpleText,body.v119-sniper-dark .block{color:#c8b6ff!important;}
+body.v119-sniper-dark button:not(.secondary):not(.bad):not(.warn):not(.good):not(.scannerTab):not(.t212HomeCard):not(.v112BackHome),
+body.v119-sniper-dark .v112Segmented button.active,
+body.v119-sniper-dark #t212V112TabBar button.active{
+  background:linear-gradient(135deg,#3a7dff,#8bbaff)!important;
+  color:#06101e!important;
+  border-color:rgba(122,176,255,.48)!important;
+}
+body.v119-sniper-dark button.secondary,
+body.v119-sniper-dark .scannerTab,
+body.v119-sniper-dark .v112Segmented button,
+body.v119-sniper-dark #t212V112TabBar button{
+  background:rgba(255,255,255,.06)!important;
+  color:#dbe7f8!important;
+  border:1px solid rgba(195,215,255,.16)!important;
+  box-shadow:none!important;
+}
+body.v119-sniper-dark .scannerTab.active{background:linear-gradient(135deg,#2c71ff,#79adff)!important;color:#fff!important;border-color:rgba(122,176,255,.45)!important;}
+body.v119-sniper-dark button.good{background:linear-gradient(135deg,#19bd7f,#61efaf)!important;color:#04140c!important;}
+body.v119-sniper-dark button.warn{background:linear-gradient(135deg,#ffc24f,#ffe19a)!important;color:#201405!important;}
+body.v119-sniper-dark button.bad{background:linear-gradient(135deg,#ff4f70,#ff96a8)!important;color:#fff!important;}
+body.v119-sniper-dark .badge.good,body.v119-sniper-dark .ltStatus.plan,body.v119-sniper-dark .ltEPill.pass{background:rgba(53,228,155,.12)!important;color:#98ffd0!important;border-color:rgba(53,228,155,.28)!important;}
+body.v119-sniper-dark .badge.warn,body.v119-sniper-dark .ltEPill.check{background:rgba(255,209,102,.12)!important;color:#ffe2a0!important;border-color:rgba(255,209,102,.28)!important;}
+body.v119-sniper-dark .badge.bad,body.v119-sniper-dark .ltEPill.block{background:rgba(255,97,120,.12)!important;color:#ffb1bf!important;border-color:rgba(255,97,120,.28)!important;}
+body.v119-sniper-dark .ltStatus.hold{background:rgba(114,234,255,.10)!important;color:#9bf1ff!important;border-color:rgba(114,234,255,.25)!important;}
+body.v119-sniper-dark .ltStatus.manual{background:rgba(200,182,255,.10)!important;color:#d8ccff!important;border-color:rgba(200,182,255,.24)!important;}
+body.v119-sniper-dark .ltEditPanel{margin-top:10px;border:1px solid var(--v119-line)!important;border-radius:18px;background:rgba(255,255,255,.04)!important;overflow:hidden;}
+body.v119-sniper-dark .ltEditPanel summary{background:rgba(122,176,255,.10)!important;color:var(--v119-text)!important;}
+body.v119-sniper-dark .ltEditPanel .quoteField{background:rgba(122,176,255,.08)!important;border-color:rgba(122,176,255,.22)!important;}
+body.v119-sniper-dark .ltPriceDiag{background:rgba(122,176,255,.09)!important;border-color:rgba(122,176,255,.25)!important;color:var(--v119-text)!important;}
+
+/* Short term Sniper layer */
+#v119SniperPanel{margin:12px 0 0;border:1px solid rgba(122,176,255,.24);background:radial-gradient(circle at 0% 0%,rgba(122,176,255,.18),transparent 38%),linear-gradient(180deg,rgba(11,22,39,.98),rgba(6,12,23,.98));border-radius:28px;padding:14px;box-shadow:0 22px 58px rgba(0,0,0,.34);}
+.v119SniperTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.v119SniperTitle span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.10em;color:#91a7c4;font-weight:1000;}
+.v119SniperTitle b{display:block;font-size:27px;line-height:.98;letter-spacing:-.065em;margin-top:5px;color:#fff;}
+.v119SniperPill{white-space:nowrap;border:1px solid rgba(195,215,255,.16);background:rgba(255,255,255,.06);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:1000;color:#dbe7f8;}
+.v119CommandHero{border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.055);border-radius:24px;padding:16px;margin-bottom:10px;}
+.v119CommandHero .k{display:block;font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:#97a8c0;font-weight:1000;}
+.v119CommandHero .action{display:block;font-size:40px;line-height:.94;letter-spacing:-.08em;margin-top:7px;color:#fff;}
+.v119CommandHero .sub{display:block;margin-top:8px;color:#a9b7cc;font-size:14px;line-height:1.38;}
+.v119Queue{display:grid;grid-template-columns:1fr;gap:9px;}
+.v119QueueCard{border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.052);border-radius:22px;padding:12px;}
+.v119QueueCard.buy{border-color:rgba(53,228,155,.28);background:linear-gradient(180deg,rgba(53,228,155,.10),rgba(255,255,255,.035));}
+.v119QueueCard.sell{border-color:rgba(255,97,120,.30);background:linear-gradient(180deg,rgba(255,97,120,.10),rgba(255,255,255,.035));}
+.v119QueueCard.near{border-color:rgba(255,209,102,.28);background:linear-gradient(180deg,rgba(255,209,102,.09),rgba(255,255,255,.035));}
+.v119QueueHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.v119QueueHead span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.10em;color:#97a8c0;font-weight:1000;}
+.v119QueueHead b{display:block;font-size:23px;line-height:1;letter-spacing:-.055em;margin-top:5px;color:#fff;}
+.v119QueueBadge{border:1px solid rgba(195,215,255,.16);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:1000;color:#dbe7f8;background:rgba(255,255,255,.06);white-space:nowrap;}
+.v119QueueGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0;}
+.v119Mini{border:1px solid rgba(195,215,255,.12);background:rgba(4,9,18,.48);border-radius:14px;padding:8px;min-width:0;}
+.v119Mini span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#91a7c4;font-weight:1000;}
+.v119Mini b{display:block;font-size:12px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;}
+.v119QueueNote{font-size:12px;color:#a9b7cc;line-height:1.34;margin-top:6px;}
+.v119QueueActions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px;}
+.v119QueueActions button{min-height:40px!important;font-size:12px!important;padding:8px!important;border-radius:14px!important;}
+.v119NoTrade{border:1px dashed rgba(195,215,255,.18);background:rgba(255,255,255,.035);border-radius:20px;padding:13px;color:#a9b7cc;line-height:1.38;}
+.v119DetailDrawer{margin-top:10px;border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.045);border-radius:20px;padding:12px;display:none;}
+.v119DetailDrawer.open{display:block;}
+.v119DetailDrawer b{display:block;margin-bottom:5px;}
+.v119DetailDrawer .reasons{font-size:12px;line-height:1.4;color:#a9b7cc;}
+body.v119-sniper-dark[data-t212-page="short"] #sessionPanel{display:none!important;}
+body.v119-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;}
+body.v119-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls button{font-size:12px!important;min-height:42px!important;padding:8px!important;}
+body.v119-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls button:nth-child(n+4){display:none!important;}
+body.v119-sniper-dark[data-t212-page="short"] #shortSignalDashboard{margin-top:12px!important;}
+body.v119-sniper-dark[data-t212-page="short"] .shortDashGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.v119-sniper-dark[data-t212-page="short"] .shortDashTile{min-height:74px!important;padding:10px!important;border-radius:18px!important;}
+body.v119-sniper-dark[data-t212-page="short"] .shortDashTile b{font-size:28px!important;}
+body.v119-sniper-dark[data-t212-page="short"] #scannerSection,
+body.v119-sniper-dark[data-t212-page="short"] #blockerSection{transition:max-height .22s ease, border-color .22s ease;}
+body.v119-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open),
+body.v119-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open){max-height:76px!important;min-height:76px!important;overflow:hidden!important;cursor:pointer!important;padding:18px 124px 18px 18px!important;}
+body.v119-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open)>*:not(h2),
+body.v119-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open)>*:not(h2){display:none!important;}
+body.v119-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open)::after,
+body.v119-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open)::after{content:'Tap for detail';position:absolute;right:14px;top:50%;transform:translateY(-50%);border:1px solid rgba(195,215,255,.16);background:rgba(255,255,255,.06);color:#dbe7f8;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:1000;}
+body.v119-sniper-dark[data-t212-page="short"] #scannerSection.v119-open,
+body.v119-sniper-dark[data-t212-page="short"] #blockerSection.v119-open{max-height:none!important;overflow:visible!important;}
+@media(max-width:430px){
+  .v119CommandHero .action{font-size:34px;}
+  .v119QueueGrid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .v119QueueActions{grid-template-columns:1fr;}
+  body.v119-sniper-dark[data-t212-page="short"] .shortDashGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+}
+</style>
+
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v115, Light Edit Edition</h1>
+<h1>Trading 212 Manual God Mode v119, Sniper Dark</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -1928,7 +2215,7 @@ body.t212-v112-app .goodText{color:#0b8f63!important;}body.t212-v112-app .badTex
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v115</span>
+<span class="mobileTitleText">Manual God Mode v119</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -4783,6 +5070,162 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     try{ saved = localStorage.getItem('t212_v112_page') || 'home'; }catch(e){}
     setRoute(saved);
     setInterval(syncLive, 1500);
+  });
+})();
+</script>
+
+
+
+<script id="v119-sniper-dark-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  function gbp(v){ try{ if(typeof moneyGBP === 'function') return moneyGBP(v); }catch(e){} return '£' + (isFinite(v)?Number(v).toFixed(2):'0.00'); }
+  function usd(v){ return '$' + (isFinite(v)?Number(v).toFixed(2):'n/a'); }
+  function num(v,d){ try{ if(typeof n === 'function') return n(v,d); }catch(e){} return isFinite(v)?Number(v).toFixed(d||2):'0.00'; }
+  function esc(v){ try{ if(typeof escapeHTML === 'function') return escapeHTML(v); }catch(e){} return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function qs(id){ return document.getElementById(id); }
+  function safeRows(){ try{ return (state && Array.isArray(state.lastRows)) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function safePositions(){ try{ return (state && Array.isArray(state.positions)) ? state.positions.filter(Boolean) : []; }catch(e){ return []; } }
+  function isBuy(r){ try{ return isConfirmedBuy(r, typeof activeSettings === 'function' ? activeSettings() : settings()); }catch(e){ return false; } }
+  function owned(sym){ try{ return isOwnedSymbol(sym); }catch(e){ return false; } }
+  function scoreRow(r){ return Number(r && (r.score || r.totalScore || r.prob || 0)) || 0; }
+  function explainRow(r){
+    if(!r) return 'No row selected yet.';
+    var bits=[];
+    if(r.buyTrigger) bits.push('Trigger: ' + r.buyTrigger);
+    if(r.signal) bits.push('Signal: ' + r.signal);
+    if(isFinite(r.score)) bits.push('Score: ' + num(r.score,0));
+    if(isFinite(r.prob)) bits.push('Confidence: ' + num(r.prob,0) + '%');
+    if(isFinite(r.expR)) bits.push('Expected R: ' + num(r.expR,2));
+    if(Array.isArray(r.reasons) && r.reasons.length) bits.push('Reasons: ' + r.reasons.join(', '));
+    if(Array.isArray(r.veto) && r.veto.length) bits.push('Blockers: ' + r.veto.join(', '));
+    if(!bits.length && typeof compactWhy === 'function') bits.push(compactWhy(r));
+    return bits.join(' | ') || 'No extra detail available.';
+  }
+  function classifyNear(r){
+    var t=String((r&&r.buyTrigger)||'').toUpperCase();
+    var s=String((r&&r.signal)||'').toUpperCase();
+    return t.indexOf('CONFIRM')>=0 || t.indexOf('ARMED')>=0 || s.indexOf('WATCH')>=0 || s.indexOf('SCOUT')>=0;
+  }
+  function sellAlert(){
+    var out=null;
+    safePositions().forEach(function(p){
+      try{
+        var ev = typeof evaluatePosition === 'function' ? evaluatePosition(p) : null;
+        var sev = ev && ev.signal === 'SELL' ? 100 : ((p.last||0) >= (p.target||Infinity) ? 80 : 0);
+        if(!out || sev > out.sev) out = {p:p, ev:ev, sev:sev};
+      }catch(e){}
+    });
+    return out;
+  }
+  function bestBuy(){
+    return safeRows().filter(function(r){ return r && r.symbol && !owned(r.symbol) && isBuy(r); })
+      .sort(function(a,b){ return scoreRow(b)-scoreRow(a); })[0] || null;
+  }
+  function nearReady(){
+    return safeRows().filter(function(r){ return r && r.symbol && !owned(r.symbol) && !isBuy(r) && classifyNear(r); })
+      .sort(function(a,b){ return scoreRow(b)-scoreRow(a); })[0] || null;
+  }
+  function rowCard(type, title, r){
+    if(!r) return '<div class="v119QueueCard '+type+'"><div class="v119QueueHead"><div><span>'+esc(title)+'</span><b>None</b></div><div class="v119QueueBadge">Clean</div></div><div class="v119NoTrade">Nothing in this queue. That is not a failure, that is the filter doing its job.</div></div>';
+    var price = r.quote && isFinite(r.quote.price) ? r.quote.price : r.price;
+    var badge = r.buyTrigger || r.signal || 'WATCH';
+    var qty = (typeof qtyText === 'function') ? qtyText(r.qty||0) : num(r.qty||0,3);
+    return '<div class="v119QueueCard '+type+'" data-v119-symbol="'+esc(r.symbol)+'">'+
+      '<div class="v119QueueHead"><div><span>'+esc(title)+'</span><b>'+esc(r.symbol)+'</b></div><div class="v119QueueBadge">'+esc(badge)+'</div></div>'+
+      '<div class="v119QueueGrid">'+
+        '<div class="v119Mini"><span>Price</span><b>'+usd(price)+'</b></div>'+
+        '<div class="v119Mini"><span>Buy</span><b>'+gbp(r.valueGBP||0)+'</b></div>'+
+        '<div class="v119Mini"><span>Qty</span><b>'+esc(qty)+'</b></div>'+
+        '<div class="v119Mini"><span>Target</span><b>'+usd(r.target)+'</b></div>'+ 
+      '</div>'+
+      '<div class="v119QueueNote">Stop '+usd(r.stop)+' · confidence '+num(r.prob||0,0)+'% · expected R '+num(r.expR||0,2)+'.</div>'+ 
+      '<div class="v119QueueActions"><button class="good" type="button" data-v119-ticket="'+esc(r.symbol)+'">Open ticket</button><button class="secondary" type="button" data-v119-why="'+esc(r.symbol)+'">Why?</button></div>'+ 
+      '</div>';
+  }
+  function sellCard(info){
+    if(!info || !info.p) return '<div class="v119QueueCard sell"><div class="v119QueueHead"><div><span>Best exit alert</span><b>None</b></div><div class="v119QueueBadge">Hold</div></div><div class="v119NoTrade">No position is shouting sell right now.</div></div>';
+    var p=info.p, ev=info.ev||{};
+    return '<div class="v119QueueCard sell"><div class="v119QueueHead"><div><span>Best exit alert</span><b>'+esc(p.symbol)+'</b></div><div class="v119QueueBadge">'+esc(ev.signal||'CHECK')+'</div></div>'+
+      '<div class="v119QueueGrid"><div class="v119Mini"><span>Last</span><b>'+usd(p.last)+'</b></div><div class="v119Mini"><span>Entry</span><b>'+usd(p.entry)+'</b></div><div class="v119Mini"><span>Stop</span><b>'+usd(p.stop)+'</b></div><div class="v119Mini"><span>Target</span><b>'+usd(p.target)+'</b></div></div>'+ 
+      '<div class="v119QueueNote">'+esc(ev.reason||'Check open position card before acting.')+'</div>'+ 
+      '<div class="v119QueueActions"><button class="bad" type="button" data-v119-position="'+esc(p.id)+'">Open position</button><button class="secondary" type="button" data-v119-positions="1">All positions</button></div></div>';
+  }
+  function renderSniper(){
+    var command = qs('commandSection'); if(!command) return;
+    var panel = qs('v119SniperPanel');
+    if(!panel){
+      panel=document.createElement('div');
+      panel.id='v119SniperPanel';
+      var dash=qs('shortSignalDashboard');
+      if(dash) command.insertBefore(panel,dash); else command.appendChild(panel);
+    }
+    var rows=safeRows();
+    var buy=bestBuy();
+    var near=nearReady();
+    var sell=sellAlert();
+    var action='WAIT', cls='warnText', sub='No clean trade yet. Cash is a position.';
+    if(sell && sell.ev && sell.ev.signal === 'SELL') { action='SELL '+sell.p.symbol; cls='badText'; sub=sell.ev.reason || 'Exit alert on an open position.'; }
+    else if(buy) { action='BUY '+buy.symbol; cls='goodText'; sub='Use the ticket. Check Trading 212 live price is still inside the buy zone before touching anything.'; }
+    else if(near) { action='CONFIRM '+near.symbol; cls='cyanText'; sub='Interesting, but not a buy yet. Wait for the hold window, no flicker chasing.'; }
+    else if(rows.length) { action='WAIT'; cls='warnText'; sub='Scan complete, no clean buy. That is discipline, not dead app.'; }
+    else { action='NO SCAN'; cls='warnText'; sub='Load history and go live, then this becomes the only box to watch.'; }
+    var age='No scan yet';
+    try{ if(state && state.scanDiag && state.scanDiag.finishedAt) age='Updated '+new Date(state.scanDiag.finishedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }catch(e){}
+    panel.innerHTML='<div class="v119SniperTop"><div class="v119SniperTitle"><span>Short Term Sniper Mode</span><b>One decision first</b></div><div class="v119SniperPill">'+esc(age)+'</div></div>'+ 
+      '<div class="v119CommandHero"><span class="k">What do I do now?</span><b class="action '+cls+'">'+esc(action)+'</b><span class="sub">'+esc(sub)+'</span></div>'+ 
+      '<div class="v119Queue">'+rowCard('buy','Best buy now',buy)+rowCard('near','Nearly ready',near)+sellCard(sell)+'</div>'+ 
+      '<div class="v119DetailDrawer" id="v119DetailDrawer"><b>Decision detail</b><div class="reasons">Tap Why on a candidate.</div></div>';
+  }
+  function showWhy(sym){
+    var r=safeRows().filter(function(x){return x && x.symbol===sym;})[0];
+    var d=qs('v119DetailDrawer'); if(!d) return;
+    d.classList.add('open');
+    d.innerHTML='<b>'+esc(sym)+' decision detail</b><div class="reasons">'+esc(explainRow(r))+'</div>';
+    d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function wireClicks(){
+    document.addEventListener('click',function(e){
+      var t=e.target.closest('[data-v119-ticket]');
+      if(t){ e.preventDefault(); try{ showTicket(t.getAttribute('data-v119-ticket')); }catch(err){} var box=qs('ticketSection'); if(box) box.scrollIntoView({behavior:'smooth',block:'start'}); return; }
+      var w=e.target.closest('[data-v119-why]');
+      if(w){ e.preventDefault(); showWhy(w.getAttribute('data-v119-why')); return; }
+      var p=e.target.closest('[data-v119-positions]');
+      if(p){ e.preventDefault(); var pos=qs('positionsSection'); if(pos) pos.scrollIntoView({behavior:'smooth',block:'start'}); return; }
+      var sec=e.target.closest('body.v119-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open), body.v119-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open)');
+      if(sec){ e.preventDefault(); sec.classList.add('v119-open'); return; }
+    }, true);
+  }
+  function patchRenderers(){
+    try{
+      if(typeof renderResults === 'function' && !renderResults.__v119){
+        var oldResults=renderResults;
+        renderResults=function(){ var v=oldResults.apply(this,arguments); setTimeout(renderSniper,0); return v; };
+        renderResults.__v119=true;
+      }
+      if(typeof renderSessionPanel === 'function' && !renderSessionPanel.__v119){
+        var oldSession=renderSessionPanel;
+        renderSessionPanel=function(){ var v=oldSession.apply(this,arguments); setTimeout(renderSniper,0); return v; };
+        renderSessionPanel.__v119=true;
+      }
+      if(typeof renderPositions === 'function' && !renderPositions.__v119){
+        var oldPositions=renderPositions;
+        renderPositions=function(){ var v=oldPositions.apply(this,arguments); setTimeout(renderSniper,0); return v; };
+        renderPositions.__v119=true;
+      }
+    }catch(e){}
+  }
+  ready(function(){
+    document.documentElement.classList.add('v119-sniper-dark');
+    document.body.classList.add('v119-sniper-dark');
+    var brand=document.querySelector('.v112BrandText b'); if(brand) brand.textContent='God Mode v119';
+    var brandSub=document.querySelector('.v112BrandText span'); if(brandSub) brandSub.textContent='Sniper dark cockpit, detail tucked behind taps';
+    document.querySelectorAll('#scannerSection h2,#blockerSection h2').forEach(function(h){ h.addEventListener('click',function(){ var s=h.closest('section'); if(s) s.classList.toggle('v119-open'); }); });
+    wireClicks();
+    patchRenderers();
+    renderSniper();
+    setInterval(renderSniper,5000);
   });
 })();
 </script>
