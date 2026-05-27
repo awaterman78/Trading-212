@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 Manual God Mode v123, Live Scanner Restore Dark</title>
+<title>Trading 212 Manual God Mode v125, Opportunity Radar Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -4103,6 +4103,48 @@ function wireCommandShortcuts(){document.querySelectorAll('[data-command-shortcu
 function focusCommandLayer(){const el=$('sessionPanel')||$('actionCockpit');if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'});}
 function maybeAutoPrimeDaily(){const s=settings();if(!s.autoPrimeDaily)return;if(!s.massiveKey&&!s.fmpKey&&!s.avKey)return;const last=localStorage.getItem(LS.autoPrime);if(last===todayISO())return;const missing=allSymbols().filter(x=>!historyFresh(x));if(!missing.length){localStorage.setItem(LS.autoPrime,todayISO());return}localStorage.setItem(LS.autoPrime,todayISO());setTimeout(()=>{toast('Daily history prime','Auto-priming '+missing.length+' missing symbol(s). This only runs when the page is open.','info');primeHistory(false)},900)}
 function bind(){ $('saveKeys').onclick=()=>{saveJSON(LS.keys,{finnhubKey:$('finnhubKey').value.trim(),massiveKey:$('massiveKey')?$('massiveKey').value.trim():'',fmpKey:$('fmpKey')?$('fmpKey').value.trim():'',avKey:$('avKey').value.trim()});toast('Keys saved','Stored locally in this browser only.','good')};$('saveRisk').onclick=()=>{saveSettings();const s=settings();$('riskPct').value=s.riskPct;$('maxAllocPct').value=s.maxAllocPct;$('dailyLossPct').value=s.dailyLossPct;if($('dailyTargetPct'))$('dailyTargetPct').value=s.dailyTargetPct;if($('dailyStretchPct'))$('dailyStretchPct').value=s.dailyStretchPct;$('maxExposurePct').value=s.maxExposurePct;if($('minOrderGBP'))$('minOrderGBP').value=s.minOrderGBP;if($('cashMode'))$('cashMode').value=s.cashMode;syncCashDisplay();toast('Risk saved','Settings updated and percent inputs normalised.','good')};$('saveFilters').onclick=()=>{saveSettings();toast('Filters saved','God mode filters updated, including v69 ignition sniper, cash and movement filters.','good')};$('saveWatchlist').onclick=()=>{localStorage.setItem(LS.watchlist,$('watchlist').value);if($('momentumList'))localStorage.setItem(LS.momentum,$('momentumList').value);if($('includeLearningSymbols'))localStorage.setItem('t212gm67_include_learning',$('includeLearningSymbols').checked?'yes':'no');if($('avoidWeakSymbols'))localStorage.setItem('t212gm67_avoid_weak',$('avoidWeakSymbols').checked?'yes':'no');toast('Watchlist saved','Core, momentum and learning rotation settings saved.','good')};if($('reconcileCash'))$('reconcileCash').onclick=reconcileCash;$('testData').onclick=async()=>{try{await fetchQuote('AAPL',settings().finnhubKey);toast('Live data OK','Finnhub quote returned for AAPL.','good')}catch(e){toast('Live data failed',sanitizeError(e.message),'bad')}};$('primeHistory').onclick=()=>primeHistory(false);$('refreshHistory').onclick=()=>primeHistory(true);if($('testHistory'))$('testHistory').onclick=testHistoryData;if($('resetAlphaBudget'))$('resetAlphaBudget').onclick=resetAlphaBudget;$('scanNow').onclick=scan;if($('dailyRoutine'))$('dailyRoutine').onclick=runDailyRoutine;if($('showTopOnly'))$('showTopOnly').onclick=focusCommandLayer;$('startLive').onclick=startLive;$('stopLive').onclick=stopLive;$('requestNotify').onclick=enableTradeAlerts;updateAlertButton();$('soundTest').onclick=()=>{beep(880,.08);setTimeout(()=>beep(1040,.08),120)};$('exportJournal').onclick=exportCSV;$('clearJournal').onclick=()=>{if(confirm('Clear journal in this browser?')){state.journal=[];saveJSON(LS.journal,state.journal);renderJournal()}};if($('refreshFeedback'))$('refreshFeedback').onclick=()=>{renderFeedback();renderLearningLab()};if($('copyReviewPack'))$('copyReviewPack').onclick=copyReviewPack;if($('exportJournalJSON'))$('exportJournalJSON').onclick=exportJSON;if($('importJournalJSON'))$('importJournalJSON').onchange=e=>importJSONFile(e.target.files[0]);if($('copyLearningPack'))$('copyLearningPack').onclick=copyLearningPack;if($('exportLearningJSON'))$('exportLearningJSON').onclick=exportLearningJSON;if($('clearLearning'))$('clearLearning').onclick=clearLearningMemory;if($('velocityMode'))$('velocityMode').onclick=()=>setVelocityMode(!state.cashVelocityMode);if($('unstickDay'))$('unstickDay').onclick=()=>setUnstickMode(true);if($('normalMode'))$('normalMode').onclick=()=>{state.cashVelocityMode=false;setUnstickMode(false);localStorage.setItem('t212gm68_velocity_mode','off');updateUnstickButtons();};if($('rotateWatchlist'))$('rotateWatchlist').onclick=rotateWatchlistFromLearning;document.querySelectorAll('[data-restore-watchlist]').forEach(b=>b.onclick=restoreExpandedStarterWatchlist);if($('showBlockers'))$('showBlockers').onclick=()=>{if($('blockerSection'))$('blockerSection').scrollIntoView({behavior:'smooth',block:'start'});renderBlockerBoard(state.lastRows||[])};updateUnstickButtons()}
+
+try{
+  Object.assign(window,{
+    state:state,
+    settings:settings,
+    activeSettings:activeSettings,
+    scan:scan,
+    startLive:startLive,
+    stopLive:stopLive,
+    runDailyRoutine:runDailyRoutine,
+    renderResults:renderResults,
+    renderSessionPanel:renderSessionPanel,
+    renderPositions:renderPositions,
+    renderBlockerBoard:renderBlockerBoard,
+    renderRuleBoard:renderRuleBoard,
+    scannerCounts:scannerCounts,
+    compactWhy:compactWhy,
+    qtyText:qtyText,
+    isConfirmedBuy:isConfirmedBuy,
+    isOwnedSymbol:isOwnedSymbol,
+    evaluatePosition:evaluatePosition,
+    positionValues:positionValues,
+    portfolioState:portfolioState,
+    cashLedger:cashLedger,
+    toast:toast,
+    moneyGBP:moneyGBP,
+    n:n,
+    escapeHTML:escapeHTML,
+    usSessionState:usSessionState,
+    allSymbols:allSymbols,
+    shortTermScanSymbols:shortTermScanSymbols,
+    marketSymbols:marketSymbols,
+    watchlist:watchlist,
+    freshMoverScore:freshMoverScore,
+    scalpIgnitionScore:scalpIgnitionScore,
+    opportunityTier:opportunityTier,
+    setVelocityMode:setVelocityMode,
+    setUnstickMode:setUnstickMode,
+    updateUnstickButtons:updateUnstickButtons,
+    saveSettings:saveSettings
+  });
+}catch(e){}
 loadSettings();bind();syncCashDisplay();renderHistoryState();renderPositions();renderFeedback();renderLearningLab();renderSessionPanel([]);setTimeout(maybeAutoPrimeDaily,1200);setInterval(()=>{if(state.positions.length)renderPositions()},15000);
 })();
 </script>
@@ -5990,6 +6032,311 @@ body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open
     setBrand(); wire(); insertControls();
     setInterval(function(){ setBrand(); insertControls(); },700);
   });
+})();
+</script>
+
+
+
+<style id="v124-short-autoscan-watchdog-css">
+/* v124, short scanner watchdog, proves whether scan is actually running and auto kicks first scan when history is ready. */
+html.v124-short-autoscan-watchdog{background:#050914!important;color-scheme:dark!important;}
+body.v124-short-autoscan-watchdog #v123LiveControls{grid-template-columns:repeat(4,minmax(0,1fr))!important;}
+body.v124-short-autoscan-watchdog #v123ScanMini{border-color:rgba(122,176,255,.22)!important;background:rgba(122,176,255,.07)!important;}
+#v124WatchdogLine{margin-top:8px;border:1px solid rgba(53,228,155,.22);background:rgba(53,228,155,.07);border-radius:16px;padding:9px 10px;color:#a9b7cc;font-size:12px;line-height:1.35;}
+#v124WatchdogLine b{color:#fff!important;}
+#v124WatchdogLine .good{color:#8dffd0!important;}#v124WatchdogLine .warn{color:#ffdc86!important;}#v124WatchdogLine .bad{color:#ff9bad!important;}
+body.v124-short-autoscan-watchdog #v123LiveControls button[data-v123-start]{background:linear-gradient(135deg,#35e49b,#10b981)!important;color:#04120b!important;}
+body.v124-short-autoscan-watchdog[data-t212-page="short"] #scannerSection.v124-open{display:block!important;max-height:none!important;overflow:visible!important;padding:14px!important;}
+body.v124-short-autoscan-watchdog[data-t212-page="short"] #scannerSection.v124-open>*:not(h2){display:revert!important;}
+body.v124-short-autoscan-watchdog[data-t212-page="short"] #scannerSection.v124-open .scannerControls{display:block!important;position:static!important;margin:8px 0!important;}
+body.v124-short-autoscan-watchdog[data-t212-page="short"] #scannerSection.v124-open .scannerCards{display:block!important;}
+body.v124-short-autoscan-watchdog[data-t212-page="short"] #scannerSection.v124-open .scannerCard{display:block!important;margin:7px 0!important;}
+@media(max-width:430px){body.v124-short-autoscan-watchdog #v123LiveControls{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#v124WatchdogLine{font-size:11px!important;}}
+</style>
+<script id="v124-short-autoscan-watchdog-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function id(x){ return document.getElementById(x); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];}); }
+  function now(){ return Date.now(); }
+  function rows(){ try{ return state && Array.isArray(state.lastRows) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function getSettings(){ try{ return typeof settings==='function' ? settings() : {}; }catch(e){ return {}; } }
+  function getSession(){ try{ return typeof usSessionState==='function' ? usSessionState() : {phase:'unknown',label:'unknown'}; }catch(e){ return {phase:'unknown',label:'unknown'}; } }
+  function page(){ return document.body.getAttribute('data-t212-page') || ''; }
+  function hasKey(){ var s=getSettings(); return !!(s&&s.finnhubKey); }
+  function isOpenSession(){ var s=getSession(); return !!(s && !s.holiday && !s.weekend && s.phase!=='closed'); }
+  function historyReadyCount(){ try{ var all=typeof allSymbols==='function'?allSymbols():[]; return all.filter(function(sym){ return state.history && state.history[sym] && Array.isArray(state.history[sym].data) && state.history[sym].data.length>40; }).length; }catch(e){ return 0; } }
+  function allCount(){ try{ return (typeof allSymbols==='function'?allSymbols():[]).length||0; }catch(e){ return 0; } }
+  function shortCount(){ try{ return (typeof shortTermScanSymbols==='function'?shortTermScanSymbols():[]).length||0; }catch(e){ return 0; } }
+  function scanningStale(){ try{ return !!(state.scanning && state.scanDiag && state.scanDiag.startedAt && now()-state.scanDiag.startedAt>90000); }catch(e){ return false; } }
+  function resetStaleScan(){ if(scanningStale()){ try{ state.scanning=false; state.scanDiag.phase='reset-stale'; state.scanDiag.message='Previous scan lock was older than 90 seconds, reset by v124 watchdog.'; }catch(e){} return true; } return false; }
+  function statusText(){
+    var r=rows(), d={}; try{ d=state.scanDiag||{}; }catch(e){}
+    var sess=getSession(); var live=false, scanning=false; try{ live=!!state.live; scanning=!!state.scanning; }catch(e){}
+    var hist=historyReadyCount(), total=allCount(), shortlist=shortCount();
+    var phase=d.phase || (scanning?'scanning':(r.length?'scored':'idle'));
+    var age='never'; try{ if(d.finishedAt) age=Math.round((now()-d.finishedAt)/1000)+'s ago'; }catch(e){}
+    var cls = r.length?'good':(hasKey()&&isOpenSession()?'warn':'bad');
+    var msg='Watchdog '+(live?'live':'ready')+' · '+esc(sess.label||sess.phase||'session')+' · shortlist '+shortlist+' · history '+hist+'/'+total+' · phase '+esc(phase)+' · rows '+r.length+' · last '+age;
+    if(!hasKey()) msg+=' · add Finnhub key';
+    else if(isOpenSession() && !r.length && !scanning) msg+=' · auto scan will kick in';
+    return '<b class="'+cls+'">Scanner watchdog:</b> '+msg;
+  }
+  function setBrand(){
+    document.documentElement.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog');
+    document.body.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog');
+    document.title='Trading 212 Manual God Mode v125, Opportunity Radar Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v124';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Sniper dark, auto scan watchdog';
+    var m=document.querySelector('.mobileTitleText'); if(m) m.textContent='Manual God Mode v124';
+  }
+  function addWatchdogLine(){
+    var mini=id('v123ScanMini'); if(!mini) return;
+    var line=id('v124WatchdogLine');
+    if(!line){ line=document.createElement('div'); line.id='v124WatchdogLine'; mini.insertAdjacentElement('afterend', line); }
+    line.innerHTML=statusText();
+  }
+  function improveControls(){
+    var bar=id('v123LiveControls'); if(!bar) return;
+    var start=bar.querySelector('[data-v123-start]'); if(start) start.textContent='Start scanner';
+    var load=bar.querySelector('[data-v123-load]'); if(load) load.textContent='Load + scan';
+    var scan=bar.querySelector('[data-v123-scan]'); if(scan) scan.textContent='Force scan';
+    var res=bar.querySelector('[data-v123-results]'); if(res) res.textContent='Open results';
+  }
+  function openResults(){
+    var sec=id('scannerSection'); if(!sec) return;
+    sec.classList.add('v124-open','v123-open','v119-open','v120-open');
+    try{ state.scannerFilter='all'; state.scannerShowAll=true; }catch(e){}
+    try{ if(typeof renderResults==='function') renderResults(rows()); }catch(e){}
+  }
+  function callScan(reason, openAfter){
+    resetStaleScan();
+    if(!hasKey()){ try{ if(typeof toast==='function') toast('Finnhub key needed','Add your Finnhub key in Data before live scanning.','warn'); }catch(e){} return Promise.resolve(false); }
+    if(!isOpenSession()){ try{ if(typeof toast==='function') toast('Scanner standby', (getSession().label||'US market is closed')+'. The short scanner will not produce live rows while the session is closed.','warn'); }catch(e){} return Promise.resolve(false); }
+    if(window.__v124ScanRunning) return Promise.resolve(false);
+    window.__v124ScanRunning=true;
+    try{ if(typeof toast==='function') toast('Scanner starting', reason || 'Forcing a fresh short-term scan now.','info'); }catch(e){}
+    var p;
+    try{ p = (typeof scan==='function') ? scan() : null; }catch(e){ try{ if(typeof toast==='function') toast('Scan failed', String(e&&e.message||e), 'bad'); }catch(_){} window.__v124ScanRunning=false; return Promise.resolve(false); }
+    return Promise.resolve(p).then(function(){ if(openAfter) openResults(); return true; }).catch(function(e){ try{ if(typeof toast==='function') toast('Scan failed', String(e&&e.message||e), 'bad'); }catch(_){} return false; }).finally(function(){ window.__v124ScanRunning=false; addWatchdogLine(); });
+  }
+  function startScanner(openAfter){
+    resetStaleScan();
+    var before=rows().length;
+    var p=null;
+    try{ if(typeof startLive==='function') p=startLive(); }catch(e){ try{ if(typeof toast==='function') toast('Live start failed', String(e&&e.message||e), 'warn'); }catch(_){} }
+    return Promise.resolve(p).then(function(){
+      return new Promise(function(resolve){ setTimeout(resolve,700); });
+    }).then(function(){
+      if(rows().length===before || rows().length===0) return callScan('Live button pressed, forcing first scan.', openAfter);
+      if(openAfter) openResults();
+      return true;
+    });
+  }
+  function autoWatchdog(){
+    setBrand(); improveControls(); addWatchdogLine(); resetStaleScan();
+    if(page()!=='short') return;
+    if(!hasKey() || !isOpenSession()) return;
+    var r=rows(), d={}; try{ d=state.scanDiag||{}; }catch(e){}
+    var last=Number(d.finishedAt||0);
+    var enoughHistory=historyReadyCount()>=5 || allCount()===0;
+    var idle=!state.scanning && !window.__v124ScanRunning;
+    if(!idle) return;
+    var dueFirst = r.length===0 && enoughHistory && (!window.__v124LastAuto || now()-window.__v124LastAuto>45000);
+    var dueRefresh = r.length>0 && last && now()-last>Math.max(25000,(getSettings().pollSeconds||10)*3500);
+    if(dueFirst || dueRefresh){
+      window.__v124LastAuto=now();
+      if(dueFirst){
+        try{ state.live=true; }catch(e){}
+        callScan('v124 watchdog saw market open, history ready, but no scan rows after waiting. Auto starting now.', false);
+      }else{
+        callScan('v124 watchdog refresh.', false);
+      }
+    }
+  }
+  function wire(){
+    if(document.body.getAttribute('data-v124-wired')) return;
+    document.body.setAttribute('data-v124-wired','1');
+    document.addEventListener('click',function(e){
+      var start=e.target.closest('[data-v123-start]');
+      if(start){ e.preventDefault(); startScanner(true); return; }
+      var load=e.target.closest('[data-v123-load]');
+      if(load){ e.preventDefault(); var p=null; try{ if(typeof runDailyRoutine==='function') p=runDailyRoutine(); }catch(ex){} Promise.resolve(p).then(function(){ return startScanner(true); }); return; }
+      var scanBtn=e.target.closest('[data-v123-scan]');
+      if(scanBtn){ e.preventDefault(); callScan('Force scan pressed.', true); return; }
+      var res=e.target.closest('[data-v123-results]');
+      if(res){ e.preventDefault(); openResults(); setTimeout(function(){ var sec=id('scannerSection'); if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'}); },50); return; }
+    },true);
+  }
+  ready(function(){
+    setBrand(); wire(); improveControls(); addWatchdogLine();
+    setTimeout(autoWatchdog,1200);
+    setTimeout(autoWatchdog,5000);
+    setInterval(autoWatchdog,5000);
+  });
+})();
+</script>
+
+
+
+<style id="v125-opportunity-radar-dark-css">
+/* v125, opportunity radar. This does not loosen the green light, it shows the best near-term movement candidates and why they are not green yet. */
+html.v125-opportunity-radar-dark{background:#050914!important;color-scheme:dark!important;}
+body.v125-opportunity-radar-dark #v125OpportunityRadar{margin:10px 0 0!important;border:1px solid rgba(255,209,102,.24)!important;background:linear-gradient(180deg,rgba(255,209,102,.08),rgba(9,18,32,.92))!important;border-radius:18px!important;padding:10px!important;box-shadow:0 14px 38px rgba(0,0,0,.28)!important;}
+body.v125-opportunity-radar-dark .v125RadarHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;}
+body.v125-opportunity-radar-dark .v125RadarHead b{display:block;font-size:15px!important;letter-spacing:-.02em;color:#fff!important;}
+body.v125-opportunity-radar-dark .v125RadarHead span{display:block;font-size:11px!important;line-height:1.25;color:#a9b7cc!important;margin-top:2px;}
+body.v125-opportunity-radar-dark .v125RadarBadge{display:inline-flex;align-items:center;border-radius:999px;border:1px solid rgba(255,209,102,.28);background:rgba(255,209,102,.10);color:#ffdc86!important;padding:5px 8px;font-size:10px!important;font-weight:1000;white-space:nowrap;}
+body.v125-opportunity-radar-dark .v125ModeStrip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:8px 0;}
+body.v125-opportunity-radar-dark .v125ModeStrip button{min-height:34px!important;padding:6px 5px!important;border-radius:12px!important;font-size:11px!important;box-shadow:none!important;background:rgba(255,255,255,.06)!important;color:#dbe7f8!important;border:1px solid rgba(195,215,255,.14)!important;}
+body.v125-opportunity-radar-dark .v125ModeStrip button.active{background:linear-gradient(135deg,#ffc24f,#ffe19a)!important;color:#201405!important;border-color:rgba(255,209,102,.44)!important;}
+body.v125-opportunity-radar-dark .v125RadarCard{border:1px solid rgba(195,215,255,.13);background:rgba(255,255,255,.045);border-radius:15px;padding:9px;margin:7px 0;}
+body.v125-opportunity-radar-dark .v125RadarCard.hot{border-color:rgba(53,228,155,.35);background:linear-gradient(180deg,rgba(53,228,155,.10),rgba(255,255,255,.04));}
+body.v125-opportunity-radar-dark .v125RadarTop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;}
+body.v125-opportunity-radar-dark .v125RadarTop b{font-size:20px!important;color:#fff!important;letter-spacing:-.04em;}
+body.v125-opportunity-radar-dark .v125RadarTop span{font-size:10px!important;color:#a9b7cc!important;text-transform:uppercase;letter-spacing:.08em;font-weight:1000;}
+body.v125-opportunity-radar-dark .v125RadarAction{border-radius:999px;padding:5px 8px;font-size:10px!important;font-weight:1000;background:rgba(122,176,255,.12);border:1px solid rgba(122,176,255,.22);color:#b9d6ff!important;white-space:nowrap;}
+body.v125-opportunity-radar-dark .v125RadarAction.hot{background:rgba(53,228,155,.12);border-color:rgba(53,228,155,.32);color:#98ffd0!important;}
+body.v125-opportunity-radar-dark .v125RadarGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:8px;}
+body.v125-opportunity-radar-dark .v125RadarMini{background:rgba(4,9,18,.52);border:1px solid rgba(195,215,255,.10);border-radius:11px;padding:6px;min-width:0;}
+body.v125-opportunity-radar-dark .v125RadarMini span{display:block;color:#95a6bf!important;font-size:8px!important;text-transform:uppercase;letter-spacing:.06em;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+body.v125-opportunity-radar-dark .v125RadarMini b{display:block;margin-top:2px;font-size:12px!important;color:#fff!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+body.v125-opportunity-radar-dark .v125RadarNote{font-size:11px!important;line-height:1.32;color:#a9b7cc!important;margin-top:7px;}
+body.v125-opportunity-radar-dark .v125RadarBtns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+body.v125-opportunity-radar-dark .v125RadarBtns button{min-height:34px!important;border-radius:12px!important;font-size:11px!important;padding:6px!important;}
+body.v125-opportunity-radar-dark .v125Reality{border:1px solid rgba(122,176,255,.18);background:rgba(122,176,255,.07);border-radius:14px;padding:8px;margin-top:8px;font-size:11px!important;line-height:1.35;color:#c8d6ea!important;}
+body.v125-opportunity-radar-dark .v125Pulse{display:inline-flex;align-items:center;gap:5px;}
+body.v125-opportunity-radar-dark .v125Pulse::before{content:'';width:7px;height:7px;border-radius:50%;background:#35e49b;box-shadow:0 0 0 4px rgba(53,228,155,.12);}
+@media(max-width:430px){body.v125-opportunity-radar-dark #v125OpportunityRadar{padding:9px!important;border-radius:16px!important;}body.v125-opportunity-radar-dark .v125RadarGrid{grid-template-columns:repeat(2,minmax(0,1fr));}body.v125-opportunity-radar-dark .v125ModeStrip{grid-template-columns:1fr 1fr 1fr;}body.v125-opportunity-radar-dark .v125ModeStrip button{font-size:10px!important;}}
+</style>
+<script id="v125-opportunity-radar-dark-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function id(x){ return document.getElementById(x); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c];}); }
+  function num(v,d){ v=Number(v); return isFinite(v)?v.toFixed(d==null?2:d):'n/a'; }
+  function gbp(v){ try{ return typeof moneyGBP==='function'?moneyGBP(v):'£'+num(v,2); }catch(e){ return '£'+num(v,2); } }
+  function usd(v){ return '$'+num(v,2); }
+  function rows(){ try{ return window.state && Array.isArray(state.lastRows) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function settingsSafe(){ try{ return typeof activeSettings==='function'?activeSettings():(typeof settings==='function'?settings():{}); }catch(e){ return {}; } }
+  function owned(sym){ try{ return typeof isOwnedSymbol==='function' && isOwnedSymbol(sym); }catch(e){ return false; } }
+  function confirmed(r){ try{ return typeof isConfirmedBuy==='function' && isConfirmedBuy(r, settingsSafe()); }catch(e){ return false; } }
+  function hardBlock(r){ var txt=((r&&r.veto)?r.veto.join(' | '):'')+' | '+((r&&r.buyTrigger)||''); return /daily loss lock|daily target lock|earnings|no cash|exposure cap|red lock|target lock|history-only quote/i.test(txt); }
+  function fresh(r){ try{ return typeof freshMoverScore==='function'?freshMoverScore(r):{score:0,tags:[]}; }catch(e){ return {score:0,tags:[]}; } }
+  function ignition(r){ try{ return typeof scalpIgnitionScore==='function'?scalpIgnitionScore(r):{score:0,tags:[]}; }catch(e){ return {score:0,tags:[]}; } }
+  function movementScore(r){
+    if(!r||!r.quote||r.error||owned(r.symbol)) return -999;
+    var f=fresh(r), ig=ignition(r), score=0;
+    score += Number(r.score||0)/12;
+    score += Number(r.prob||0)/20;
+    score += Number(f.score||0)*2.2;
+    score += Number(ig.score||0)*1.8;
+    if(isFinite(r.m5)) score += Math.max(-4, Math.min(5, Number(r.m5)*8));
+    if(isFinite(r.m15)) score += Math.max(-4, Math.min(5, Number(r.m15)*5));
+    if(confirmed(r)) score += 20;
+    if(String(r.buyTrigger||'').toUpperCase().indexOf('CONFIRM')>=0) score += 9;
+    if(String(r.buyTrigger||'').toUpperCase().indexOf('ARMED')>=0) score += 5;
+    if(String(r.buyTrigger||'').toUpperCase().indexOf('CHASE')>=0) score -= 8;
+    if(hardBlock(r)) score -= 40;
+    return score;
+  }
+  function pickCandidates(){
+    return rows().filter(function(r){ return r&&r.symbol&&r.quote&&!r.error&&!owned(r.symbol); })
+      .sort(function(a,b){ return movementScore(b)-movementScore(a); })
+      .slice(0,3);
+  }
+  function actionLabel(r){
+    if(!r) return {txt:'No rows', hot:false};
+    if(confirmed(r)) return {txt:'Green review', hot:true};
+    var ig=ignition(r), f=fresh(r), trig=String(r.buyTrigger||'').toUpperCase();
+    if(hardBlock(r)) return {txt:'Blocked', hot:false};
+    if(trig.indexOf('CONFIRM')>=0) return {txt:'Confirming', hot:true};
+    if(ig.score>=8 && f.score>=4) return {txt:'Micro watch', hot:true};
+    if(ig.score>=6 || f.score>=4) return {txt:'Scout only', hot:false};
+    return {txt:'Paper watch', hot:false};
+  }
+  function why(r){
+    if(!r) return 'No scan rows yet.';
+    var f=fresh(r), ig=ignition(r), bits=[];
+    if(ig.tags&&ig.tags.length) bits.push('Ignition: '+ig.tags.slice(0,3).join(', '));
+    if(f.tags&&f.tags.length) bits.push('Fresh: '+f.tags.slice(0,3).join(', '));
+    if(r.veto&&r.veto.length) bits.push('Not green because '+r.veto.slice(0,2).join(', '));
+    if(!bits.length && r.reasons&&r.reasons.length) bits.push(r.reasons.slice(0,3).join(', '));
+    return bits.join('. ') || 'No extra reason captured.';
+  }
+  function card(r,idx){
+    if(!r){ return '<div class="v125RadarCard"><div class="v125RadarTop"><div><span>No radar candidate</span><b>None</b></div><div class="v125RadarAction">Idle</div></div><div class="v125RadarNote">Run scanner first. Rows can exist without a buy, but this radar will show the closest moving names.</div></div>'; }
+    var a=actionLabel(r), f=fresh(r), ig=ignition(r), price=r.quote&&r.quote.price;
+    var targetPct = price&&r.target ? ((r.target/price-1)*100) : NaN;
+    var stopPct = price&&r.stop ? ((r.stop/price-1)*100) : NaN;
+    var qty = isFinite(r.qty)?Number(r.qty).toFixed(3):'0.000';
+    return '<div class="v125RadarCard '+(a.hot?'hot':'')+'" data-v125-symbol="'+esc(r.symbol)+'">'+
+      '<div class="v125RadarTop"><div><span>#'+idx+' closest near-term mover</span><b>'+esc(r.symbol)+'</b></div><div class="v125RadarAction '+(a.hot?'hot':'')+'">'+esc(a.txt)+'</div></div>'+ 
+      '<div class="v125RadarGrid">'+
+        '<div class="v125RadarMini"><span>Price</span><b>'+usd(price)+'</b></div>'+ 
+        '<div class="v125RadarMini"><span>5m / 15m</span><b>'+num(r.m5,2)+'% / '+num(r.m15,2)+'%</b></div>'+ 
+        '<div class="v125RadarMini"><span>Ignition</span><b>'+num(ig.score,0)+'/12</b></div>'+ 
+        '<div class="v125RadarMini"><span>Fresh</span><b>'+num(f.score,0)+'/7</b></div>'+ 
+        '<div class="v125RadarMini"><span>Suggested size</span><b>'+gbp(r.valueGBP||0)+'</b></div>'+ 
+        '<div class="v125RadarMini"><span>Qty</span><b>'+esc(qty)+'</b></div>'+ 
+        '<div class="v125RadarMini"><span>Target</span><b>'+num(targetPct,2)+'%</b></div>'+ 
+        '<div class="v125RadarMini"><span>Stop</span><b>'+num(stopPct,2)+'%</b></div>'+ 
+      '</div>'+ 
+      '<div class="v125RadarNote">'+esc(why(r))+'</div>'+ 
+      '<div class="v125RadarBtns"><button class="secondary" type="button" data-v125-open="'+esc(r.symbol)+'">Open row</button><button class="secondary" type="button" data-v125-paper="'+esc(r.symbol)+'">Paper note</button></div>'+ 
+      '</div>';
+  }
+  function currentFrequency(){ try{ var el=id('tradeFrequency'); return el?el.value:'balanced'; }catch(e){ return 'balanced'; } }
+  function modeButtons(){ var mode=currentFrequency(); return '<div class="v125ModeStrip"><button type="button" data-v125-mode="balanced" class="'+(mode==='balanced'||mode==='quality'?'active':'')+'">Balanced</button><button type="button" data-v125-mode="active" class="'+(mode==='active'?'active':'')+'">Active</button><button type="button" data-v125-mode="micro" class="'+(mode==='micro'?'active':'')+'">Micro</button></div>'; }
+  function render(){
+    var panel=id('v119SniperPanel'); if(!panel) return;
+    var after=id('v123ScanMini') || id('v124WatchdogLine') || panel.querySelector('.v119CommandHero') || panel;
+    var box=id('v125OpportunityRadar');
+    if(!box){ box=document.createElement('div'); box.id='v125OpportunityRadar'; after.insertAdjacentElement('afterend',box); }
+    var c=pickCandidates();
+    var top=c[0];
+    var a=actionLabel(top);
+    var note = rows().length ? 'Shows the closest movers, even when the proper green light is still blocked.' : 'Run scanner first, then this shows the closest moving names.';
+    box.innerHTML='<div class="v125RadarHead"><div><b>Opportunity radar</b><span>'+esc(note)+'</span></div><div class="v125RadarBadge '+(a.hot?'v125Pulse':'')+'">'+esc(a.txt)+'</div></div>'+modeButtons()+
+      (c.length?c.map(function(r,i){return card(r,i+1);}).join(''):card(null,1))+
+      '<div class="v125Reality"><b>Reality check:</b> there is not always a clean small-percent trade. This radar helps find movement. Green still means rules pass. Scout and Micro mean controlled tiny review or paper tracking, not free money.</div>';
+  }
+  function setBrand(){
+    document.documentElement.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog','v125-opportunity-radar-dark');
+    document.body.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog','v125-opportunity-radar-dark');
+    document.title='Trading 212 Manual God Mode v125, Opportunity Radar Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v125';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Sniper dark, opportunity radar';
+    var m=document.querySelector('.mobileTitleText'); if(m) m.textContent='Manual God Mode v125';
+  }
+  function setMode(mode){
+    var el=id('tradeFrequency'); if(el){ el.value=mode; }
+    try{ if(typeof saveSettings==='function') saveSettings(); }catch(e){}
+    try{ if(typeof toast==='function') toast('Trade frequency '+mode, mode==='micro'?'Micro mode shows tiny scout candidates. Still manual, still stop-led.':mode==='active'?'Active mode lowers filters slightly but keeps cash and stop controls.':'Balanced mode restored.','info'); }catch(e){}
+    try{ if(typeof scan==='function') scan(); }catch(e){}
+    setTimeout(render,800);
+  }
+  function openRow(sym){
+    try{ state.scannerFilter='all'; state.scannerShowAll=true; if(typeof renderResults==='function') renderResults(rows()); }catch(e){}
+    var sec=id('scannerSection'); if(sec){ sec.classList.add('v124-open','v123-open','v119-open','v120-open'); setTimeout(function(){ sec.scrollIntoView({behavior:'smooth',block:'start'}); },40); }
+  }
+  function paper(sym){
+    var r=rows().find(function(x){return String(x.symbol||'').toUpperCase()===String(sym||'').toUpperCase();});
+    var msg=sym+': paper tracked at '+(new Date()).toLocaleTimeString('en-GB')+'. '+why(r);
+    try{ var k='t212gm125_paper_notes'; var arr=JSON.parse(localStorage.getItem(k)||'[]'); arr.unshift({ts:new Date().toISOString(),symbol:sym,price:r&&r.quote&&r.quote.price,score:r&&r.score,trigger:r&&r.buyTrigger,note:msg}); localStorage.setItem(k,JSON.stringify(arr.slice(0,100))); }catch(e){}
+    try{ if(typeof toast==='function') toast('Paper note saved', msg, 'good'); }catch(e){}
+  }
+  function wire(){
+    if(document.body.getAttribute('data-v125-wired')) return; document.body.setAttribute('data-v125-wired','1');
+    document.addEventListener('click',function(e){
+      var mode=e.target.closest('[data-v125-mode]'); if(mode){ e.preventDefault(); setMode(mode.getAttribute('data-v125-mode')); return; }
+      var open=e.target.closest('[data-v125-open]'); if(open){ e.preventDefault(); openRow(open.getAttribute('data-v125-open')); return; }
+      var pp=e.target.closest('[data-v125-paper]'); if(pp){ e.preventDefault(); paper(pp.getAttribute('data-v125-paper')); return; }
+    },true);
+  }
+  ready(function(){ setBrand(); wire(); render(); setTimeout(render,1200); setInterval(function(){ setBrand(); render(); },2500); });
 })();
 </script>
 
