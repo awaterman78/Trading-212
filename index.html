@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 Manual God Mode v119, Sniper Dark</title>
+<title>Trading 212 Manual God Mode v120, Compact Sniper Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -2200,10 +2200,111 @@ body.v119-sniper-dark[data-t212-page="short"] #blockerSection.v119-open{max-heig
 }
 </style>
 
+
+<style id="v120-compact-sniper-dark-css">
+/* v120, compact sniper dark. Keeps the detail, but removes the live-trading clutter from the first screen. */
+:root{
+  --v120-bg:#050914;
+  --v120-panel:#0b1424;
+  --v120-panel2:#111d31;
+  --v120-text:#f4f8ff;
+  --v120-muted:#a7b6cd;
+  --v120-line:rgba(195,215,255,.16);
+  --v120-blue:#7ab0ff;
+  --v120-green:#35e49b;
+  --v120-amber:#ffd166;
+  --v120-red:#ff6178;
+  --v120-shadow:0 18px 48px rgba(0,0,0,.38);
+}
+html.v120-compact-sniper-dark{background:#050914!important;color-scheme:dark!important;}
+body.v120-compact-sniper-dark{background:radial-gradient(circle at 0 -8%,rgba(122,176,255,.25),transparent 30%),radial-gradient(circle at 100% 0,rgba(53,228,155,.12),transparent 28%),linear-gradient(180deg,#07111f 0,#081526 44%,#04070f 100%)!important;color:var(--v120-text)!important;}
+body.v120-compact-sniper-dark header{padding:calc(8px + env(safe-area-inset-top,0px)) 10px 8px!important;background:rgba(5,9,20,.90)!important;}
+body.v120-compact-sniper-dark #t212V112Status{max-width:520px!important;}
+body.v120-compact-sniper-dark .v112StatusShell{grid-template-columns:38px minmax(0,1fr) auto!important;gap:8px!important;}
+body.v120-compact-sniper-dark .v112BrandIcon{width:38px!important;height:38px!important;border-radius:16px!important;font-size:20px!important;}
+body.v120-compact-sniper-dark .v112BrandText b{font-size:18px!important;line-height:1.05!important;color:#fff!important;}
+body.v120-compact-sniper-dark .v112BrandText span{font-size:11px!important;color:var(--v120-muted)!important;max-width:220px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+body.v120-compact-sniper-dark .v112LivePill{font-size:11px!important;padding:7px 9px!important;border-radius:999px!important;background:rgba(53,228,155,.13)!important;color:#9dffd3!important;border-color:rgba(53,228,155,.26)!important;}
+body.v120-compact-sniper-dark main{padding-top:8px!important;padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #v112ShortHero{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #t212V112AppBar{top:64px!important;margin:0 0 8px!important;padding:9px!important;border-radius:22px!important;background:rgba(8,15,28,.91)!important;border-color:var(--v120-line)!important;box-shadow:var(--v120-shadow)!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112AppBarTop{grid-template-columns:38px minmax(0,1fr)!important;gap:9px!important;margin-bottom:8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112BackHome{width:38px!important;height:38px!important;min-height:38px!important;border-radius:15px!important;font-size:19px!important;background:rgba(255,255,255,.06)!important;color:#dbe7f8!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112AppTitle b{font-size:21px!important;line-height:1!important;color:#fff!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112AppTitle span,
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112ModeChip{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112Segmented{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;margin-top:0!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v112Segmented button{min-height:38px!important;border-radius:15px!important;font-size:13px!important;padding:0 6px!important;box-shadow:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection{padding:10px!important;border-radius:22px!important;margin-bottom:8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection>h2{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection>.row.tight{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls{display:flex!important;gap:6px!important;margin:0 0 8px!important;overflow-x:auto!important;padding-bottom:2px!important;scrollbar-width:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls::-webkit-scrollbar{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls button{min-height:31px!important;border-radius:999px!important;font-size:10px!important;padding:5px 9px!important;white-space:nowrap!important;box-shadow:none!important;flex:0 0 auto!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #v119SniperPanel{margin:0!important;padding:10px!important;border-radius:22px!important;box-shadow:var(--v120-shadow)!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119SniperTop{align-items:center!important;margin-bottom:8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119SniperTitle span{font-size:9px!important;letter-spacing:.11em!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119SniperTitle b{font-size:21px!important;line-height:1!important;margin-top:3px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119SniperPill{font-size:10px!important;padding:5px 8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119CommandHero{padding:12px!important;border-radius:19px!important;margin-bottom:8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119CommandHero .k{font-size:9px!important;letter-spacing:.10em!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119CommandHero .action{font-size:33px!important;line-height:.92!important;margin-top:5px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119CommandHero .sub{font-size:12px!important;line-height:1.28!important;margin-top:6px!important;}
+.v120CountStrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0 8px;}
+.v120CountStrip button{min-width:0!important;min-height:54px!important;padding:7px 5px!important;border-radius:15px!important;background:rgba(255,255,255,.055)!important;color:#eef6ff!important;border:1px solid rgba(195,215,255,.13)!important;box-shadow:none!important;text-align:left!important;}
+.v120CountStrip span{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#97a8c0;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.v120CountStrip b{display:block;font-size:20px;line-height:1;margin-top:4px;color:#fff;}
+.v120CountStrip .buy b{color:#65f0b4!important}.v120CountStrip .wait b{color:#ffdc86!important}.v120CountStrip .blocked b{color:#ff8ca0!important}
+body.v120-compact-sniper-dark[data-t212-page="short"] #shortSignalDashboard{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119Queue{gap:6px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueCard{padding:9px!important;border-radius:18px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueHead{align-items:center!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueHead span{font-size:8.5px!important;letter-spacing:.10em!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueHead b{font-size:18px!important;margin-top:3px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueBadge{font-size:10px!important;padding:4px 7px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119NoTrade{display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:7px 0!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119Mini{padding:6px!important;border-radius:12px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119Mini span{font-size:7px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119Mini b{font-size:11px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueNote{font-size:11px!important;line-height:1.25!important;margin-top:4px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueActions{grid-template-columns:1fr 1fr!important;gap:6px!important;margin-top:7px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueActions button{min-height:34px!important;font-size:11px!important;border-radius:12px!important;padding:7px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] .v119DetailDrawer{border-radius:16px!important;padding:10px!important;font-size:12px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent),
+body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open),
+body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open),
+body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open){max-height:58px!important;min-height:58px!important;overflow:hidden!important;cursor:pointer!important;padding:15px 100px 15px 15px!important;border-radius:20px!important;position:relative!important;margin-bottom:8px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent)>*:not(h2),
+body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open)>*:not(h2),
+body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open)>*:not(h2),
+body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open)>*:not(h2){display:none!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent)::after,
+body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open)::after,
+body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open)::after,
+body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open)::after{content:'Open';position:absolute;right:12px;top:50%;transform:translateY(-50%);border:1px solid rgba(195,215,255,.16);background:rgba(255,255,255,.06);color:#dbe7f8;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:1000;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection.v120-open,
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection.v120-urgent,
+body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection.v120-open,
+body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection.v120-open,
+body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection.v120-open{max-height:none!important;overflow:visible!important;padding:14px!important;}
+body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection h2,
+body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection h2,
+body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection h2,
+body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection h2{font-size:18px!important;margin:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+@media(max-width:430px){
+  body.v120-compact-sniper-dark[data-t212-page="short"] .v119CommandHero .action{font-size:31px!important;}
+  body.v120-compact-sniper-dark[data-t212-page="short"] .v119QueueGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  .v120CountStrip{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;}
+  .v120CountStrip button{min-height:50px!important;padding:6px 4px!important;}
+  .v120CountStrip b{font-size:18px;}
+}
+</style>
+
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v119, Sniper Dark</h1>
+<h1>Trading 212 Manual God Mode v120, Compact Sniper Dark</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -2215,7 +2316,7 @@ body.v119-sniper-dark[data-t212-page="short"] #blockerSection.v119-open{max-heig
 <div aria-label="Phone cockpit summary" class="mobileShell">
 <div class="mobileTitleBar">
 <span aria-hidden="true" class="mobileIcon">☰</span>
-<span class="mobileTitleText">Manual God Mode v119</span>
+<span class="mobileTitleText">Manual God Mode v120</span>
 <span class="mobileLiveSmall" id="mobileLiveSmall">● Idle</span>
 <span aria-hidden="true" class="mobileIcon sliders">☷</span>
 </div>
@@ -5219,13 +5320,76 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   ready(function(){
     document.documentElement.classList.add('v119-sniper-dark');
     document.body.classList.add('v119-sniper-dark');
-    var brand=document.querySelector('.v112BrandText b'); if(brand) brand.textContent='God Mode v119';
+    var brand=document.querySelector('.v112BrandText b'); if(brand) brand.textContent='God Mode v120';
     var brandSub=document.querySelector('.v112BrandText span'); if(brandSub) brandSub.textContent='Sniper dark cockpit, detail tucked behind taps';
     document.querySelectorAll('#scannerSection h2,#blockerSection h2').forEach(function(h){ h.addEventListener('click',function(){ var s=h.closest('section'); if(s) s.classList.toggle('v119-open'); }); });
     wireClicks();
     patchRenderers();
     renderSniper();
     setInterval(renderSniper,5000);
+  });
+})();
+</script>
+
+
+<script id="v120-compact-sniper-dark-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  function q(id){ return document.getElementById(id); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function rows(){ try{ return (state && Array.isArray(state.lastRows)) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function counts(){
+    var r=rows(), c={buy:0, blocked:0, owned:0, all:r.length};
+    try{ if(typeof scannerCounts === 'function') c=scannerCounts(r); }catch(e){}
+    var buy=Number(c.buy||0), blocked=Number(c.blocked||0), owned=Number(c.owned||0), total=r.length;
+    var wait=Math.max(0,total-buy-blocked-owned);
+    var sells=0; try{ if(typeof countSellAlerts === 'function') sells=countSellAlerts()||0; }catch(e){}
+    return {buy:buy, wait:wait, blocked:blocked, sells:sells, total:total};
+  }
+  function addCounts(){
+    var panel=q('v119SniperPanel'); if(!panel) return;
+    var hero=panel.querySelector('.v119CommandHero'); if(!hero) return;
+    var strip=panel.querySelector('.v120CountStrip');
+    if(!strip){
+      strip=document.createElement('div');
+      strip.className='v120CountStrip';
+      hero.insertAdjacentElement('afterend', strip);
+    }
+    var c=counts();
+    strip.innerHTML='<button type="button" class="buy" data-command-shortcut="buys"><span>Buy</span><b>'+c.buy+'</b></button>'+ 
+      '<button type="button" class="wait" data-command-shortcut="wait"><span>Wait</span><b>'+c.wait+'</b></button>'+ 
+      '<button type="button" class="blocked" data-command-shortcut="blocked"><span>Blocked</span><b>'+c.blocked+'</b></button>'+ 
+      '<button type="button" class="sells" data-command-shortcut="sells"><span>Sells</span><b>'+c.sells+'</b></button>';
+  }
+  function markUrgentPositions(){
+    var pos=q('positionsSection'); if(!pos) return;
+    var urgent=false;
+    try{ urgent=(typeof countSellAlerts === 'function' && (countSellAlerts()||0)>0); }catch(e){}
+    pos.classList.toggle('v120-urgent', urgent);
+  }
+  function wireDrawers(){
+    document.addEventListener('click', function(e){
+      var sec=e.target.closest('body.v120-compact-sniper-dark[data-t212-page="short"] #positionsSection, body.v120-compact-sniper-dark[data-t212-page="short"] #ticketSection, body.v120-compact-sniper-dark[data-t212-page="short"] #scannerSection, body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection');
+      if(!sec) return;
+      var interactive=e.target.closest('button,input,select,textarea,a,summary,details');
+      if(interactive && interactive !== sec) return;
+      if(e.target.closest('h2') || !sec.classList.contains('v120-open')){
+        e.preventDefault();
+        sec.classList.toggle('v120-open');
+        if(sec.classList.contains('v120-open')) sec.scrollIntoView({behavior:'smooth',block:'start'});
+      }
+    }, true);
+  }
+  ready(function(){
+    document.documentElement.classList.add('v120-compact-sniper-dark');
+    document.body.classList.add('v120-compact-sniper-dark');
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v120';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Compact sniper dark, detail stays tucked away';
+    wireDrawers();
+    setInterval(function(){ addCounts(); markUrgentPositions(); }, 700);
+    addCounts();
+    markUrgentPositions();
   });
 })();
 </script>
