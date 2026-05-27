@@ -6340,5 +6340,174 @@ body.v125-opportunity-radar-dark .v125Pulse::before{content:'';width:7px;height:
 })();
 </script>
 
+
+
+<style id="v126-simple-short-dark-css">
+/* v126, Simple Short. Live page shows only command, owned positions, and one next action. Detail stays behind a button. */
+html.v126-simple-short-dark{background:#050914!important;color-scheme:dark!important;}
+body.v126-simple-short-dark .v112BrandText b{color:#fff!important;}
+body.v126-simple-short-dark .v112BrandText span{color:#a9b7cc!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #commandSection{display:block!important;padding:10px!important;margin:0 0 10px!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #commandSection>*:not(#v126SimplePanel){display:none!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #v119SniperPanel,
+body.v126-simple-short-dark[data-t212-page="short"] #v121ShortDQ,
+body.v126-simple-short-dark[data-t212-page="short"] #v123ScanMini,
+body.v126-simple-short-dark[data-t212-page="short"] #v124WatchdogLine,
+body.v126-simple-short-dark[data-t212-page="short"] #v125OpportunityRadar,
+body.v126-simple-short-dark[data-t212-page="short"] #shortSignalDashboard{display:none!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #positionsSection:not(.v126-open),
+body.v126-simple-short-dark[data-t212-page="short"] #ticketSection:not(.v126-open),
+body.v126-simple-short-dark[data-t212-page="short"] #scannerSection:not(.v126-open),
+body.v126-simple-short-dark[data-t212-page="short"] #blockerSection:not(.v126-open){display:none!important;}
+body.v126-simple-short-dark[data-t212-page="short"].v126-detail-open #scannerSection,
+body.v126-simple-short-dark[data-t212-page="short"].v126-detail-open #blockerSection{display:block!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #scannerSection.v126-open,
+body.v126-simple-short-dark[data-t212-page="short"] #blockerSection.v126-open,
+body.v126-simple-short-dark[data-t212-page="short"] #positionsSection.v126-open,
+body.v126-simple-short-dark[data-t212-page="short"] #ticketSection.v126-open{display:block!important;max-height:none!important;overflow:visible!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #scannerSection.v126-open::after,
+body.v126-simple-short-dark[data-t212-page="short"] #blockerSection.v126-open::after,
+body.v126-simple-short-dark[data-t212-page="short"] #positionsSection.v126-open::after,
+body.v126-simple-short-dark[data-t212-page="short"] #ticketSection.v126-open::after{display:none!important;content:none!important;}
+body.v126-simple-short-dark[data-t212-page="short"] #scannerSection.v126-open>*:not(h2),
+body.v126-simple-short-dark[data-t212-page="short"] #blockerSection.v126-open>*:not(h2),
+body.v126-simple-short-dark[data-t212-page="short"] #positionsSection.v126-open>*:not(h2),
+body.v126-simple-short-dark[data-t212-page="short"] #ticketSection.v126-open>*:not(h2){display:revert!important;}
+#v126SimplePanel{border:1px solid rgba(122,176,255,.20);background:radial-gradient(circle at 0% 0%,rgba(122,176,255,.16),transparent 38%),linear-gradient(180deg,rgba(12,23,41,.98),rgba(6,12,23,.98));border-radius:22px;padding:10px;box-shadow:0 18px 46px rgba(0,0,0,.34);}
+.v126Head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.v126Title span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:1000;color:#9fb0ca;}
+.v126Title b{display:block;font-size:19px;line-height:1.02;letter-spacing:-.04em;color:#fff;}
+.v126Pill{border:1px solid rgba(195,215,255,.16);background:rgba(255,255,255,.055);border-radius:999px;padding:6px 8px;font-size:10.5px;font-weight:1000;color:#cbd7ea;white-space:nowrap;}
+.v126Action{border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.045);border-radius:18px;padding:12px;margin-bottom:8px;}
+.v126Action span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#7f8ea8;font-weight:1000;margin-bottom:3px;}
+.v126Action b{display:block;font-size:34px;line-height:.92;letter-spacing:-.07em;}
+.v126Action p{margin:6px 0 0;font-size:12px;line-height:1.32;color:#a9b7cc;}
+.v126Action.buy{border-color:rgba(53,228,155,.34);background:linear-gradient(180deg,rgba(53,228,155,.12),rgba(255,255,255,.045));}.v126Action.buy b{color:#98ffd0;}
+.v126Action.sell{border-color:rgba(255,97,120,.34);background:linear-gradient(180deg,rgba(255,97,120,.12),rgba(255,255,255,.045));}.v126Action.sell b{color:#ffb1bf;}
+.v126Action.wait{border-color:rgba(255,209,102,.28);background:linear-gradient(180deg,rgba(255,209,102,.09),rgba(255,255,255,.045));}.v126Action.wait b{color:#ffe2a0;}
+.v126Action.hold{border-color:rgba(122,176,255,.28);background:linear-gradient(180deg,rgba(122,176,255,.09),rgba(255,255,255,.045));}.v126Action.hold b{color:#b9d6ff;}
+.v126Controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0;}
+.v126Controls button{min-height:36px!important;border-radius:13px!important;font-size:11px!important;padding:6px 5px!important;box-shadow:none!important;}
+.v126Controls .primary{background:linear-gradient(135deg,#35e49b,#10b981)!important;color:#04120b!important;}
+.v126Controls .detailOpen{background:linear-gradient(135deg,#ffca5b,#ffe59e)!important;color:#241704!important;}
+.v126Strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0;}
+.v126Mini{background:rgba(4,9,18,.55);border:1px solid rgba(195,215,255,.10);border-radius:13px;padding:7px;min-width:0;}
+.v126Mini span{display:block;font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:1000;color:#8fa2bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.v126Mini b{display:block;margin-top:3px;font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.v126Section{border:1px solid rgba(195,215,255,.12);background:rgba(255,255,255,.035);border-radius:18px;padding:9px;margin-top:8px;}
+.v126SectionHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;}
+.v126SectionHead b{font-size:14px;color:#fff;letter-spacing:-.02em;}.v126SectionHead span{font-size:10px;color:#9fb0ca;font-weight:900;}
+.v126OwnedCard,.v126NextCard{border:1px solid rgba(195,215,255,.11);background:rgba(4,9,18,.42);border-radius:16px;padding:9px;margin:6px 0;}
+.v126OwnedTop,.v126NextTop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start;}
+.v126Sym{font-size:22px;line-height:1;font-weight:1000;letter-spacing:-.055em;color:#fff;}.v126Sub{font-size:11px;color:#a9b7cc;margin-top:3px;line-height:1.25;}
+.v126Badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.055);font-size:10px;font-weight:1000;color:#dbe7f8;white-space:nowrap;}
+.v126Badge.good{color:#98ffd0;border-color:rgba(53,228,155,.28);background:rgba(53,228,155,.10);}.v126Badge.bad{color:#ffb1bf;border-color:rgba(255,97,120,.28);background:rgba(255,97,120,.10);}.v126Badge.warn{color:#ffe2a0;border-color:rgba(255,209,102,.28);background:rgba(255,209,102,.10);}
+.v126Metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:8px;}
+.v126Metric{background:rgba(255,255,255,.045);border:1px solid rgba(195,215,255,.09);border-radius:11px;padding:6px;min-width:0;}.v126Metric span{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.07em;color:#8fa2bb;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.v126Metric b{display:block;font-size:12px;margin-top:2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.v126Note{font-size:11px;line-height:1.32;color:#a9b7cc;margin-top:7px;}
+.v126Actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:8px;}.v126Actions button{min-height:34px!important;border-radius:12px!important;font-size:10.5px!important;padding:6px 4px!important;box-shadow:none!important;}
+.v126Empty{border:1px dashed rgba(195,215,255,.16);background:rgba(4,9,18,.32);border-radius:14px;padding:9px;color:#a9b7cc;font-size:12px;line-height:1.32;}
+.v126Frozen{font-size:10.5px;color:#8fa2bb;line-height:1.28;margin-top:6px;}
+@media(max-width:430px){.v126Action b{font-size:30px}.v126Controls{grid-template-columns:repeat(2,minmax(0,1fr));}.v126Strip{grid-template-columns:repeat(4,minmax(0,1fr));}.v126Mini{padding:6px 5px}.v126Mini b{font-size:12px}.v126Metrics{grid-template-columns:repeat(2,minmax(0,1fr));}.v126Actions{grid-template-columns:repeat(3,minmax(0,1fr));}.v126Actions button{font-size:9.5px!important}.v126Title b{font-size:18px}}
+</style>
+<script id="v126-simple-short-dark-js">
+(function(){
+  var focus={symbol:'',bucket:'',since:0,detail:false};
+  function id(x){return document.getElementById(x)}
+  function esc(x){try{return (window.escapeHTML||function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})})(x)}catch(e){return String(x||'')}}
+  function num(v,d){var f=window.n||function(x,k){x=+x;return isFinite(x)?x.toFixed(k||0):'0'};return f(v,d)}
+  function gbp(v){var f=window.moneyGBP||function(x){x=+x||0;return '£'+x.toFixed(2)};return f(v)}
+  function pct(v){v=+v||0;return (v>=0?'+':'')+v.toFixed(1)+'%'}
+  function usd(v){v=+v||0;return '$'+v.toFixed(2)}
+  function qty(v){try{return (window.qtyText?window.qtyText(v):String((+v||0).toFixed(3)))}catch(e){return String(v||'0')}}
+  function rows(){return (window.state&&Array.isArray(window.state.lastRows))?window.state.lastRows:[]}
+  function positions(){return (window.state&&Array.isArray(window.state.positions))?window.state.positions:[]}
+  function active(){try{return window.activeSettings?window.activeSettings():{};}catch(e){return {}}}
+  function owned(sym){try{return window.isOwnedSymbol?window.isOwnedSymbol(sym):positions().some(function(p){return String(p.symbol).toUpperCase()===String(sym).toUpperCase()});}catch(e){return false}}
+  function confirmed(r){try{return window.isConfirmedBuy?window.isConfirmedBuy(r,active()):!!(r&&r.confirmedBuyZone)}catch(e){return !!(r&&r.confirmedBuyZone)} }
+  function tierCode(r){try{return window.opportunityTier?window.opportunityTier(r).code:''}catch(e){return ''}}
+  function score(r){return (+r.score||0)+(+r.prob||0)/4+(+r.expR||0)*10+(r.buyTrigger==='CONFIRMING'?15:0)+(r.buyTrigger==='ARMED'?8:0)+(tierCode(r)==='T2'?6:0)}
+  function cleanRows(){return rows().filter(function(r){return r&&r.symbol&&r.quote&&!r.error&&!owned(r.symbol)})}
+  function buyRows(){return cleanRows().filter(function(r){return confirmed(r)}).sort(function(a,b){return score(b)-score(a)})}
+  function nearRows(){return cleanRows().filter(function(r){return !confirmed(r)&&(r.buyTrigger==='CONFIRMING'||r.buyTrigger==='ARMED'||r.signal==='WATCH'||tierCode(r)==='T2'||tierCode(r)==='T3')}).sort(function(a,b){return score(b)-score(a)})}
+  function stablePick(list,bucket){
+    if(!list.length){if(focus.bucket===bucket){focus={symbol:'',bucket:'',since:0,detail:focus.detail};}return null;}
+    var now=Date.now();
+    var keep=list.find(function(r){return r.symbol===focus.symbol});
+    if(keep&&focus.bucket===bucket&&now-focus.since<90000)return keep;
+    focus.symbol=list[0].symbol; focus.bucket=bucket; focus.since=now; return list[0];
+  }
+  function evFor(p){try{return window.evaluatePosition?window.evaluatePosition(p):{signal:'HOLD',reason:'inside plan',gainR:0}}catch(e){return {signal:'HOLD',reason:'inside plan',gainR:0}}}
+  function valFor(p){try{return window.positionValues?window.positionValues(p,active()):{boughtValue:+p.valueGBP||0,currentValue:+p.valueGBP||0,pl:0,plPct:0}}catch(e){return {boughtValue:+p.valueGBP||0,currentValue:+p.valueGBP||0,pl:0,plPct:0}}
+  }
+  function marketText(){try{var s=window.usSessionState?window.usSessionState():null;return s?(s.regular?'US open':(s.premarket?'Pre':(s.afterhours?'After':'Closed'))):'Market';}catch(e){return 'Market'}}
+  function actionState(){
+    var pos=positions();
+    var sell=pos.map(function(p){return {p:p,ev:evFor(p)}}).filter(function(x){return x.ev&&x.ev.signal==='SELL'});
+    if(sell.length)return {kind:'sell',label:'SELL '+sell[0].p.symbol,sub:sell[0].ev.reason+'. Sell in Trading 212, then close it here.',item:sell[0]};
+    if(pos.length){var x={p:pos[0],ev:evFor(pos[0])};return {kind:'hold',label:'MANAGE '+pos[0].symbol,sub:'You own '+pos.length+' position'+(pos.length>1?'s':'')+'. Exits first. New buys stay quiet so the screen does not jump around.',item:x};}
+    var b=stablePick(buyRows(),'buy'); if(b)return {kind:'buy',label:'BUY '+b.symbol,sub:'Only act if Trading 212 live price and spread still match the ticket.',row:b};
+    var n=stablePick(nearRows(),'near'); if(n)return {kind:'wait',label:'WATCH '+n.symbol,sub:'Closest setup, but not green. Wait for confirmation, no chasing.',row:n};
+    if(rows().length)return {kind:'wait',label:'WAIT',sub:'Rows scanned, no clean trade. That is the filter doing its job.'};
+    return {kind:'wait',label:'START SCANNER',sub:'Tap Start scanner or Load + scan. This panel will then show one action only.'};
+  }
+  function counts(){var r=rows(), p=positions();var buys=buyRows().length, near=nearRows().length, sells=p.map(function(x){return evFor(x)}).filter(function(e){return e.signal==='SELL'}).length;return {rows:r.length,buys:buys,near:near,sells:sells,owned:p.length};}
+  function renderOwned(){
+    var p=positions();
+    if(!p.length)return '<div class="v126Section"><div class="v126SectionHead"><b>Owned now</b><span>0 open</span></div><div class="v126Empty">No short term positions tracked. If you bought in Trading 212 and it is missing here, tap Add owned.</div></div>';
+    var cards=p.map(function(x){var ev=evFor(x), v=valFor(x), cls=ev.signal==='SELL'?'bad':(v.pl>=0?'good':'warn');return '<div class="v126OwnedCard"><div class="v126OwnedTop"><div><div class="v126Sym">'+esc(x.symbol)+'</div><div class="v126Sub">'+esc(ev.reason||'within plan')+'</div></div><span class="v126Badge '+cls+'">'+esc(ev.signal||'HOLD')+'</span></div><div class="v126Metrics"><div class="v126Metric"><span>P/L</span><b class="'+(v.pl>=0?'goodText':'badText')+'">'+gbp(v.pl)+'</b></div><div class="v126Metric"><span>%</span><b class="'+(v.plPct>=0?'goodText':'badText')+'">'+pct(v.plPct)+'</b></div><div class="v126Metric"><span>Last</span><b>'+usd(x.last||x.entry)+'</b></div><div class="v126Metric"><span>Target</span><b>'+usd(x.target)+'</b></div></div><div class="v126Actions"><button class="secondary" type="button" data-v126-copy="'+esc(qty(x.qty))+'">Copy qty</button><button class="secondary" type="button" data-v126-be="'+esc(x.id)+'">B/E stop</button><button class="'+(ev.signal==='SELL'?'bad':'secondary')+'" type="button" data-v126-close="'+esc(x.id)+'">Sold, close</button></div></div>'}).join('');
+    return '<div class="v126Section"><div class="v126SectionHead"><b>Owned now</b><span>'+p.length+' open, always shown</span></div>'+cards+'</div>';
+  }
+  function nextCard(st){
+    if(positions().length)return '<div class="v126Section"><div class="v126SectionHead"><b>Next buy</b><span>paused</span></div><div class="v126Empty">You already have a short term position tracked. Manage the exit first, then look for the next buy. This stops the screen turning into confetti.</div></div>';
+    var r=st.row; if(!r)return '<div class="v126Section"><div class="v126SectionHead"><b>Next action</b><span>stable</span></div><div class="v126Empty">No clean buy or near trigger. Keep cash, or open details if you want to inspect the full scanner.</div></div>';
+    var isBuy=st.kind==='buy';
+    var price=r.quote&&r.quote.price?+r.quote.price:0;
+    return '<div class="v126Section"><div class="v126SectionHead"><b>'+(isBuy?'Buy candidate':'Closest watch')+'</b><span>'+(focus.symbol?'locked '+esc(focus.symbol):'stable')+'</span></div><div class="v126NextCard"><div class="v126NextTop"><div><div class="v126Sym">'+esc(r.symbol)+'</div><div class="v126Sub">'+esc(isBuy?'Green only while live price is inside the zone.':'Not a buy yet. Watch, do not chase.')+'</div></div><span class="v126Badge '+(isBuy?'good':'warn')+'">'+esc(r.buyTrigger||r.signal||'WATCH')+'</span></div><div class="v126Metrics"><div class="v126Metric"><span>Price</span><b>'+usd(price)+'</b></div><div class="v126Metric"><span>Buy £</span><b>'+gbp(r.valueGBP||0)+'</b></div><div class="v126Metric"><span>Qty</span><b>'+esc(qty(r.qty||r.qtyRounded||0))+'</b></div><div class="v126Metric"><span>Score</span><b>'+num(r.score||0,0)+'</b></div></div><div class="v126Note">Stop '+usd(r.stop)+' · target '+usd(r.target)+' · confidence '+num(r.prob||0,0)+'%. This card is held steady for 90 seconds unless a higher priority action appears.</div><div class="v126Actions"><button class="'+(isBuy?'good':'secondary')+'" type="button" data-v126-ticket="'+esc(r.symbol)+'">Open ticket</button><button class="secondary" type="button" data-v126-row="'+esc(r.symbol)+'">Open row</button><button class="secondary" type="button" data-v126-freeze="1">Keep focus</button></div></div></div>';
+  }
+  function ensure(){
+    var command=id('commandSection'); if(!command) return null;
+    var box=id('v126SimplePanel');
+    if(!box){box=document.createElement('div');box.id='v126SimplePanel';command.insertBefore(box,command.firstChild||null)}
+    return box;
+  }
+  function render(){
+    var box=ensure(); if(!box) return;
+    var c=counts(), st=actionState();
+    var age='No scan yet'; try{if(window.state&&state.scanDiag&&state.scanDiag.finishedAt)age='Scan '+new Date(state.scanDiag.finishedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}catch(e){}
+    box.innerHTML='<div class="v126Head"><div class="v126Title"><span>Short term simple mode</span><b>Only what matters</b></div><div class="v126Pill">'+esc((window.state&&state.live?'Live':'Ready')+' · '+age)+'</div></div><div class="v126Action '+esc(st.kind)+'"><span>What do I do now?</span><b>'+esc(st.label)+'</b><p>'+esc(st.sub)+'</p></div><div class="v126Controls"><button class="primary" type="button" data-v126-start="1">Start</button><button class="secondary" type="button" data-v126-load="1">Load + scan</button><button class="secondary" type="button" data-v126-scan="1">Scan</button><button class="secondary '+(focus.detail?'detailOpen':'')+'" type="button" data-v126-detail="1">Details</button></div><div class="v126Strip"><div class="v126Mini"><span>Owned</span><b>'+c.owned+'</b></div><div class="v126Mini"><span>Buys</span><b class="goodText">'+c.buys+'</b></div><div class="v126Mini"><span>Watch</span><b class="warnText">'+c.near+'</b></div><div class="v126Mini"><span>Sells</span><b class="badText">'+c.sells+'</b></div></div>'+renderOwned()+nextCard(st)+'<div class="v126Frozen">Simple view is deliberately stable. Full scanner detail is hidden behind Details so refreshes do not move the live decision around.</div>';
+  }
+  function clickHidden(sel){var b=document.querySelector(sel); if(b){b.click(); return true;} return false;}
+  function openSec(which){['scannerSection','blockerSection','positionsSection','ticketSection'].forEach(function(x){var e=id(x); if(e)e.classList.remove('v126-open')}); var e=id(which); if(e){e.classList.add('v126-open');document.body.classList.add('v126-detail-open');setTimeout(function(){e.scrollIntoView({behavior:'smooth',block:'start'});},30)}}
+  function openRow(sym){try{window.state.scannerFilter='all';window.state.scannerShowAll=true;if(window.renderResults)window.renderResults(rows());}catch(e){} openSec('scannerSection'); setTimeout(function(){var card=document.querySelector('[data-symbol="'+sym+'"], [data-v125-symbol="'+sym+'"], [data-v119-ticket="'+sym+'"]'); if(card&&card.scrollIntoView)card.scrollIntoView({behavior:'smooth',block:'center'});},120);}
+  function wire(){
+    if(document.body.getAttribute('data-v126-wired'))return;document.body.setAttribute('data-v126-wired','1');
+    document.addEventListener('click',function(e){
+      var x=e.target.closest('[data-v126-start]'); if(x){e.preventDefault(); if(window.startLive)window.startLive(); else clickHidden('#startLive'); return;}
+      x=e.target.closest('[data-v126-load]'); if(x){e.preventDefault(); if(window.runDailyRoutine)window.runDailyRoutine(); else clickHidden('#dailyRoutine'); return;}
+      x=e.target.closest('[data-v126-scan]'); if(x){e.preventDefault(); if(window.scan)window.scan(); else clickHidden('#scanNow'); return;}
+      x=e.target.closest('[data-v126-detail]'); if(x){e.preventDefault(); focus.detail=!focus.detail; document.body.classList.toggle('v126-detail-open',focus.detail); var sc=id('scannerSection'), bl=id('blockerSection'); if(sc)sc.classList.toggle('v126-open',focus.detail); if(bl)bl.classList.toggle('v126-open',focus.detail); render(); return;}
+      x=e.target.closest('[data-v126-copy]'); if(x){e.preventDefault(); var txt=x.getAttribute('data-v126-copy')||''; try{navigator.clipboard.writeText(txt)}catch(err){} if(window.toast)toast('Copied qty',txt,'good'); return;}
+      x=e.target.closest('[data-v126-close]'); if(x){e.preventDefault(); var idv=x.getAttribute('data-v126-close'); if(!clickHidden('[data-close="'+idv+'"]')) openSec('positionsSection'); return;}
+      x=e.target.closest('[data-v126-be]'); if(x){e.preventDefault(); var idb=x.getAttribute('data-v126-be'); if(!clickHidden('[data-breakeven="'+idb+'"]')) openSec('positionsSection'); return;}
+      x=e.target.closest('[data-v126-ticket]'); if(x){e.preventDefault(); var sym=x.getAttribute('data-v126-ticket'); if(!clickHidden('[data-ticket="'+sym+'"], [data-v119-ticket="'+sym+'"]')) openSec('ticketSection'); var t=id('ticketSection'); if(t)t.classList.add('v126-open'); return;}
+      x=e.target.closest('[data-v126-row]'); if(x){e.preventDefault(); openRow(x.getAttribute('data-v126-row')); return;}
+      x=e.target.closest('[data-v126-freeze]'); if(x){e.preventDefault(); focus.since=Date.now(); if(window.toast)toast('Focus held','This card will stay steady unless a sell or confirmed buy overrides it.','info'); return;}
+      x=e.target.closest('[data-v126-add]'); if(x){e.preventDefault(); if(!clickHidden('[data-manual-add]')) openSec('ticketSection'); return;}
+    },true);
+  }
+  function ready(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn();}
+  ready(function(){
+    document.documentElement.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog','v125-opportunity-radar-dark','v126-simple-short-dark');
+    document.body.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore','v124-short-autoscan-watchdog','v125-opportunity-radar-dark','v126-simple-short-dark');
+    document.title='Trading 212 Manual God Mode v126, Simple Short Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b)b.textContent='God Mode v126';
+    var s=document.querySelector('.v112BrandText span'); if(s)s.textContent='Simple short dark, only what matters';
+    var m=document.querySelector('.mobileTitleText'); if(m)m.textContent='Manual God Mode v126';
+    wire(); render(); setInterval(render,1500);
+  });
+})();
+</script>
+
 </body>
 </html>
