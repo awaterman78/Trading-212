@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 Manual God Mode v120, Compact Sniper Dark</title>
+<title>Trading 212 Manual God Mode v121, Decision Quality Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -2304,7 +2304,7 @@ body.v120-compact-sniper-dark[data-t212-page="short"] #blockerSection h2{font-si
 </head>
 <body>
 <header>
-<h1>Trading 212 Manual God Mode v120, Compact Sniper Dark</h1>
+<h1>Trading 212 Manual God Mode v121, Decision Quality Dark</h1>
 <div class="sub">A short term US stock trading cockpit for Trading 212 manual execution. v107 restores full mobile values and details. It is US-only, manual execution, with Ignition Sniper mode, one-slot execution, ignition scoring, 5m/10m learning, 1% hit tracking, 5 to 10 minute movement checks, faster profit protection, safer non-destructive watchlist rotation, expanded liquid starter list, faster 10 second scan polling, blocker diagnostics, opportunity tiers, daily target mode, pre-market watch mode, compact phone-first position cards, trade grading, session stats, missed-signal learning, behaviour coaching and Massive cached history. Finnhub handles US live quotes, Massive handles cached US daily history, and the dashboard gives calibrated scores, buy zones, chase limits, stop ladders, sell alerts, visual price maps and a feedback journal. It does not place orders. Use Invest or ISA for this pilot, not CFD.</div>
 <div class="topbar">
 <span class="pill"><span class="dot" id="liveDot"></span><span id="liveStatus">Idle</span></span>
@@ -5390,6 +5390,297 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
     setInterval(function(){ addCounts(); markUrgentPositions(); }, 700);
     addCounts();
     markUrgentPositions();
+  });
+})();
+</script>
+
+
+
+<style id="v121-decision-quality-dark-css">
+/* v121, Decision Quality Layer. Keeps the engine detail, but turns it into one readable decision audit. */
+body.v121-decision-quality-dark .v121DQ,
+body.v121-decision-quality-dark .v121LongDQ,
+body.v121-decision-quality-dark .v121WhyPanel{
+  border:1px solid rgba(195,215,255,.15)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.060),rgba(255,255,255,.030))!important;
+  color:#f4f8ff!important;
+  border-radius:20px!important;
+  padding:11px!important;
+  margin:9px 0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+body.v121-decision-quality-dark .v121DQHead,
+body.v121-decision-quality-dark .v121LongDQHead{
+  display:flex!important;
+  align-items:flex-start!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  margin-bottom:9px!important;
+}
+body.v121-decision-quality-dark .v121DQHead b,
+body.v121-decision-quality-dark .v121LongDQHead b{
+  display:block!important;
+  font-size:17px!important;
+  line-height:1.05!important;
+  letter-spacing:-.045em!important;
+  color:#ffffff!important;
+}
+body.v121-decision-quality-dark .v121DQHead span,
+body.v121-decision-quality-dark .v121LongDQHead span{
+  display:block!important;
+  margin-top:3px!important;
+  font-size:11px!important;
+  line-height:1.25!important;
+  color:#a9b7cc!important;
+}
+body.v121-decision-quality-dark .v121DQScore{
+  min-width:54px!important;
+  text-align:center!important;
+  border:1px solid rgba(122,176,255,.24)!important;
+  background:rgba(122,176,255,.10)!important;
+  color:#dbeaff!important;
+  border-radius:16px!important;
+  padding:7px 8px!important;
+  font-weight:1000!important;
+  font-size:18px!important;
+  line-height:1!important;
+}
+body.v121-decision-quality-dark .v121DQScore small{display:block!important;margin-top:3px!important;font-size:8px!important;letter-spacing:.07em!important;text-transform:uppercase!important;color:#96a9c5!important;}
+body.v121-decision-quality-dark .v121DQGrid{
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:6px!important;
+}
+body.v121-decision-quality-dark .v121DQItem{
+  min-width:0!important;
+  border:1px solid rgba(195,215,255,.12)!important;
+  background:rgba(4,9,18,.52)!important;
+  border-radius:14px!important;
+  padding:8px 6px!important;
+}
+body.v121-decision-quality-dark .v121DQItem span{
+  display:block!important;
+  font-size:7.5px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.08em!important;
+  font-weight:1000!important;
+  color:#91a7c4!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v121-decision-quality-dark .v121DQItem b{
+  display:block!important;
+  margin-top:3px!important;
+  font-size:11px!important;
+  line-height:1.12!important;
+  color:#fff!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+body.v121-decision-quality-dark .v121DQItem.pass{border-color:rgba(53,228,155,.30)!important;background:rgba(53,228,155,.085)!important;}
+body.v121-decision-quality-dark .v121DQItem.check{border-color:rgba(255,209,102,.30)!important;background:rgba(255,209,102,.085)!important;}
+body.v121-decision-quality-dark .v121DQItem.block{border-color:rgba(255,97,120,.30)!important;background:rgba(255,97,120,.085)!important;}
+body.v121-decision-quality-dark .v121DQItem.pass b{color:#98ffd0!important;}
+body.v121-decision-quality-dark .v121DQItem.check b{color:#ffe2a0!important;}
+body.v121-decision-quality-dark .v121DQItem.block b{color:#ffb1bf!important;}
+body.v121-decision-quality-dark .v121DQFoot{
+  margin-top:8px!important;
+  border-top:1px solid rgba(195,215,255,.10)!important;
+  padding-top:8px!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+  color:#a9b7cc!important;
+}
+body.v121-decision-quality-dark .v121DQFoot b{color:#ffffff!important;}
+body.v121-decision-quality-dark details.v121DQDetails{margin-top:8px!important;}
+body.v121-decision-quality-dark details.v121DQDetails summary{
+  cursor:pointer!important;
+  list-style:none!important;
+  border:1px solid rgba(195,215,255,.13)!important;
+  background:rgba(255,255,255,.045)!important;
+  color:#dbe7f8!important;
+  border-radius:14px!important;
+  padding:8px 10px!important;
+  font-size:11px!important;
+  font-weight:1000!important;
+}
+body.v121-decision-quality-dark details.v121DQDetails summary::-webkit-details-marker{display:none!important;}
+body.v121-decision-quality-dark .v121DQExplain{padding:8px 2px 0!important;font-size:11px!important;line-height:1.38!important;color:#a9b7cc!important;}
+body.v121-decision-quality-dark .v121DQExplain p{margin:5px 0!important;}
+body.v121-decision-quality-dark .v121LongDQ{padding:10px!important;border-radius:18px!important;}
+body.v121-decision-quality-dark .v121LongDQ .v121DQGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+body.v121-decision-quality-dark .v121WhyPanel{margin-top:9px!important;}
+body.v121-decision-quality-dark .v121WhyPanel .v121DQGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important;}
+@media(max-width:430px){
+  body.v121-decision-quality-dark .v121DQGrid,
+  body.v121-decision-quality-dark .v121LongDQ .v121DQGrid,
+  body.v121-decision-quality-dark .v121WhyPanel .v121DQGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+  body.v121-decision-quality-dark .v121DQHead b{font-size:16px!important;}
+  body.v121-decision-quality-dark .v121DQScore{font-size:16px!important;min-width:48px!important;}
+}
+</style>
+
+<script id="v121-decision-quality-dark-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn(); }
+  function q(id){ return document.getElementById(id); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function asNum(v,d){ var n=Number(v); return Number.isFinite(n)?n:d; }
+  function fmt(v,d){ v=Number(v); return Number.isFinite(v)?v.toFixed(d==null?0:d):'n/a'; }
+  function gbp(v){ try{ if(typeof moneyGBP === 'function') return moneyGBP(v); }catch(e){} v=Number(v); return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00'); }
+  function usd(v){ v=Number(v); return '$'+(Number.isFinite(v)?v.toFixed(2):'n/a'); }
+  function pct(v){ v=Number(v); return Number.isFinite(v)?(v>=0?'+':'')+v.toFixed(1)+'%':'n/a'; }
+  function rows(){ try{ return (window.state && Array.isArray(state.lastRows)) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function positions(){ try{ return (window.state && Array.isArray(state.positions)) ? state.positions.filter(Boolean) : []; }catch(e){ return []; } }
+  function rowPrice(r){ return asNum(r && r.quote && r.quote.price, asNum(r && r.price, NaN)); }
+  function rowScore(r){ return Math.max(asNum(r&&r.score,0),asNum(r&&r.totalScore,0),asNum(r&&r.prob,0)); }
+  function rowProb(r){ return asNum(r&&r.prob, asNum(r&&r.confidence,0)); }
+  function vetoes(r){ return Array.isArray(r&&r.veto)?r.veto.map(String):[]; }
+  function reasons(r){ return Array.isArray(r&&r.reasons)?r.reasons.map(String):[]; }
+  function hasText(list,needle){ needle=String(needle).toLowerCase(); return list.some(function(x){return String(x).toLowerCase().indexOf(needle)>=0;}); }
+  function isOwned(sym){ try{ return typeof isOwnedSymbol === 'function' ? isOwnedSymbol(sym) : false; }catch(e){ return false; } }
+  function rowIsBuy(r){ try{ return typeof isConfirmedBuy === 'function' ? isConfirmedBuy(r, typeof activeSettings==='function'?activeSettings():settings()) : /BUY/i.test(String(r&&r.signal)); }catch(e){ return /BUY/i.test(String(r&&r.signal)); } }
+  function rowNear(r){ var t=String((r&&r.buyTrigger)||'').toUpperCase(), s=String((r&&r.signal)||'').toUpperCase(); return t.indexOf('CONFIRM')>=0 || t.indexOf('ARMED')>=0 || s.indexOf('WATCH')>=0 || s.indexOf('SCOUT')>=0 || s.indexOf('ARMED')>=0; }
+  function bestBuy(){ return rows().filter(function(r){return r&&r.symbol&&!isOwned(r.symbol)&&rowIsBuy(r);}).sort(function(a,b){return rowScore(b)-rowScore(a);})[0]||null; }
+  function nearReady(){ return rows().filter(function(r){return r&&r.symbol&&!isOwned(r.symbol)&&!rowIsBuy(r)&&rowNear(r);}).sort(function(a,b){return rowScore(b)-rowScore(a);})[0]||null; }
+  function sellInfo(){ var out=null; positions().forEach(function(p){ try{ var ev=typeof evaluatePosition==='function'?evaluatePosition(p):null; var sev=(ev&&ev.signal==='SELL')?100:((asNum(p.last,0)>=asNum(p.target,Infinity))?80:0); if(!out||sev>out.sev) out={p:p,ev:ev,sev:sev}; }catch(e){} }); return out; }
+  function item(name,state,label,why){ return {name:name,state:state,label:label,why:why}; }
+  function stateValue(s){ return s==='pass'?20:s==='check'?10:0; }
+  function shortQuality(row,mode){
+    var r=row||{}, v=vetoes(r), rs=reasons(r), price=rowPrice(r), score=rowScore(r), prob=rowProb(r), expR=asNum(r.expR,0);
+    var fresh=false; try{ fresh=!!(state&&state.scanDiag&&state.scanDiag.finishedAt&&(Date.now()-state.scanDiag.finishedAt<90000)); }catch(e){}
+    var data=item('Data', row?((Number.isFinite(price)&&fresh)?'pass':Number.isFinite(price)?'check':'block'):(rows().length?'check':'block'), row?(Number.isFinite(price)?(fresh?'Fresh':'Stale'):'No price'):(rows().length?'Rows only':'No scan'), row?'Quote and scan freshness.':'No scan rows yet.');
+    var setupState=score>=80||prob>=75||expR>=1?'pass':(score>=60||prob>=55||expR>0?'check':'block');
+    var setup=item('Setup', setupState, setupState==='pass'?'Strong':setupState==='check'?'Mixed':'Weak', 'Signal score, confidence and expected R.');
+    var badPrice=hasText(v,'chase')||hasText(v,'spread')||hasText(rs,'chase');
+    var priceState=badPrice?'block':(expR>=0.8?'pass':'check');
+    var priceQ=item('Price', priceState, badPrice?'Bad entry':priceState==='pass'?'Fair entry':'Check zone', 'Avoids chasing, weak spread and poor reward to risk.');
+    var owned=isOwned(r.symbol);
+    var fitState=owned?'block':(asNum(r.valueGBP,0)>0?'pass':'check');
+    var fit=item('Fit', fitState, owned?'Owned already':fitState==='pass'?'Cash sized':'Size check', 'Checks duplicate holdings and whether the order size exists.');
+    var timingState=mode==='buy'?'pass':mode==='near'?'check':mode==='sell'?'pass':'block';
+    var timing=item('Timing', timingState, mode==='buy'?'Buy window':mode==='near'?'Wait hold':mode==='sell'?'Exit alert':'Wait', 'Confirms action timing before you move.');
+    var arr=[data,setup,priceQ,fit,timing];
+    var total=Math.round(arr.reduce(function(a,x){return a+stateValue(x.state);},0));
+    var action=mode==='buy'?'Buy only if Trading 212 price is still inside the ticket zone.':mode==='near'?'Do not buy yet. Wait for confirmation, no flicker chasing.':mode==='sell'?'Open the position card and follow the exit rule.':'Wait. No clean trade beats a forced click.';
+    var change=mode==='buy'?'Decision changes if price chases beyond the zone, quote goes stale, or a blocker appears.':mode==='near'?'Decision changes when confirmation holds and the price remains inside the zone.':mode==='sell'?'Decision changes if the sell alert clears before you act.':'Decision changes when a confirmed buy appears with fresh price, clean blockers and positive expected R.';
+    if(!row && rows().length===0){ action='Load history and start live scan first.'; change='Decision changes once live scan data exists.'; }
+    return {score:total,items:arr,action:action,change:change,row:r};
+  }
+  function dqHTML(q,compact){
+    return '<div class="v121DQHead"><div><b>Decision quality</b><span>'+esc(q.action)+'</span></div><div class="v121DQScore">'+esc(q.score)+'<small>score</small></div></div>'+ 
+      '<div class="v121DQGrid">'+q.items.map(function(x){return '<div class="v121DQItem '+x.state+'"><span>'+esc(x.name)+'</span><b>'+esc(x.label)+'</b></div>';}).join('')+'</div>'+ 
+      '<div class="v121DQFoot"><b>What would change it?</b> '+esc(q.change)+'</div>'+ 
+      (compact?'':'<details class="v121DQDetails"><summary>Show the five checks</summary><div class="v121DQExplain">'+q.items.map(function(x){return '<p><b>'+esc(x.name)+':</b> '+esc(x.why)+'</p>';}).join('')+'</div></details>');
+  }
+  function renderShortDQ(){
+    var panel=q('v119SniperPanel'); if(!panel) return;
+    var buy=bestBuy(), near=nearReady(), sell=sellInfo();
+    var mode='wait', row=null;
+    if(sell&&sell.ev&&sell.ev.signal==='SELL'){ mode='sell'; }
+    else if(buy){ mode='buy'; row=buy; }
+    else if(near){ mode='near'; row=near; }
+    else if(rows().length===0){ mode='noscan'; }
+    var quality=shortQuality(row,mode);
+    var box=q('v121ShortDQ');
+    if(!box){
+      box=document.createElement('div'); box.id='v121ShortDQ'; box.className='v121DQ';
+      var strip=panel.querySelector('.v120CountStrip');
+      var hero=panel.querySelector('.v119CommandHero');
+      if(strip) strip.insertAdjacentElement('afterend', box); else if(hero) hero.insertAdjacentElement('afterend', box); else panel.prepend(box);
+    }
+    box.innerHTML=dqHTML(quality,false);
+    shadowLog(mode,row,quality.score);
+  }
+  function shadowLog(mode,row,score){
+    try{
+      var key='t212gm121_shadow_decisions';
+      var now=Date.now();
+      var arr=JSON.parse(localStorage.getItem(key)||'[]');
+      var last=arr[arr.length-1];
+      var sym=row&&row.symbol?String(row.symbol):'';
+      if(!last || now-last.ts>300000 || last.mode!==mode || last.sym!==sym){
+        arr.push({ts:now,mode:mode,sym:sym,score:score,price:rowPrice(row),expectedR:row&&row.expR});
+        if(arr.length>300) arr=arr.slice(arr.length-300);
+        localStorage.setItem(key,JSON.stringify(arr));
+      }
+    }catch(e){}
+  }
+  function enhanceWhy(){
+    var d=q('v119DetailDrawer'); if(!d || !d.classList.contains('open')) return;
+    var b=d.querySelector('b'); if(!b) return;
+    var sym=String(b.textContent||'').split(' ')[0].trim();
+    if(!sym || d.getAttribute('data-v121-sym')===sym) return;
+    var row=rows().filter(function(x){return x&&String(x.symbol)===sym;})[0];
+    if(!row) return;
+    d.setAttribute('data-v121-sym',sym);
+    var mode=rowIsBuy(row)?'buy':rowNear(row)?'near':'wait';
+    var ql=shortQuality(row,mode);
+    var div=document.createElement('div'); div.className='v121WhyPanel'; div.innerHTML=dqHTML(ql,true);
+    d.appendChild(div);
+  }
+  function readStore(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)||'null'); return v==null?d:v; }catch(e){ return d; } }
+  function longRows(){ return readStore('t212gm93_tracker',[]).filter(Boolean); }
+  function longPlan(){ return readStore('t212gm93_plan',null); }
+  function dateDue(s){ if(!s) return false; var d=new Date(String(s)+'T23:59:59'); return isFinite(d.getTime()) && d.getTime()<Date.now(); }
+  function valueFromPrices(cost,buy,current){ cost=Number(cost); buy=Number(buy); current=Number(current); if(Number.isFinite(cost)&&cost>0&&Number.isFinite(buy)&&buy>0&&Number.isFinite(current)&&current>0) return cost*(current/buy); return Number.isFinite(cost)?cost:0; }
+  function longQuality(x,plan){
+    x=x||{}; plan=plan||{};
+    var sym=String(x.sym||'').toUpperCase();
+    var rep=(Array.isArray(plan.report)?plan.report:[]).filter(function(r){return String(r&&r.sym||'').toUpperCase()===sym;})[0]||null;
+    var gate=rep&&rep.evidence?String(rep.evidence.gate||'CHECK'):'CHECK';
+    var owned=asNum(x.owned,0), target=asNum(x.target,0), buy=asNum(x.buyPrice,NaN), cur=asNum(x.currentPrice,NaN), score=asNum(x.score,0);
+    var val=valueFromPrices(owned,buy,cur), pl=owned?((val-owned)/owned*100):0;
+    var live=String(x.liveSource||'');
+    var dataState=(/Finnhub|FMP/i.test(live)&&Number.isFinite(cur))?'pass':(Number.isFinite(cur)?'check':'block');
+    var businessState=(gate==='PASS'||score>=82)?'pass':(gate==='BLOCK'||score<65?'block':'check');
+    var priceState=(pl>25||pl<-20)?'check':'pass';
+    var fitState=target>0&&owned>target*1.25?'check':(owned>0?'pass':'check');
+    var timingState=dateDue(x.review)||/review/i.test(String(x.manualSignal||''))?'check':(/do not|sell/i.test(String(x.manualSignal||''))?'block':'pass');
+    var arr=[
+      item('Data',dataState,dataState==='pass'?'Live quote':dataState==='check'?'Manual/proxy':'No quote','Live price freshness and ticker mapping.'),
+      item('Business',businessState,businessState==='pass'?'Evidence pass':businessState==='check'?'Watch evidence':'Evidence weak','Fundamentals, ETF status and quality score.'),
+      item('Price',priceState,priceState==='pass'?'Normal range':pl>25?'Extended':'Drawdown','Price move versus logged cost. Long term does not panic sell on price alone.'),
+      item('Fit',fitState,fitState==='pass'?'Inside target':'Allocation check','Current owned value compared with target allocation.'),
+      item('Timing',timingState,timingState==='pass'?'Hold cycle':timingState==='check'?'Review due':'Manual block','Review date and manual signal.')
+    ];
+    var total=Math.round(arr.reduce(function(a,z){return a+stateValue(z.state);},0));
+    var action='Hold and review on schedule.';
+    var change='Decision changes if fundamentals weaken, allocation gets too large, review date arrives, or a better benchmark alternative wins.';
+    if(timingState==='block'){ action='Manual signal says do not buy or sell check. Review before adding.'; }
+    else if(fitState==='check' && target>0 && owned>target*1.25){ action='Over target. Do not add. Consider trim review, not panic selling.'; change='Decision changes after rebalancing or if target is deliberately raised.'; }
+    else if(timingState==='check'){ action='Review due. Check thesis, benchmark and allocation before adding.'; }
+    else if(dataState!=='pass'){ action='Hold, but fix live quote ticker or update price manually.'; }
+    else if(target>0 && owned<target*0.75 && businessState==='pass'){ action='Under target, but only add when the plan says buy.'; }
+    return {score:total,items:arr,action:action,change:change,pl:pl};
+  }
+  function longDQHTML(q){ return '<div class="v121LongDQHead"><div><b>Decision quality</b><span>'+esc(q.action)+'</span></div><div class="v121DQScore">'+esc(q.score)+'<small>score</small></div></div><div class="v121DQGrid">'+q.items.map(function(x){return '<div class="v121DQItem '+x.state+'"><span>'+esc(x.name)+'</span><b>'+esc(x.label)+'</b></div>';}).join('')+'</div><div class="v121DQFoot"><b>What would change it?</b> '+esc(q.change)+'</div>'; }
+  function renderLongDQ(){
+    var cards=document.querySelectorAll('.ltTrackCard[data-lts-card]'); if(!cards.length) return;
+    var t=longRows(); var plan=longPlan();
+    cards.forEach(function(card){
+      var sym=String(card.getAttribute('data-lts-card')||'').toUpperCase();
+      var x=t.filter(function(r){return String(r&&r.sym||'').toUpperCase()===sym;})[0]; if(!x) return;
+      var box=card.querySelector('.v121LongDQ');
+      if(!box){ box=document.createElement('div'); box.className='v121LongDQ'; var actions=card.querySelector('.ltTrackActions'); if(actions) actions.parentNode.insertBefore(box,actions); else card.appendChild(box); }
+      box.innerHTML=longDQHTML(longQuality(x,plan));
+    });
+  }
+  function routeBrand(){
+    document.documentElement.classList.add('v121-decision-quality-dark');
+    document.body.classList.add('v121-decision-quality-dark');
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v121';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Decision quality dark, fast view first';
+    var title=document.querySelector('.mobileTitleText'); if(title) title.textContent='Manual God Mode v121';
+  }
+  ready(function(){
+    routeBrand();
+    setInterval(function(){ renderShortDQ(); enhanceWhy(); renderLongDQ(); }, 900);
+    setTimeout(function(){ renderShortDQ(); renderLongDQ(); }, 250);
+    document.addEventListener('click',function(e){ if(e.target && e.target.closest('[data-v119-why]')) setTimeout(enhanceWhy,80); }, true);
   });
 })();
 </script>
