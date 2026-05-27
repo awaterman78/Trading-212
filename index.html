@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 Manual God Mode v121, Decision Quality Dark</title>
+<title>Trading 212 Manual God Mode v123, Live Scanner Restore Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -5681,6 +5681,314 @@ body.v121-decision-quality-dark .v121WhyPanel .v121DQGrid{grid-template-columns:
     setInterval(function(){ renderShortDQ(); enhanceWhy(); renderLongDQ(); }, 900);
     setTimeout(function(){ renderShortDQ(); renderLongDQ(); }, 250);
     document.addEventListener('click',function(e){ if(e.target && e.target.closest('[data-v119-why]')) setTimeout(enhanceWhy,80); }, true);
+  });
+})();
+</script>
+
+
+<style id="v122-ultra-sniper-dark-css">
+/* v122, Ultra Sniper Dark. Same decision engine, much tighter live screen. */
+html.v122-ultra-sniper-dark{background:#050914!important;color-scheme:dark!important;}
+body.v122-ultra-sniper-dark{background:radial-gradient(circle at 0 -8%,rgba(122,176,255,.23),transparent 30%),radial-gradient(circle at 100% 0,rgba(53,228,155,.11),transparent 28%),linear-gradient(180deg,#07111f 0,#081526 44%,#04070f 100%)!important;color:#f4f8ff!important;}
+body.v122-ultra-sniper-dark header{padding:calc(7px + env(safe-area-inset-top,0px)) 10px 7px!important;background:rgba(5,9,20,.92)!important;}
+body.v122-ultra-sniper-dark .v112StatusShell{grid-template-columns:36px minmax(0,1fr) auto!important;gap:8px!important;}
+body.v122-ultra-sniper-dark .v112BrandIcon{width:36px!important;height:36px!important;border-radius:15px!important;font-size:19px!important;}
+body.v122-ultra-sniper-dark .v112BrandText b{font-size:17px!important;line-height:1.02!important;color:#fff!important;}
+body.v122-ultra-sniper-dark .v112BrandText span{font-size:10.5px!important;line-height:1.15!important;color:#a7b6cd!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:240px!important;}
+body.v122-ultra-sniper-dark .v112LivePill{font-size:10.5px!important;padding:6px 8px!important;}
+body.v122-ultra-sniper-dark main{padding-top:7px!important;padding-bottom:calc(118px + env(safe-area-inset-bottom,0px))!important;}
+
+/* Short room, remove the duplicate top room card. Bottom nav still switches rooms. */
+body.v122-ultra-sniper-dark[data-t212-page="short"] #t212V112AppBar{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v112ShortHero{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection{padding:9px!important;border-radius:20px!important;margin:0 0 8px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection>h2,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection>.row.tight{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls{display:flex!important;gap:5px!important;margin:0 0 7px!important;overflow-x:auto!important;padding-bottom:2px!important;scrollbar-width:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls::-webkit-scrollbar{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #commandSection .opportunityControls button{min-height:28px!important;border-radius:999px!important;font-size:9.5px!important;padding:4px 8px!important;white-space:nowrap!important;box-shadow:none!important;flex:0 0 auto!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v119SniperPanel{margin:0!important;padding:9px!important;border-radius:20px!important;box-shadow:0 16px 40px rgba(0,0,0,.36)!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119SniperTop{margin-bottom:7px!important;align-items:center!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119SniperTitle span{font-size:8.5px!important;letter-spacing:.12em!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119SniperTitle b{font-size:19px!important;line-height:1!important;margin-top:2px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119SniperPill{font-size:9.5px!important;padding:4px 7px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119CommandHero{padding:10px!important;border-radius:17px!important;margin-bottom:7px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119CommandHero .k{font-size:8.5px!important;letter-spacing:.10em!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119CommandHero .action{font-size:30px!important;line-height:.9!important;margin-top:4px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119CommandHero .sub{font-size:11.5px!important;line-height:1.24!important;margin-top:5px!important;}
+
+/* Counts must be glanceable, not chunky. */
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v120CountStrip{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:7px 0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v120CountStrip button{min-height:43px!important;padding:5px 4px!important;border-radius:13px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v120CountStrip span{font-size:7px!important;letter-spacing:.08em!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v120CountStrip b{font-size:17px!important;margin-top:2px!important;}
+
+/* Decision quality, compact by default. Detail is still behind the Show button. */
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ{padding:8px!important;border-radius:17px!important;margin:7px 0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQHead{gap:7px!important;margin-bottom:0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQHead b{font-size:15px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQHead span{font-size:10.5px!important;line-height:1.25!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQScore{font-size:16px!important;min-width:46px!important;padding:6px!important;border-radius:14px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQScore small{font-size:7px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQGrid{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQFoot{font-size:10.5px!important;line-height:1.28!important;margin-top:6px!important;padding-top:6px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQDetails summary{min-height:32px!important;padding:7px 10px!important;border-radius:13px!important;font-size:11px!important;margin-top:6px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ details[open] .v121DQExplain{display:grid!important;grid-template-columns:1fr!important;gap:4px!important;padding-top:6px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ details[open] .v121DQExplain p{font-size:10.5px!important;margin:0!important;}
+
+/* If there is no scan yet, do not waste half the screen repeating empty queues. */
+body.v122-ultra-sniper-dark.v122-no-scan[data-t212-page="short"] .v119Queue{display:none!important;}
+body.v122-ultra-sniper-dark.v122-no-scan[data-t212-page="short"] #v121ShortDQ .v121DQFoot,
+body.v122-ultra-sniper-dark.v122-no-scan[data-t212-page="short"] #v121ShortDQ details{display:none!important;}
+body.v122-ultra-sniper-dark.v122-no-scan[data-t212-page="short"] #v121ShortDQ{margin-bottom:0!important;}
+
+/* Empty queues after scanning become one-line status rows. Live detail remains available when a real row exists. */
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119Queue{gap:5px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard{padding:8px!important;border-radius:16px!important;margin:0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard:has(.v119NoTrade){display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:center!important;gap:8px!important;min-height:44px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard:has(.v119NoTrade) .v119QueueHead{margin:0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard:has(.v119NoTrade) .v119QueueHead span{font-size:8px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard:has(.v119NoTrade) .v119QueueHead b{font-size:16px!important;margin-top:2px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueCard:has(.v119NoTrade) .v119NoTrade{display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueBadge{font-size:9.5px!important;padding:4px 7px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueGrid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:6px 0!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119Mini{padding:5px!important;border-radius:11px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119Mini span{font-size:6.8px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119Mini b{font-size:10.5px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueNote{font-size:10.5px!important;line-height:1.22!important;margin-top:4px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueActions{grid-template-columns:1fr 1fr!important;gap:5px!important;margin-top:6px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] .v119QueueActions button{min-height:32px!important;font-size:10.5px!important;border-radius:11px!important;padding:6px!important;}
+
+/* Lower detail panels stay collapsed and tap-open. */
+body.v122-ultra-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open){max-height:52px!important;min-height:52px!important;overflow:hidden!important;cursor:pointer!important;padding:13px 88px 13px 13px!important;border-radius:18px!important;position:relative!important;margin-bottom:7px!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent)>*:not(h2),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open)>*:not(h2),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open)>*:not(h2),
+body.v122-ultra-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open)>*:not(h2){display:none!important;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #positionsSection:not(.v120-open):not(.v120-urgent)::after,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #ticketSection:not(.v120-open)::after,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #scannerSection:not(.v119-open):not(.v120-open)::after,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #blockerSection:not(.v119-open):not(.v120-open)::after{content:'Open';position:absolute;right:11px;top:50%;transform:translateY(-50%);border:1px solid rgba(195,215,255,.16);background:rgba(255,255,255,.06);color:#dbe7f8;border-radius:999px;padding:5px 8px;font-size:9.5px;font-weight:1000;}
+body.v122-ultra-sniper-dark[data-t212-page="short"] #positionsSection h2,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #ticketSection h2,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #scannerSection h2,
+body.v122-ultra-sniper-dark[data-t212-page="short"] #blockerSection h2{font-size:16px!important;margin:0!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}
+
+/* Bottom nav slightly smaller so it stops eating the trade panel. */
+body.v122-ultra-sniper-dark #t212V112TabBar{height:66px!important;padding:6px!important;border-radius:25px!important;}
+body.v122-ultra-sniper-dark #t212V112TabBar button{height:52px!important;min-height:52px!important;border-radius:18px!important;font-size:10.5px!important;}
+body.v122-ultra-sniper-dark #t212V112TabBar button span{font-size:19px!important;}
+@media(max-width:430px){
+  body.v122-ultra-sniper-dark[data-t212-page="short"] .v119CommandHero .action{font-size:28px!important;}
+  body.v122-ultra-sniper-dark[data-t212-page="short"] .v119SniperTitle b{font-size:18px!important;}
+  body.v122-ultra-sniper-dark[data-t212-page="short"] #v121ShortDQ .v121DQHead span{font-size:10px!important;}
+}
+</style>
+<script id="v122-ultra-sniper-dark-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function setBrand(){
+    document.documentElement.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark');
+    document.body.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark');
+    document.title='Trading 212 Manual God Mode v123, Live Scanner Restore Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v122';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Ultra sniper dark, one screen first';
+    var m=document.querySelector('.mobileTitleText'); if(m) m.textContent='Manual God Mode v122';
+  }
+  function syncNoScan(){
+    var hero=document.querySelector('.v119CommandHero .action');
+    var text=hero ? String(hero.textContent||'').trim().toUpperCase() : '';
+    document.body.classList.toggle('v122-no-scan', text.indexOf('NO SCAN')>=0);
+  }
+  function tapPanels(){
+    ['positionsSection','ticketSection','scannerSection','blockerSection'].forEach(function(id){
+      var el=document.getElementById(id); if(!el || el.getAttribute('data-v122-tap')) return;
+      el.setAttribute('data-v122-tap','1');
+      el.addEventListener('click',function(e){
+        if(document.body.getAttribute('data-t212-page')!=='short') return;
+        if(e.target && e.target.closest('button,input,select,textarea,a,summary,details')) return;
+        el.classList.toggle('v120-open');
+      },true);
+    });
+  }
+  ready(function(){
+    setBrand(); tapPanels(); syncNoScan();
+    setInterval(function(){ setBrand(); tapPanels(); syncNoScan(); },700);
+  });
+})();
+</script>
+
+
+
+<style id="v123-live-scanner-restore-css">
+/* v123, restores live controls and makes scanner results obvious again. */
+html.v123-live-scanner-restore{background:#050914!important;color-scheme:dark!important;}
+body.v123-live-scanner-restore .v112BrandText b{color:#fff!important;}
+body.v123-live-scanner-restore .v112BrandText span{color:#a9b7cc!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #v119SniperPanel{overflow:visible!important;}
+#v123LiveControls{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:6px!important;
+  margin:7px 0!important;
+}
+#v123LiveControls button{
+  min-height:38px!important;
+  border-radius:13px!important;
+  padding:7px 5px!important;
+  font-size:10.5px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#v123ScanMini{
+  border:1px solid rgba(195,215,255,.14)!important;
+  background:rgba(255,255,255,.045)!important;
+  border-radius:14px!important;
+  padding:7px 9px!important;
+  margin:5px 0 7px!important;
+  color:#b7c6dc!important;
+  font-size:10.8px!important;
+  line-height:1.25!important;
+}
+#v123ScanMini b{color:#fff!important;}
+#v123ScanMini .good{color:#8dffd0!important;}
+#v123ScanMini .warn{color:#ffdc86!important;}
+#v123ScanMini .bad{color:#ff9bad!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open{
+  max-height:none!important;
+  min-height:0!important;
+  overflow:visible!important;
+  padding:13px!important;
+  cursor:default!important;
+  border-radius:20px!important;
+}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open::after,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open::after,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open::after{display:none!important;content:none!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open>*:not(h2),
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open>*:not(h2),
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open>*:not(h2){display:revert!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerControls,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerControls,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerControls{display:block!important;position:static!important;margin:8px 0!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerTabs,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerTabs,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerTabs{display:flex!important;gap:6px!important;overflow-x:auto!important;flex-wrap:nowrap!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerTools,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerTools,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerTools{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:7px!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerSummary,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerSummary,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerSummary{display:block!important;font-size:11px!important;margin:7px 0!important;color:#a9b7cc!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerCards,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerCards,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerCards{display:block!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerCard,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerCard,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerCard{display:block!important;margin:7px 0!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerMeta,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerMeta,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerMeta{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:6px!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerCard details,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerCard details,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerCard details{display:block!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .scannerCard .actions,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v119-open .scannerCard .actions,
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v120-open .scannerCard .actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important;margin-top:7px!important;}
+body.v123-live-scanner-restore[data-t212-page="short"] #scannerSection.v123-open .resultsScroll{display:none!important;}
+@media(max-width:390px){#v123LiveControls{grid-template-columns:repeat(2,minmax(0,1fr))!important;}#v123LiveControls button{font-size:10px!important;}}
+</style>
+<script id="v123-live-scanner-restore-js">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  function id(x){ return document.getElementById(x); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function rows(){ try{ return state && Array.isArray(state.lastRows) ? state.lastRows.filter(Boolean) : []; }catch(e){ return []; } }
+  function n(v,d){ v=Number(v); return isFinite(v)?v.toFixed(d||0):'0'; }
+  function classify(r){ return String((r&&r.buyTrigger)||r&&r.signal||'').toUpperCase(); }
+  function rowScore(r){ return Number((r&&r.score)||0) + Number((r&&r.prob)||0)/10 + Number((r&&r.expR)||0)*5; }
+  function counts(){
+    var all=rows(), c={buy:0,blocked:0,owned:0};
+    try{ if(typeof scannerCounts==='function') c=scannerCounts(all)||c; }catch(e){}
+    var buy=Number(c.buy||0), blocked=Number(c.blocked||0), owned=Number(c.owned||0);
+    var wait=Math.max(0, all.length-buy-blocked-owned);
+    return {all:all.length,buy:buy,wait:wait,blocked:blocked,owned:owned};
+  }
+  function setBrand(){
+    document.documentElement.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore');
+    document.body.classList.add('v119-sniper-dark','v120-compact-sniper-dark','v121-decision-quality-dark','v122-ultra-sniper-dark','v123-live-scanner-restore');
+    document.title='Trading 212 Manual God Mode v123, Live Scanner Restore Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b) b.textContent='God Mode v123';
+    var s=document.querySelector('.v112BrandText span'); if(s) s.textContent='Sniper dark, live controls restored';
+    var m=document.querySelector('.mobileTitleText'); if(m) m.textContent='Manual God Mode v123';
+  }
+  function scanMiniHTML(){
+    var c=counts();
+    var live=false; try{ live=!!(state&&state.live); }catch(e){}
+    var statusEl=id('liveStatus');
+    var status=statusEl ? String(statusEl.textContent||'') : (live?'Live':'Idle');
+    var age='no scan yet';
+    try{ if(state && state.scanDiag && state.scanDiag.finishedAt) age='last scan '+new Date(state.scanDiag.finishedAt).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }catch(e){}
+    var top=rows().slice().sort(function(a,b){ return rowScore(b)-rowScore(a); }).slice(0,3).map(function(r){ return esc(r.symbol||'?')+' '+esc(classify(r)||'WAIT'); }).join(' · ');
+    if(!top) top='No rows yet.';
+    var cls = c.all ? 'good' : 'warn';
+    return '<b>Live:</b> '+esc(status)+' · <b class="'+cls+'">Rows '+c.all+'</b> · Buy '+c.buy+' · Wait '+c.wait+' · Blocked '+c.blocked+' · '+esc(age)+'<br><b>Top rows:</b> '+top;
+  }
+  function insertControls(){
+    var panel=id('v119SniperPanel'); if(!panel) return;
+    var hero=panel.querySelector('.v119CommandHero'); if(!hero) return;
+    var bar=id('v123LiveControls');
+    if(!bar){
+      bar=document.createElement('div'); bar.id='v123LiveControls';
+      hero.insertAdjacentElement('afterend',bar);
+    }
+    bar.innerHTML='<button class="good" type="button" data-v123-start="1">Start live</button><button class="secondary" type="button" data-v123-load="1">Load + live</button><button class="secondary" type="button" data-v123-scan="1">Scan now</button><button class="secondary" type="button" data-v123-results="1">Results</button>';
+    var mini=id('v123ScanMini');
+    if(!mini){ mini=document.createElement('div'); mini.id='v123ScanMini'; bar.insertAdjacentElement('afterend',mini); }
+    mini.innerHTML=scanMiniHTML();
+  }
+  function selectAllTab(){
+    try{ state.scannerFilter='all'; state.scannerShowAll=true; }catch(e){}
+    document.querySelectorAll('#scannerTabs .scannerTab').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-scanner-filter')==='all'); });
+    try{ if(typeof renderResults==='function') renderResults(rows()); }catch(e){}
+  }
+  function openScanner(all){
+    var sec=id('scannerSection'); if(!sec) return;
+    sec.classList.add('v123-open','v119-open','v120-open');
+    if(all) selectAllTab();
+    setTimeout(function(){ sec.scrollIntoView({behavior:'smooth',block:'start'}); },40);
+  }
+  function safeCall(fnName){
+    try{ if(typeof window[fnName]==='function') return window[fnName](); }catch(e){ try{ if(typeof toast==='function') toast(fnName+' failed', String(e&&e.message||e), 'bad'); }catch(_){} }
+  }
+  function wire(){
+    if(document.body.getAttribute('data-v123-wired')) return;
+    document.body.setAttribute('data-v123-wired','1');
+    document.addEventListener('click',function(e){
+      var start=e.target.closest('[data-v123-start]');
+      if(start){ e.preventDefault(); safeCall('startLive'); setTimeout(insertControls,300); return; }
+      var load=e.target.closest('[data-v123-load]');
+      if(load){ e.preventDefault(); safeCall('runDailyRoutine'); setTimeout(insertControls,500); return; }
+      var scan=e.target.closest('[data-v123-scan]');
+      if(scan){ e.preventDefault(); var p=safeCall('scan'); Promise.resolve(p).then(function(){ openScanner(true); insertControls(); }); return; }
+      var res=e.target.closest('[data-v123-results]');
+      if(res){ e.preventDefault(); openScanner(true); return; }
+      var sc=e.target.closest('#scannerScanNow,[data-scan-now-card]');
+      if(sc){ setTimeout(function(){ openScanner(true); insertControls(); },500); }
+    },true);
+  }
+  ready(function(){
+    setBrand(); wire(); insertControls();
+    setInterval(function(){ setBrand(); insertControls(); },700);
   });
 })();
 </script>
