@@ -6509,5 +6509,60 @@ body.v126-simple-short-dark[data-t212-page="short"] #ticketSection.v126-open>*:n
 })();
 </script>
 
+
+
+<style id="v127-simple-short-cash-rec-css">
+/* v127, restore short cash reconcile into the simple short view. */
+body.v127-simple-short-cash-rec[data-t212-page="short"] #v127CashRec{border:1px solid rgba(53,228,155,.22);background:linear-gradient(180deg,rgba(53,228,155,.08),rgba(4,9,18,.46));border-radius:16px;padding:8px;margin:8px 0;color:#f4f8ff;}
+#v127CashRec .v127CashTop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px;}
+#v127CashRec .v127CashTop b{display:block;font-size:14px;line-height:1.05;color:#98ffd0;letter-spacing:-.02em;}
+#v127CashRec .v127CashTop span{display:block;margin-top:3px;font-size:10.5px;color:#a9b7cc;line-height:1.25;}
+#v127CashRec .v127Mode{display:inline-flex;align-items:center;border-radius:999px;padding:5px 7px;border:1px solid rgba(195,215,255,.14);background:rgba(255,255,255,.055);font-size:9.5px;font-weight:1000;color:#dbe7f8;white-space:nowrap;}
+#v127CashRec .v127Mode.auto{color:#98ffd0;border-color:rgba(53,228,155,.28);background:rgba(53,228,155,.10);}
+#v127CashRec .v127Mode.manual{color:#ffe2a0;border-color:rgba(255,209,102,.28);background:rgba(255,209,102,.10);}
+#v127CashRec .v127CashGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:7px 0;}
+#v127CashRec .v127CashMini{background:rgba(255,255,255,.045);border:1px solid rgba(195,215,255,.09);border-radius:11px;padding:6px;min-width:0;}
+#v127CashRec .v127CashMini span{display:block;font-size:7px;text-transform:uppercase;letter-spacing:.07em;color:#8fa2bb;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#v127CashRec .v127CashMini b{display:block;font-size:12px;margin-top:2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#v127CashRec .v127CashActions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px;}
+#v127CashRec .v127CashActions button{min-height:32px!important;border-radius:12px!important;font-size:10.5px!important;padding:6px 4px!important;box-shadow:none!important;}
+@media(max-width:430px){#v127CashRec .v127CashGrid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+</style>
+<script id="v127-simple-short-cash-rec-js">
+(function(){
+  function id(x){return document.getElementById(x)}
+  function esc(v){try{return (window.escapeHTML||function(x){return String(x==null?'':x).replace(/[&<>\"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]})})(v)}catch(e){return String(v||'')}}
+  function gbp(v){try{return window.moneyGBP?window.moneyGBP(v):'£'+((+v||0).toFixed(2))}catch(e){return '£'+((+v||0).toFixed(2))}}
+  function cash(){try{return window.cashLedger?window.cashLedger(window.activeSettings?window.activeSettings():null):null}catch(e){return null}}
+  function click(sel){var b=document.querySelector(sel); if(b){b.click(); return true;} return false;}
+  function setAuto(){try{var cm=id('cashMode'); if(cm)cm.value='auto'; if(window.saveSettings)window.saveSettings(); if(window.toast)window.toast('Auto cash ledger on','Short cash now follows pot plus closed P/L minus open bought value.','good'); if(window.renderSessionPanel)window.renderSessionPanel(window.state&&state.lastRows?state.lastRows:[]); if(window.renderResults&&window.state&&state.lastRows)window.renderResults(state.lastRows);}catch(e){}}
+  function rec(){ if(click('#reconcileCash'))return; try{var c=cash(); var v=parseFloat(prompt('Actual Trading 212 cash available in £. This only changes the dashboard cash field, not Trading 212.', c?((+c.available||0).toFixed(2)):'0.00')); if(!isFinite(v)||v<0)return; var cashInput=id('cash'); if(cashInput)cashInput.value=v.toFixed(2); var cm=id('cashMode'); if(cm)cm.value='manual'; if(window.saveSettings)window.saveSettings(); if(window.toast)window.toast('Cash reconciled','Dashboard cash set to '+gbp(v)+'.','good'); }catch(e){} }
+  function html(c){
+    if(!c)return '';
+    var mode=(c.mode||'auto');
+    return '<div id="v127CashRec"><div class="v127CashTop"><div><b>Cash rec, '+gbp(c.available)+' available</b><span>Short cash = pot plus realised P/L minus open bought value. Manual only overrides the dashboard.</span></div><span class="v127Mode '+esc(mode)+'">'+esc(mode==='manual'?'Manual':'Auto')+'</span></div><div class="v127CashGrid"><div class="v127CashMini"><span>Day start</span><b>'+gbp(c.dayStart)+'</b></div><div class="v127CashMini"><span>Open bought</span><b>'+gbp(c.bought)+'</b></div><div class="v127CashMini"><span>Open now</span><b>'+gbp(c.current)+'</b></div><div class="v127CashMini"><span>Account est</span><b>'+gbp(c.accountEstimate)+'</b></div></div><div class="v127CashActions"><button type="button" class="secondary" data-v127-auto="1">Use auto</button><button type="button" class="secondary" data-v127-rec="1">Reconcile cash</button></div></div>'
+  }
+  function render(){
+    if(document.body.getAttribute('data-t212-page')!=='short')return;
+    var panel=id('v126SimplePanel'); if(!panel)return;
+    var current=id('v127CashRec');
+    var markup=html(cash()); if(!markup)return;
+    if(!current){
+      var strip=panel.querySelector('.v126Strip');
+      var tmp=document.createElement('div'); tmp.innerHTML=markup; var node=tmp.firstElementChild;
+      if(strip&&strip.parentNode)strip.parentNode.insertBefore(node,strip.nextSibling); else panel.appendChild(node);
+    }else{
+      var tmp2=document.createElement('div'); tmp2.innerHTML=markup; current.replaceWith(tmp2.firstElementChild);
+    }
+  }
+  function wire(){
+    if(document.body.getAttribute('data-v127-cash-wired'))return; document.body.setAttribute('data-v127-cash-wired','1');
+    document.addEventListener('click',function(e){var x=e.target.closest('[data-v127-rec]'); if(x){e.preventDefault(); rec(); setTimeout(render,150); return;} x=e.target.closest('[data-v127-auto]'); if(x){e.preventDefault(); setAuto(); setTimeout(render,150); return;}},true);
+  }
+  function ready(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn()}
+  ready(function(){document.documentElement.classList.add('v127-simple-short-cash-rec');document.body.classList.add('v127-simple-short-cash-rec');document.title='Trading 212 Manual God Mode v127, Simple Short Cash Rec Dark';var b=document.querySelector('.v112BrandText b');if(b)b.textContent='God Mode v127';var s=document.querySelector('.v112BrandText span');if(s)s.textContent='Simple short dark, cash rec restored';wire();render();setInterval(render,800);});
+})();
+</script>
+
 </body>
 </html>
