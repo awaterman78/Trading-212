@@ -7221,5 +7221,109 @@ body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
 })();
 </script>
 
+
+
+<!-- v134 Long Top-up Log Button, add-more candidates can be logged directly as new lots -->
+<style id="v134-long-topup-log-css">
+.v134TopUpActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.v134TopUpActions button{min-height:42px!important;border-radius:14px!important;font-size:13px!important}
+.v134TopUpLogBtn{background:linear-gradient(135deg,#35e49b,#7af0bd)!important;color:#06101e!important}
+.v134TopUpHint{font-size:11px;color:#a9b7cc;margin-top:6px;line-height:1.35}
+@media(max-width:780px){.v134TopUpActions{grid-template-columns:1fr}.v134TopUpActions button{font-size:12px!important}}
+</style>
+<script id="v134-long-topup-log-js">
+(function(){
+  'use strict';
+  var TRACK='t212gm93_tracker', JOURNAL='t212gm93_journal';
+  function read(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function fmt(v,d){v=Number(v);return Number.isFinite(v)?v.toFixed(d||2):'n/a'}
+  function today(){return new Date().toISOString().slice(0,10)}
+  function findTracker(sym){var s=String(sym||'').toUpperCase().trim();var t=read(TRACK,[]);return {list:t,item:t.find(function(x){return String(x&&x.sym||'').toUpperCase().trim()===s}),sym:s}}
+  function seedLots(x){
+    if(!x)return [];
+    if(Array.isArray(x.lots)&&x.lots.length)return x.lots.filter(function(l){return +l.amount>0&&+l.price>0});
+    var owned=+x.owned||0;
+    var px=(Number.isFinite(+x.buyPrice)&&+x.buyPrice>0)?+x.buyPrice:((Number.isFinite(+x.price)&&+x.price>0)?+x.price:null);
+    if(owned>0&&px)return [{date:x.created||x.updated||today(),amount:+owned,price:+px,qty:Number.isFinite(+x.qty)&&+x.qty>0?+x.qty:null,note:'Opening basis from existing tracker'}];
+    return [];
+  }
+  function recalc(x){
+    var lots=seedLots(x);
+    var total=lots.reduce(function(a,l){return a+(+l.amount||0)},0);
+    var weighted=total?lots.reduce(function(a,l){return a+(+l.price||0)*(+l.amount||0)},0)/total:null;
+    var qtyTotal=lots.reduce(function(a,l){return a+(Number.isFinite(+l.qty)?+l.qty:0)},0);
+    x.lots=lots;
+    if(total>0)x.owned=+total.toFixed(4);
+    if(weighted&&weighted>0){x.buyPrice=+weighted.toFixed(6);x.price=x.buyPrice;}
+    if(qtyTotal>0)x.qty=+qtyTotal.toFixed(6);
+    x.lotCount=lots.length;x.updated=today();return x;
+  }
+  function addTopUpLot(sym, defaultAmount){
+    var found=findTracker(sym), t=found.list, x=found.item, s=found.sym;
+    if(!s)return;
+    if(!x){x={sym:s,quoteSymbol:s,owned:0,target:Math.max(+defaultAmount*2||10,10),review:new Date(Date.now()+90*86400000).toISOString().slice(0,10),created:today()};t.push(x)}
+    recalc(x);
+    var amount=parseFloat(prompt('Amount bought in £ for '+s, Number.isFinite(+defaultAmount)&&+defaultAmount>0?String(+defaultAmount):'5'));
+    if(!Number.isFinite(amount)||amount<=0)return;
+    var suggested=(Number.isFinite(+x.currentPrice)&&+x.currentPrice>0)?+x.currentPrice:((Number.isFinite(+x.buyPrice)&&+x.buyPrice>0)?+x.buyPrice:'');
+    var price=parseFloat(prompt('Actual bought share price for this new top-up, as shown in Trading 212', suggested));
+    if(!Number.isFinite(price)||price<=0){alert('Top-up cancelled. Enter the real bought price so the weighted average stays truthful.');return;}
+    var qtyRaw=prompt('Quantity bought, optional. Leave blank if unknown.', '');
+    var qty=parseFloat(qtyRaw);
+    var note=prompt('Note, optional', 'Logged from Add-more engine')||'';
+    x.lots=seedLots(x);
+    x.lots.push({date:today(),amount:+amount.toFixed(4),price:+price.toFixed(6),qty:Number.isFinite(qty)&&qty>0?+qty.toFixed(6):null,note:note||'Add-more lot'});
+    var hadCurrent=Number.isFinite(+x.currentPrice)&&+x.currentPrice>0;
+    recalc(x);
+    if(!hadCurrent){x.currentPrice=price;x.currentTs=Date.now();x.liveSource='Manual top-up price';}
+    write(TRACK,t);
+    var j=read(JOURNAL,[]);
+    j.push({date:today(),sym:s,action:'Top-up bought',amount:+amount.toFixed(4),price:+price.toFixed(6),qty:Number.isFinite(qty)&&qty>0?+qty.toFixed(6):null,note:'Add-more engine lot. '+note+' Weighted average now '+fmt(x.buyPrice,4)+'.'});
+    write(JOURNAL,j);
+    try{if(typeof window.renderAll==='function')window.renderAll()}catch(e){}
+    setTimeout(decorate,500);
+    var toast=window.toast||window.safeToast;
+    if(typeof toast==='function')toast('Top-up logged',s+' new lot added. Average bought price now '+fmt(x.buyPrice,4)+'.','good');
+  }
+  function parseAmount(row){
+    var txt=(row&&row.textContent)||'';
+    var m=txt.match(/£\s*([0-9]+(?:\.[0-9]+)?)/);
+    return m?parseFloat(m[1]):5;
+  }
+  function decorateTopUpRows(){
+    document.title='Trading 212 Manual God Mode v134, Long Top-up Lot Logging Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b)b.textContent='God Mode v134';
+    var sub=document.querySelector('.v112BrandText span'); if(sub)sub.textContent='Long Beast, log top-ups as lots';
+    var m=document.querySelector('.mobileTitleText'); if(m)m.textContent='Manual God Mode v134';
+    var badge=document.querySelector('.ltSimpleBadge'); if(badge)badge.textContent='v134 top-up lot logging';
+    document.querySelectorAll('.v130TopUpRow:not(.v130TopUpBlocked)').forEach(function(row){
+      if(row.querySelector('[data-v134-topuplog]'))return;
+      var symEl=row.querySelector('.v130TopUpTop b');
+      var sym=symEl?String(symEl.textContent||'').trim().toUpperCase():'';
+      if(!sym||/NO CLEAN/i.test(sym))return;
+      var amount=parseAmount(row);
+      row.insertAdjacentHTML('beforeend','<div class="v134TopUpActions"><button class="v134TopUpLogBtn" data-v134-topuplog="'+esc(sym)+'" data-v134-amount="'+esc(amount)+'">Log this top-up</button><button class="secondary" data-v134-openholding="'+esc(sym)+'">Open holding</button></div><div class="v134TopUpHint">After buying in Trading 212, tap Log this top-up and enter the real execution price. The app will keep the old buy and this new buy as separate lots.</div>');
+    });
+  }
+  document.addEventListener('click',function(e){
+    var btn=e.target.closest('[data-v134-topuplog]');
+    if(btn){e.preventDefault();e.stopImmediatePropagation();addTopUpLot(btn.getAttribute('data-v134-topuplog'),parseFloat(btn.getAttribute('data-v134-amount'))||5);return;}
+    var open=e.target.closest('[data-v134-openholding]');
+    if(open){
+      e.preventDefault();e.stopImmediatePropagation();
+      var sym=open.getAttribute('data-v134-openholding');
+      var card=document.querySelector('.ltTrackCard[data-lts-card="'+CSS.escape(sym)+'"]');
+      if(card){card.scrollIntoView({behavior:'smooth',block:'center'});}else{alert('Holding card not visible yet. Go to Tracker after buying, then find '+sym+'.');}
+      return;
+    }
+  },true);
+  function ready(){decorateTopUpRows();setInterval(decorateTopUpRows,1500);document.addEventListener('click',function(e){if(e.target.closest('#ltsBuildPlan,#v129BuildBeast,#ltsRefreshPrices,[data-v112-route="long"],[data-t212-route="long"]'))setTimeout(decorateTopUpRows,1000)},true)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
+})();
+</script>
+
 </body>
 </html>
