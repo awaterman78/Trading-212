@@ -2657,8 +2657,8 @@ COIN"></textarea>
 
 <div class="card span12 longSimpleSection" id="longSimpleSection" role="region" aria-label="Long term evidence first autopilot">
   <div class="ltSimpleTop">
-    <div><h2>Long term autopilot, verified evidence</h2><p class="tiny">One job: turn your funding amount into one clear buy list, then move completed buys into aftercare. v118 reconciles owned cash, monitors total long value, and gives clear live price diagnostics for long holdings.</p></div>
-    <span class="ltSimpleBadge">v117 value monitor</span>
+    <div><h2>Long term Beast, evidence and protection</h2><p class="tiny">Long term is now the main engine. Broad universe, evidence gated buys, tracker aftercare, live value monitoring and profit protection checks. Manual execution only.</p></div>
+    <span class="ltSimpleBadge">v129 beast mode</span>
   </div>
 
   <div class="ltSimpleGrid" id="ltsOverview">
@@ -2669,6 +2669,29 @@ COIN"></textarea>
     <div class="ltValueHero"><span>Total long value</span><b>£0.00</b><small>Build a plan or log holdings to monitor the long pot.</small></div>
     <div class="ltValueGrid">
       <div><span>Invested cost</span><b>£0.00</b></div><div><span>Holdings now</span><b>£0.00</b></div><div><span>Live P/L</span><b>£0.00</b></div><div><span>Cash / unallocated</span><b>£0.00</b></div>
+    </div>
+  </div>
+
+  <div class="v129BeastPanel" id="v129BeastPanel" aria-label="Long term beast monitor">
+    <div class="v129BeastHead">
+      <div><b>Long term Beast monitor</b><span>Buys are evidence gated. Exits protect gains without panic selling normal pullbacks.</span></div>
+      <strong id="v129BeastState">Not checked</strong>
+    </div>
+    <div class="v129BeastGrid" id="v129BeastGrid">
+      <div><span>Universe</span><b>80+</b><small>Curated quality, ETFs, growth and sector leaders.</small></div>
+      <div><span>Buy rule</span><b>Evidence</b><small>No company buy without usable data unless Explore is chosen.</small></div>
+      <div><span>Protection</span><b>Trailing</b><small>Watches give-back from highs after progression.</small></div>
+      <div><span>Action</span><b>Manual</b><small>It advises, you place Trading 212 orders.</small></div>
+    </div>
+    <div class="v129BeastActions">
+      <button type="button" class="good" id="v129BuildBeast">Build beast plan</button>
+      <button type="button" class="secondary" id="v129PrimeUniverse">Prime long universe</button>
+      <button type="button" class="secondary" id="v129CheckProtection">Check sell risk</button>
+      <button type="button" class="secondary" id="v129ShowPortfolio">Portfolio view</button>
+    </div>
+    <div class="v129ProtectionBox" id="v129ProtectionBox">
+      <b>Protection status</b>
+      <div class="tiny">Tap Check sell risk after live prices refresh. The app watches fresh prices, progress from cost, give-back from the best seen value, quote freshness and cached trend.</div>
     </div>
   </div>
 
@@ -2694,7 +2717,7 @@ COIN"></textarea>
     <summary><span>Advanced controls</span><span class="muted">usually leave these alone</span></summary>
     <div class="ltControls">
       <label>Use this round, %<input id="ltsDeployPct" min="10" max="100" step="5" type="number" value="80"></label>
-      <label>Max buys now<input id="ltsMaxBuys" min="1" max="8" step="1" type="number" value="6"></label>
+      <label>Max buys now<input id="ltsMaxBuys" min="1" max="12" step="1" type="number" value="8"></label>
       <label>Minimum buy, £<input id="ltsMinBuy" min="1" step="1" type="number" value="5"></label>
       <label>Style<select id="ltsStyle"><option value="best" selected>Evidence optimised, default</option><option value="balanced">Balanced, more ETF ballast</option><option value="growth">Growth tilt, higher risk</option><option value="etf">ETF safety first</option></select></label>
       <label>Evidence rule<select id="ltsStrictness"><option value="verified" selected>Verified, no company buys without fundamentals</option><option value="balanced">Balanced, strong data preferred</option><option value="explore">Explore, allow model candidates</option></select></label>
@@ -2716,7 +2739,7 @@ COIN"></textarea>
   </details>
 
   <details class="ltAdvanced" id="ltsRadarDetails"><summary><span>Idea radar, optional</span><span class="muted">discovery only, not buy instructions</span></summary><div class="ltAdvancedBody">
-    <div class="row"><label>Universe<select id="ltsUniverse"><option value="broad">Broad radar</option><option value="growth">Growth, AI and semis</option><option value="quality">Quality compounders</option><option value="etf">ETF and sector core</option></select></label><label>Results<input id="ltsRadarCount" type="number" min="3" max="20" value="8"></label></div>
+    <div class="row"><label>Universe<select id="ltsUniverse"><option value="broad">Broad radar</option><option value="growth">Growth, AI and semis</option><option value="quality">Quality compounders</option><option value="etf">ETF and sector core</option></select></label><label>Results<input id="ltsRadarCount" type="number" min="3" max="50" value="20"></label></div>
     <div class="row tight" style="margin-top:10px"><button class="secondary" id="ltsRunRadar" type="button">Find ideas</button></div>
     <div id="ltsRadarList" class="ltRadarList"><div class="ltEmpty">Optional discovery only. The plan above decides buys.</div></div>
   </div></details>
@@ -4314,24 +4337,83 @@ function startLongPriceAutoRefresh(){
 }
 
 const BASE=[
-{sym:'SPY',name:'S&P 500 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:82,pot:10,risk:'low',expect:'Core market holding. Baseline evidence is acceptable because it is diversified.'},
-{sym:'QQQ',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:84,pot:14,risk:'medium',expect:'Growth ETF. Strong long-term engine, expect larger drawdowns.'},
+{sym:'SPY',name:'S&P 500 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:83,pot:10,risk:'low',expect:'Core US market baseline. Use as the hurdle for individual stock risk.'},
+{sym:'VOO',name:'Vanguard S&P 500 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:83,pot:10,risk:'low',expect:'Low cost S&P 500 core proxy. Similar role to SPY.'},
+{sym:'QQQ',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:85,pot:14,risk:'medium',expect:'Growth ETF. Strong long-term engine, expect larger drawdowns.'},
+{sym:'QQQM',name:'Nasdaq 100 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:84,pot:14,risk:'medium',expect:'Nasdaq 100 ETF alternative. Good growth ballast if quotes are available.'},
+{sym:'VUG',name:'Growth ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:80,pot:12,risk:'medium',expect:'Broad US growth ETF. Useful benchmark versus single stock choices.'},
+{sym:'SCHD',name:'Dividend quality ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:77,pot:8,risk:'low',expect:'Income and quality tilt. Lower growth, useful ballast.'},
+{sym:'DIA',name:'Dow ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:76,pot:8,risk:'low',expect:'Lower volatility US blue chip exposure.'},
 {sym:'IWM',name:'Russell 2000 ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:79,pot:12,risk:'medium',expect:'Small-cap diversification. Staged buys, review cycle risk.'},
-{sym:'DIA',name:'Dow ETF',role:'Core ETF',sector:'Core ETF',theme:'Core ETF',score:76,pot:8,risk:'low',expect:'Lower-volatility US blue-chip exposure.'},
-{sym:'V',name:'Visa',role:'Quality compounder',sector:'Financials',theme:'Payments',score:82,pot:12,risk:'medium',expect:'Quality payments compounder. Review valuation, regulation and growth.'},
-{sym:'MSFT',name:'Microsoft',role:'Quality compounder',sector:'Technology',theme:'Mega cap tech',score:84,pot:13,risk:'medium',expect:'Quality compounder. Review AI/cloud growth and valuation.'},
-{sym:'GOOGL',name:'Alphabet',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:84,pot:15,risk:'medium',expect:'Quality growth. Review AI capex, ad growth and valuation.'},
-{sym:'META',name:'Meta',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:81,pot:13,risk:'medium',expect:'High quality but sentiment can swing. Review spending and growth.'},
-{sym:'AMZN',name:'Amazon',role:'Quality compounder',sector:'Consumer/Cloud',theme:'Mega cap tech',score:81,pot:14,risk:'medium',expect:'Growth and margin expansion thesis. Review AWS and retail margins.'},
-{sym:'COST',name:'Costco',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:80,pot:9,risk:'low',expect:'Excellent quality, often expensive. Add only if valuation passes.'},
-{sym:'JPM',name:'JPMorgan',role:'Quality compounder',sector:'Financials',theme:'Banks',score:76,pot:8,risk:'medium',expect:'Bank quality leader. Review credit cycle and rates.'},
-{sym:'TSM',name:'TSMC',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:83,pot:17,risk:'high',expect:'Higher cycle/geopolitical risk. Smaller staged buys only.'},
-{sym:'NVDA',name:'Nvidia',role:'Growth',sector:'Semiconductors',theme:'Semis',score:81,pot:20,risk:'high',expect:'High growth, high valuation risk. Small staged buys only.'},
-{sym:'AVGO',name:'Broadcom',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:80,pot:15,risk:'high',expect:'Quality chip and infrastructure compounder. Watch valuation.'},
-{sym:'ASML',name:'ASML',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:80,pot:15,risk:'high',expect:'Semi equipment moat. Review cycle and China restrictions.'},
-{sym:'LLY',name:'Eli Lilly',role:'Growth',sector:'Healthcare',theme:'Healthcare growth',score:78,pot:17,risk:'high',expect:'Healthcare growth. Check valuation and product concentration.'},
-{sym:'CRWD',name:'CrowdStrike',role:'Growth',sector:'Software',theme:'Software',score:74,pot:18,risk:'high',expect:'Cybersecurity growth. Needs valuation and cash-flow evidence.'},
-{sym:'PLTR',name:'Palantir',role:'Growth',sector:'Software',theme:'Software',score:70,pot:20,risk:'very high',expect:'Speculative growth. Tiny only if evidence and valuation justify it.'}
+{sym:'SMH',name:'Semiconductor ETF',role:'Core ETF',sector:'Semiconductors',theme:'Semis',score:82,pot:16,risk:'high',expect:'Sector ETF for semis. Less single stock risk than individual chips.'},
+{sym:'SOXX',name:'Semiconductor ETF',role:'Core ETF',sector:'Semiconductors',theme:'Semis',score:81,pot:15,risk:'high',expect:'Semi basket. Use as benchmark for chip stock picks.'},
+{sym:'XLK',name:'Technology ETF',role:'Core ETF',sector:'Technology',theme:'Sector ETF',score:80,pot:12,risk:'medium',expect:'Technology sector basket. Benchmark for mega cap tech.'},
+{sym:'XLV',name:'Healthcare ETF',role:'Core ETF',sector:'Healthcare',theme:'Sector ETF',score:76,pot:8,risk:'low',expect:'Healthcare defensive growth basket.'},
+{sym:'XLF',name:'Financials ETF',role:'Core ETF',sector:'Financials',theme:'Sector ETF',score:74,pot:7,risk:'medium',expect:'Financials sector basket. Rate and credit cycle sensitive.'},
+{sym:'XLE',name:'Energy ETF',role:'Core ETF',sector:'Energy',theme:'Sector ETF',score:72,pot:7,risk:'medium',expect:'Energy sector basket. Cyclical and commodity exposed.'},
+{sym:'AAPL',name:'Apple',role:'Quality compounder',sector:'Technology',theme:'Mega cap tech',score:82,pot:10,risk:'medium',expect:'Quality ecosystem compounder. Review growth, buybacks and valuation.'},
+{sym:'MSFT',name:'Microsoft',role:'Quality compounder',sector:'Technology',theme:'Mega cap tech',score:86,pot:13,risk:'medium',expect:'Quality compounder. Review AI/cloud growth and valuation.'},
+{sym:'GOOGL',name:'Alphabet',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:86,pot:15,risk:'medium',expect:'Quality growth. Review AI capex, ad growth and valuation.'},
+{sym:'META',name:'Meta',role:'Quality compounder',sector:'Communication',theme:'Mega cap tech',score:83,pot:13,risk:'medium',expect:'High quality but sentiment can swing. Review spending and growth.'},
+{sym:'AMZN',name:'Amazon',role:'Quality compounder',sector:'Consumer/Cloud',theme:'Mega cap tech',score:84,pot:14,risk:'medium',expect:'Growth and margin expansion thesis. Review AWS and retail margins.'},
+{sym:'NVDA',name:'Nvidia',role:'Growth',sector:'Semiconductors',theme:'Semis',score:84,pot:20,risk:'high',expect:'High growth, high valuation risk. Small staged buys only.'},
+{sym:'AVGO',name:'Broadcom',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:83,pot:15,risk:'high',expect:'Quality chip and infrastructure compounder. Watch valuation.'},
+{sym:'TSM',name:'TSMC',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:84,pot:17,risk:'high',expect:'Higher cycle/geopolitical risk. Smaller staged buys only.'},
+{sym:'ASML',name:'ASML',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:82,pot:15,risk:'high',expect:'Semi equipment moat. Review cycle and China restrictions.'},
+{sym:'AMD',name:'AMD',role:'Growth',sector:'Semiconductors',theme:'Semis',score:76,pot:18,risk:'high',expect:'AI and CPU growth candidate. Requires strong evidence and trend.'},
+{sym:'QCOM',name:'Qualcomm',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:76,pot:10,risk:'medium',expect:'Chip cash generator. Review handset cycle and diversification.'},
+{sym:'AMAT',name:'Applied Materials',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:78,pot:12,risk:'high',expect:'Semi equipment leader. Cyclical but quality.'},
+{sym:'LRCX',name:'Lam Research',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:78,pot:12,risk:'high',expect:'Semi equipment. Watch memory cycle and China risk.'},
+{sym:'KLAC',name:'KLA',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:79,pot:11,risk:'high',expect:'Process control quality. Watch semiconductor cycle.'},
+{sym:'MU',name:'Micron',role:'Growth',sector:'Semiconductors',theme:'Semis',score:72,pot:18,risk:'very high',expect:'Memory cycle. Only when data and trend are both strong.'},
+{sym:'TXN',name:'Texas Instruments',role:'Quality compounder',sector:'Semiconductors',theme:'Semis',score:75,pot:8,risk:'medium',expect:'Analog chip quality. More cyclical, lower hype.'},
+{sym:'ORCL',name:'Oracle',role:'Quality compounder',sector:'Technology',theme:'Software',score:77,pot:10,risk:'medium',expect:'Cloud and enterprise software. Review debt and growth.'},
+{sym:'CRM',name:'Salesforce',role:'Quality compounder',sector:'Software',theme:'Software',score:76,pot:10,risk:'medium',expect:'Software cash-flow compounder. Review growth and margins.'},
+{sym:'NOW',name:'ServiceNow',role:'Growth',sector:'Software',theme:'Software',score:79,pot:16,risk:'high',expect:'High quality software growth. Valuation sensitive.'},
+{sym:'ADBE',name:'Adobe',role:'Quality compounder',sector:'Software',theme:'Software',score:76,pot:10,risk:'medium',expect:'Creative software moat. Review AI disruption and growth.'},
+{sym:'INTU',name:'Intuit',role:'Quality compounder',sector:'Software',theme:'Software',score:78,pot:10,risk:'medium',expect:'Tax and SMB software quality. Valuation matters.'},
+{sym:'PANW',name:'Palo Alto Networks',role:'Growth',sector:'Software',theme:'Cybersecurity',score:78,pot:16,risk:'high',expect:'Cybersecurity leader. Needs growth plus cash-flow evidence.'},
+{sym:'CRWD',name:'CrowdStrike',role:'Growth',sector:'Software',theme:'Cybersecurity',score:76,pot:18,risk:'high',expect:'Cybersecurity growth. Needs valuation and cash-flow evidence.'},
+{sym:'NET',name:'Cloudflare',role:'Growth',sector:'Software',theme:'Software',score:70,pot:20,risk:'very high',expect:'High growth, high valuation risk. Tiny only if evidence is strong.'},
+{sym:'DDOG',name:'Datadog',role:'Growth',sector:'Software',theme:'Software',score:72,pot:18,risk:'high',expect:'Observability growth. Valuation and retention matter.'},
+{sym:'PLTR',name:'Palantir',role:'Growth',sector:'Software',theme:'Software',score:72,pot:20,risk:'very high',expect:'Speculative growth. Tiny only if evidence and valuation justify it.'},
+{sym:'SNOW',name:'Snowflake',role:'Growth',sector:'Software',theme:'Software',score:70,pot:20,risk:'very high',expect:'Cloud data growth. Needs improving fundamentals and trend.'},
+{sym:'SHOP',name:'Shopify',role:'Growth',sector:'Consumer/Cloud',theme:'Software',score:73,pot:18,risk:'high',expect:'Commerce platform growth. Watch profitability and valuation.'},
+{sym:'UBER',name:'Uber',role:'Growth',sector:'Consumer/Cloud',theme:'Platform',score:76,pot:16,risk:'high',expect:'Platform growth and margin expansion. Review cash flow.'},
+{sym:'V',name:'Visa',role:'Quality compounder',sector:'Financials',theme:'Payments',score:83,pot:12,risk:'medium',expect:'Quality payments compounder. Review valuation, regulation and growth.'},
+{sym:'MA',name:'Mastercard',role:'Quality compounder',sector:'Financials',theme:'Payments',score:83,pot:12,risk:'medium',expect:'Payments compounder. Similar role to Visa.'},
+{sym:'AXP',name:'American Express',role:'Quality compounder',sector:'Financials',theme:'Payments',score:76,pot:8,risk:'medium',expect:'Premium consumer credit. Watch credit cycle.'},
+{sym:'JPM',name:'JPMorgan',role:'Quality compounder',sector:'Financials',theme:'Banks',score:78,pot:8,risk:'medium',expect:'Bank quality leader. Review credit cycle and rates.'},
+{sym:'BAC',name:'Bank of America',role:'Quality compounder',sector:'Financials',theme:'Banks',score:70,pot:7,risk:'medium',expect:'Bank value candidate. More rate sensitive.'},
+{sym:'BRK.B',name:'Berkshire Hathaway',role:'Quality compounder',sector:'Financials',theme:'Quality compounder',score:80,pot:7,risk:'low',expect:'Diversified quality holding. Quote symbol may need editing by data source.'},
+{sym:'COST',name:'Costco',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:82,pot:9,risk:'low',expect:'Excellent quality, often expensive. Add only if valuation passes.'},
+{sym:'WMT',name:'Walmart',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:79,pot:8,risk:'low',expect:'Retail quality and scale. Lower drama compounder.'},
+{sym:'HD',name:'Home Depot',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:76,pot:8,risk:'medium',expect:'Housing and renovation leader. Cycle sensitive.'},
+{sym:'MCD',name:'McDonald\'s',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:76,pot:7,risk:'low',expect:'Defensive brand compounder. Growth may be steadier than explosive.'},
+{sym:'NKE',name:'Nike',role:'Quality compounder',sector:'Consumer',theme:'Consumer brand',score:68,pot:8,risk:'medium',expect:'Brand recovery candidate. Needs evidence, not nostalgia.'},
+{sym:'PG',name:'Procter & Gamble',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:75,pot:6,risk:'low',expect:'Defensive cash-flow compounder.'},
+{sym:'KO',name:'Coca-Cola',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:74,pot:5,risk:'low',expect:'Defensive brand. Lower growth, useful ballast.'},
+{sym:'PEP',name:'PepsiCo',role:'Quality compounder',sector:'Consumer',theme:'Defensive compounder',score:74,pot:5,risk:'low',expect:'Defensive staples compounder.'},
+{sym:'LLY',name:'Eli Lilly',role:'Growth',sector:'Healthcare',theme:'Healthcare growth',score:82,pot:17,risk:'high',expect:'Healthcare growth. Check valuation and product concentration.'},
+{sym:'NVO',name:'Novo Nordisk',role:'Growth',sector:'Healthcare',theme:'Healthcare growth',score:80,pot:16,risk:'high',expect:'Healthcare growth. Watch valuation and product cycle.'},
+{sym:'UNH',name:'UnitedHealth',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare',score:73,pot:8,risk:'medium',expect:'Healthcare quality, regulatory risk.'},
+{sym:'ISRG',name:'Intuitive Surgical',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare growth',score:78,pot:12,risk:'medium',expect:'Robotics healthcare compounder. Valuation sensitive.'},
+{sym:'TMO',name:'Thermo Fisher',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare',score:76,pot:9,risk:'medium',expect:'Life sciences tools quality. Cycle and funding sensitive.'},
+{sym:'DHR',name:'Danaher',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare',score:75,pot:9,risk:'medium',expect:'Life sciences quality. Watch recovery evidence.'},
+{sym:'ABBV',name:'AbbVie',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare',score:73,pot:7,risk:'medium',expect:'Pharma cash flow. Pipeline and patent risk matter.'},
+{sym:'MRK',name:'Merck',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare',score:73,pot:7,risk:'medium',expect:'Pharma quality. Pipeline concentration risk.'},
+{sym:'VRTX',name:'Vertex',role:'Quality compounder',sector:'Healthcare',theme:'Healthcare growth',score:77,pot:10,risk:'medium',expect:'Biotech quality. Pipeline matters.'},
+{sym:'CAT',name:'Caterpillar',role:'Quality compounder',sector:'Industrials',theme:'Industrials',score:76,pot:8,risk:'medium',expect:'Industrial cycle leader. Watch cycle risk.'},
+{sym:'DE',name:'Deere',role:'Quality compounder',sector:'Industrials',theme:'Industrials',score:75,pot:8,risk:'medium',expect:'Ag machinery compounder. Cyclical.'},
+{sym:'GE',name:'GE Aerospace',role:'Quality compounder',sector:'Industrials',theme:'Industrials',score:78,pot:10,risk:'medium',expect:'Aerospace quality. Watch valuation after strong runs.'},
+{sym:'UNP',name:'Union Pacific',role:'Quality compounder',sector:'Industrials',theme:'Industrials',score:75,pot:7,risk:'medium',expect:'Rail quality. Economic cycle sensitive.'},
+{sym:'HON',name:'Honeywell',role:'Quality compounder',sector:'Industrials',theme:'Industrials',score:74,pot:7,risk:'medium',expect:'Industrial quality. Watch growth and margins.'},
+{sym:'ETN',name:'Eaton',role:'Quality compounder',sector:'Industrials',theme:'Electrification',score:78,pot:12,risk:'medium',expect:'Electrification quality. Valuation matters.'},
+{sym:'LIN',name:'Linde',role:'Quality compounder',sector:'Materials',theme:'Industrials',score:78,pot:7,risk:'low',expect:'Industrial gas quality. Steady compounder.'},
+{sym:'RTX',name:'RTX',role:'Quality compounder',sector:'Industrials',theme:'Defence',score:74,pot:7,risk:'medium',expect:'Defence and aerospace. Watch execution.'},
+{sym:'LMT',name:'Lockheed Martin',role:'Quality compounder',sector:'Industrials',theme:'Defence',score:73,pot:6,risk:'medium',expect:'Defence cash flow. Lower growth.'},
+{sym:'XOM',name:'Exxon Mobil',role:'Quality compounder',sector:'Energy',theme:'Energy',score:72,pot:7,risk:'medium',expect:'Energy cash flow. Commodity cycle risk.'},
+{sym:'CVX',name:'Chevron',role:'Quality compounder',sector:'Energy',theme:'Energy',score:71,pot:7,risk:'medium',expect:'Energy major. Commodity cycle risk.'},
 ];
 function historyStore(){try{return JSON.parse(localStorage.getItem('t212gm36_us_history')||'{}')}catch(e){return {}}}
 function historyEvidence(sym){
@@ -4483,7 +4565,7 @@ function evaluate(x,fund,hist,rule){
 }
 function oppScore(x){let o=x.score*0.33+x.pot*1.8+x.trend*0.25+x.evidence.confidence*0.20; if(x.evidence.gate!=='PASS')o*=0.55; if(x.risk==='high')o-=8; if(x.risk==='very high')o-=20; if(x.role==='Core ETF')o+=10; return Math.round(clamp(o,0,100));}
 async function enrich(rule,style){
- const raw=BASE.map(x=>({...x})); const company=raw.filter(x=>x.role!=='Core ETF').sort((a,b)=>(b.score+b.pot)-(a.score+a.pot)).slice(0,14); const funds={};
+ const raw=BASE.map(x=>({...x})); const company=raw.filter(x=>x.role!=='Core ETF').sort((a,b)=>(b.score+b.pot)-(a.score+a.pot)).slice(0,40); const funds={};
  await Promise.all(company.map(async x=>{funds[x.sym]=await getFund(x.sym)}));
  return raw.map(x=>{const hist=historyEvidence(x.sym); const fund=x.role==='Core ETF'?{status:'etf',source:'ETF baseline'}:(funds[x.sym]||{status:'missing',source:'No fundamentals source'}); const score=Math.round(clamp(x.score+(hist.scoreAdj||0),40,96)); const pot=Math.round(clamp(x.pot+(hist.potAdj||0),3,28)); const y={...x,score,pot,trend:hist.trend,hist,fund}; y.evidence=evaluate(y,fund,hist,rule); y.opp=oppScore(y); return y;});
 }
@@ -4603,7 +4685,7 @@ async function buildPlan(){
   try{
     const fund=Math.max(1,+($('ltsFund')?.value||100));
     let deployPct=clamp(+($('ltsDeployPct')?.value||80),10,100);
-    const maxBuys=Math.round(clamp(+($('ltsMaxBuys')?.value||6),1,8));
+    const maxBuys=Math.round(clamp(+($('ltsMaxBuys')?.value||8),1,12));
     const minBuy=Math.max(1,+($('ltsMinBuy')?.value||5));
     const style=$('ltsStyle')?.value||'best';
     const rule=$('ltsStrictness')?.value||'verified';
@@ -6667,6 +6749,55 @@ body.v128-calm-short-dark[data-t212-page="short"] #blockerSection.v128-open::aft
   function wire(){if(document.body.getAttribute('data-v128-wired'))return;document.body.setAttribute('data-v128-wired','1');document.addEventListener('click',function(e){var x=e.target.closest('[data-v128-start]');if(x){e.preventDefault();clearFocus(); if(window.startLive)window.startLive(); else click('#startLive'); setTimeout(function(){render(true)},250);return;}x=e.target.closest('[data-v128-load]');if(x){e.preventDefault();clearFocus(); if(window.runDailyRoutine)window.runDailyRoutine(); else click('#dailyRoutine'); setTimeout(function(){render(true)},250);return;}x=e.target.closest('[data-v128-scan]');if(x){e.preventDefault();clearFocus(); if(window.scan)window.scan(); else click('#scanNow'); setTimeout(function(){render(true)},250);return;}x=e.target.closest('[data-v128-detail]');if(x){e.preventDefault();openDetails();return;}x=e.target.closest('[data-v128-rec]');if(x){e.preventDefault();rec();return;}x=e.target.closest('[data-v128-auto]');if(x){e.preventDefault();setAuto();return;}x=e.target.closest('[data-v128-copy]');if(x){e.preventDefault();var t=x.getAttribute('data-v128-copy')||'';try{navigator.clipboard.writeText(t)}catch(err){}if(window.toast)toast('Copied qty',t,'good');return;}x=e.target.closest('[data-v128-close]');if(x){e.preventDefault();if(!click('[data-close="'+x.getAttribute('data-v128-close')+'"]'))openSec('positionsSection');return;}x=e.target.closest('[data-v128-be]');if(x){e.preventDefault();if(!click('[data-breakeven="'+x.getAttribute('data-v128-be')+'"]'))openSec('positionsSection');return;}x=e.target.closest('[data-v128-ticket]');if(x){e.preventDefault();var sym=x.getAttribute('data-v128-ticket');if(!click('[data-ticket="'+sym+'"], [data-v119-ticket="'+sym+'"]'))openSec('ticketSection');var t=id('ticketSection');if(t)t.classList.add('v128-open');return;}x=e.target.closest('[data-v128-row]');if(x){e.preventDefault();var sym2=x.getAttribute('data-v128-row');var sc=id('scannerSection');if(sc)sc.classList.add('v128-open');try{document.querySelectorAll('.scannerTab').forEach(function(b){if((b.textContent||'').toLowerCase().includes('all'))b.click()})}catch(err){}setTimeout(function(){var el=[].slice.call(document.querySelectorAll('#scannerSection .scannerCard,.resultsScroll tbody tr')).find(function(el){return (el.textContent||'').toUpperCase().includes(String(sym2).toUpperCase())});if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'center'});},120);return;}x=e.target.closest('[data-v128-clear]');if(x){e.preventDefault();clearFocus();if(window.toast)toast('Unlocked','Next scan can choose a new focus.','info');render(true);return;}},true)}
   function ready(fn){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fn);else fn()}
   ready(function(){document.documentElement.classList.add('v128-calm-short-dark');document.body.classList.add('v128-calm-short-dark');document.title='Trading 212 Manual God Mode v128, Calm Short Dark';var b=document.querySelector('.v112BrandText b');if(b)b.textContent='God Mode v128';var s=document.querySelector('.v112BrandText span');if(s)s.textContent='Calm short dark, stable screen';var m=document.querySelector('.mobileTitleText');if(m)m.textContent='Manual God Mode v128';wire();render(true);setInterval(function(){render(false)},5000);});
+})();
+</script>
+
+
+<style id="v129-long-beast-css">
+/* v129, long term becomes the main engine, broader universe and profit protection panel */
+body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
+.v129BeastPanel{border:1px solid rgba(53,228,155,.25);background:linear-gradient(150deg,rgba(20,43,40,.98),rgba(9,18,31,.98));border-radius:26px;padding:14px;margin:12px 0;box-shadow:0 18px 48px rgba(0,0,0,.26)}
+.v129BeastHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}.v129BeastHead b{display:block;font-size:21px;letter-spacing:-.045em;color:#f8fbff}.v129BeastHead span{display:block;color:#a9b7cc;font-size:13px;line-height:1.35;margin-top:4px}.v129BeastHead strong{border:1px solid rgba(53,228,155,.32);background:rgba(53,228,155,.10);color:#9dffd3;border-radius:999px;padding:6px 9px;font-size:12px;white-space:nowrap}
+.v129BeastGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}.v129BeastGrid>div{background:rgba(255,255,255,.055);border:1px solid rgba(190,211,255,.13);border-radius:17px;padding:10px}.v129BeastGrid span{display:block;color:#95a6bf;font-size:10px;text-transform:uppercase;letter-spacing:.07em;font-weight:1000}.v129BeastGrid b{display:block;color:#f8fbff;font-size:16px;margin-top:4px}.v129BeastGrid small{display:block;color:#a9b7cc;font-size:11px;line-height:1.28;margin-top:3px}
+.v129BeastActions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}.v129BeastActions button{min-height:44px!important;font-size:13px!important;padding:8px!important;border-radius:16px!important}
+.v129ProtectionBox{border:1px solid rgba(122,176,255,.22);background:rgba(122,176,255,.07);border-radius:18px;padding:12px;color:#dbe8ff}.v129ProtectionBox>b{display:block;font-size:16px;margin-bottom:6px}.v129ProtectionRows{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px}.v129ProtectRow{border:1px solid rgba(190,211,255,.14);background:rgba(255,255,255,.045);border-radius:16px;padding:10px}.v129ProtectTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.v129ProtectTop b{font-size:18px;color:#fff}.v129Action{border-radius:999px;padding:5px 8px;font-size:11px;font-weight:1000;white-space:nowrap;border:1px solid rgba(190,211,255,.14);background:rgba(255,255,255,.06);color:#dbe7f8}.v129Action.hold{color:#9dffd3;border-color:rgba(53,228,155,.28);background:rgba(53,228,155,.10)}.v129Action.watch{color:#ffe2a0;border-color:rgba(255,209,102,.28);background:rgba(255,209,102,.10)}.v129Action.protect{color:#ffc2cc;border-color:rgba(255,97,120,.28);background:rgba(255,97,120,.10)}.v129Action.fix{color:#72eaff;border-color:rgba(94,231,255,.28);background:rgba(94,231,255,.10)}
+.v129ProtectStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}.v129ProtectStats div{background:rgba(4,9,18,.55);border:1px solid rgba(190,211,255,.10);border-radius:12px;padding:7px}.v129ProtectStats span{display:block;font-size:9px;color:#95a6bf;text-transform:uppercase;letter-spacing:.05em}.v129ProtectStats b{font-size:12px;color:#fff}.v129ProtectWhy{font-size:12px;line-height:1.35;color:#a9b7cc}.v129ProtectWhy b{color:#f8fbff}
+@media(max-width:780px){.v129BeastGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.v129BeastActions{grid-template-columns:1fr 1fr}.v129ProtectStats{grid-template-columns:repeat(2,minmax(0,1fr))}.v129BeastHead{display:block}.v129BeastHead strong{display:inline-flex;margin-top:8px}}
+</style>
+<script id="v129-long-beast-js">
+(function(){
+  'use strict';
+  var TRACK='t212gm93_tracker', PLAN='t212gm93_plan', HIGHS='t212gm129_long_highs', JOURNAL='t212gm93_journal';
+  var LONG_UNIVERSE = ["SPY", "VOO", "QQQ", "QQQM", "VUG", "SCHD", "DIA", "IWM", "SMH", "SOXX", "XLK", "XLV", "XLF", "XLE", "AAPL", "MSFT", "GOOGL", "META", "AMZN", "NVDA", "AVGO", "TSM", "ASML", "AMD", "QCOM", "AMAT", "LRCX", "KLAC", "MU", "TXN", "ORCL", "CRM", "NOW", "ADBE", "INTU", "PANW", "CRWD", "NET", "DDOG", "PLTR", "SNOW", "SHOP", "UBER", "V", "MA", "AXP", "JPM", "BAC", "BRK.B", "COST", "WMT", "HD", "MCD", "NKE", "PG", "KO", "PEP", "LLY", "NVO", "UNH", "ISRG", "TMO", "DHR", "ABBV", "MRK", "VRTX", "CAT", "DE", "GE", "UNP", "HON", "ETN", "LIN", "RTX", "LMT", "XOM", "CVX"];
+  function $(id){return document.getElementById(id)}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function read(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(e){return d}}
+  function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function pct(v){v=Number(v);return (Number.isFinite(v)?(v>=0?'+':'')+v.toFixed(1):'0.0')+'%'}
+  function today(){return new Date().toISOString().slice(0,10)}
+  function age(ts){ts=+ts;if(!ts)return 'no live timestamp';var s=Math.max(0,Math.round((Date.now()-ts)/1000));if(s<90)return s+'s ago';var m=Math.round(s/60);if(m<90)return m+'m ago';var h=Math.round(m/60);return h+'h ago'}
+  function getHist(sym){var h=read('t212gm36_us_history',{});var keys=[sym,(sym||'').replace('.', '-'),(sym||'').replace('-', '.')].filter(Boolean);for(var i=0;i<keys.length;i++){var r=h[keys[i]];var d=r&&(r.data||r);if(Array.isArray(d)&&d.length)return d.map(function(x){return {c:+(x.c||x.close),date:x.date||x.t}}).filter(function(x){return Number.isFinite(x.c)&&x.c>0})}return []}
+  function sma(arr,n){if(arr.length<n)return null;var s=0;for(var i=arr.length-n;i<arr.length;i++)s+=arr[i].c;return s/n}
+  function trend(sym,current){var h=getHist(sym);if(h.length<40)return {score:50,label:'thin history',bounce:45,detail:'History not primed for this ticker.'};var last=current||h[h.length-1].c;var s20=sma(h,20),s50=sma(h,50)||sma(h,Math.min(30,h.length));var p5=h.length>6?h[h.length-6].c:h[0].c;var p20=h.length>21?h[h.length-21].c:h[0].c;var high20=Math.max.apply(null,h.slice(-20).map(function(x){return x.c}));var r5=(last/p5-1)*100, r20=(last/p20-1)*100, from20High=(last/high20-1)*100;var score=50+(s20&&last>s20?14:-10)+(s50&&last>s50?18:-16)+Math.max(-16,Math.min(16,r20*1.3))+Math.max(-10,Math.min(10,r5*1.4));score=Math.max(0,Math.min(100,Math.round(score)));var bounce=Math.max(0,Math.min(100,Math.round(score+(r5<0&&r20>0?8:0)+(from20High>-4?8:-8))));var label=score>=72?'uptrend':score>=55?'constructive':score>=42?'mixed':'weak';return {score:score,label:label,bounce:bounce,detail:'20d '+pct(r20)+', 5d '+pct(r5)+', from 20d high '+pct(from20High)} }
+  function valueOf(x){var cost=+x.owned||0,buy=+x.buyPrice||0,cur=+x.currentPrice||0;if(cost>0&&buy>0&&cur>0)return cost*(cur/buy);return cost}
+  function protectionRows(){var t=read(TRACK,[]).filter(function(x){return x&&(+x.owned>0)});var highs=read(HIGHS,{});var rows=[];t.forEach(function(x){var sym=String(x.sym||'').toUpperCase();var q=String(x.quoteSymbol||x.liveSymbol||x.sym||'').toUpperCase();var cost=+x.owned||0, value=valueOf(x), pl=value-cost, plPct=cost?pl/cost*100:0;var prev=highs[sym]||{};var highVal=Math.max(+prev.highValue||0,value,cost);var highPx=Math.max(+prev.highPrice||0,+x.currentPrice||0,+x.buyPrice||0);highs[sym]={highValue:highVal,highPrice:highPx,ts:Date.now()};var give=highVal?((value/highVal)-1)*100:0;var fresh=(Date.now()-(+x.currentTs||0))<10*60000;var tr=trend(q,+x.currentPrice||0);var status='hold', label='HOLD';var why=[];if(!fresh){status='fix';label='FIX DATA';why.push('price is stale or manual')}
+    if(plPct>1.5&&give<-1.5){status='watch';label='WATCH';why.push('gave back '+pct(give)+' from best seen value after progress')}
+    if(plPct>2.5&&give<-3&&tr.bounce<58){status='protect';label='PROTECT';why.push('profit give-back and bounce confidence is only '+tr.bounce)}
+    if((plPct<-7&&tr.score<45)||(plPct>3.5&&give<-5&&tr.bounce<55)){status='protect';label='SELL REVIEW';why.push('trend is weak enough to review exit, not just normal noise')}
+    if(!why.length)why.push('trend '+tr.label+', bounce confidence '+tr.bounce);var target=+x.target||0; if(target&&value>target*1.25&&give<-2){status=status==='hold'?'watch':status; why.push('position is above target and has started giving back gains')}
+    rows.push({sym:sym,quote:q,cost:cost,value:value,pl:pl,plPct:plPct,give:give,high:highVal,trend:tr,status:status,label:label,why:why.join('; '),fresh:fresh,source:x.liveSource||'manual',age:age(x.currentTs)});
+  });write(HIGHS,highs);return rows.sort(function(a,b){var rank={protect:3,watch:2,fix:1,hold:0};return (rank[b.status]||0)-(rank[a.status]||0) || a.give-b.give});}
+  function renderProtection(){var box=$('v129ProtectionBox'), state=$('v129BeastState');if(!box)return;var rows=protectionRows();if(!rows.length){box.innerHTML='<b>Protection status</b><div class="tiny">No owned long holdings yet. Build a plan, buy manually, then log bought rows.</div>';if(state)state.textContent='No holdings';return;}var urgent=rows.filter(function(r){return r.status==='protect'}).length, watch=rows.filter(function(r){return r.status==='watch'}).length, fix=rows.filter(function(r){return r.status==='fix'}).length;if(state)state.textContent=urgent?urgent+' protect':watch?watch+' watch':fix?fix+' data fix':'Healthy';
+    box.innerHTML='<b>Protection status</b><div class="tiny">'+urgent+' protect, '+watch+' watch, '+fix+' data fix, '+rows.filter(function(r){return r.status==='hold'}).length+' hold. This is a manual sell review, not an auto-sell order.</div><div class="v129ProtectionRows">'+rows.map(function(r){return '<div class="v129ProtectRow"><div class="v129ProtectTop"><b>'+esc(r.sym)+'</b><span class="v129Action '+esc(r.status)+'">'+esc(r.label)+'</span></div><div class="v129ProtectStats"><div><span>Value</span><b>'+gbp(r.value)+'</b></div><div><span>P/L</span><b class="'+(r.pl>=0?'goodText':'badText')+'">'+gbp(r.pl)+' '+pct(r.plPct)+'</b></div><div><span>Give-back</span><b class="'+(r.give<-2?'badText':'warnText')+'">'+pct(r.give)+'</b></div><div><span>Trend</span><b>'+esc(r.trend.score)+' / '+esc(r.trend.label)+'</b></div></div><div class="v129ProtectWhy"><b>Why:</b> '+esc(r.why)+'. <span class="muted">Quote '+esc(r.source)+', '+esc(r.age)+'. '+esc(r.trend.detail)+'</span></div></div>'}).join('')+'</div>';}
+  function primeUniverse(){var wl=$('watchlist'), max=$('maxPrimeSymbols'), budget=$('avBudget'), cache=$('cacheDays');if(wl)wl.value=LONG_UNIVERSE.join('\n');if(max)max.value=Math.max(+max.value||0,Math.min(90,LONG_UNIVERSE.length));if(budget)budget.value=Math.max(+budget.value||0,Math.min(500,LONG_UNIVERSE.length+20));if(cache)cache.value='1';var save=$('saveWatchlist');if(save)save.click();var prime=$('primeHistory');if(prime)prime.click();toastSafe('Long universe priming','Loaded '+LONG_UNIVERSE.length+' long candidates into the watchlist and started history prime where your data keys allow.','info');}
+  function buildBeast(){var r=$('ltsRefreshPrices'), b=$('ltsBuildPlan');if(r)r.click();setTimeout(function(){if(b)b.click();setTimeout(renderProtection,2500)},1200);toastSafe('Beast plan','Refreshing live long prices, then rebuilding the evidence-gated plan.','info');}
+  function portfolioView(){var tracker=$('ltsTrackerBox');if(tracker){tracker.open=true;tracker.scrollIntoView({behavior:'smooth',block:'start'});}renderProtection();}
+  function toastSafe(t,m,type){try{if(typeof window.toast==='function')return window.toast(t,m,type);var el=$('toast');if(el){el.className='toast show';el.innerHTML='<b>'+esc(t)+'</b><div class="tiny">'+esc(m)+'</div>';setTimeout(function(){el.classList.remove('show')},4500);}}catch(e){}}
+  function bind(){var p=$('v129PrimeUniverse'), b=$('v129BuildBeast'), c=$('v129CheckProtection'), v=$('v129ShowPortfolio');if(p&&!p.dataset.bound){p.dataset.bound='1';p.addEventListener('click',primeUniverse)}if(b&&!b.dataset.bound){b.dataset.bound='1';b.addEventListener('click',buildBeast)}if(c&&!c.dataset.bound){c.dataset.bound='1';c.addEventListener('click',renderProtection)}if(v&&!v.dataset.bound){v.dataset.bound='1';v.addEventListener('click',portfolioView)}}
+  function goLongFirst(){try{if(!localStorage.getItem('t212gm129_seen_long_first')){localStorage.setItem('t212gm129_seen_long_first','yes');setTimeout(function(){var btn=document.querySelector('[data-v112-route="long"],[data-t212-route="long"]');if(btn)btn.click();},300)}}catch(e){}}
+  function ready(){bind();renderProtection();goLongFirst();setInterval(function(){bind();renderProtection()},30000);document.addEventListener('click',function(e){if(e.target.closest('#ltsRefreshPrices,#ltsBuildPlan,[data-v112-route="long"],[data-t212-route="long"]'))setTimeout(renderProtection,1800)},true)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
 })();
 </script>
 
