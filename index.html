@@ -6897,5 +6897,90 @@ body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
 })();
 </script>
 
+
+
+<!-- v131 Long P/L Truth, protection rows no longer pretend missing buy basis is 0% -->
+<style id="v131-long-pnl-truth-css">
+.v131BasisWarn{border:1px solid rgba(255,209,102,.30);background:rgba(255,209,102,.09);color:#ffe2a0;border-radius:14px;padding:8px;margin-top:8px;font-size:12px;line-height:1.35}
+.v131BasisOk{border:1px solid rgba(53,228,155,.24);background:rgba(53,228,155,.08);color:#98ffd0;border-radius:14px;padding:8px;margin-top:8px;font-size:12px;line-height:1.35}
+.v131FixBtn{margin-top:8px!important;min-height:34px!important;font-size:12px!important;padding:6px 9px!important;border-radius:12px!important}
+.v129ProtectStats div.v131Unknown b{color:#ffe2a0!important}
+.v129ProtectStats div.v131Good b{color:#98ffd0!important}
+.v129ProtectStats div.v131Bad b{color:#ffb1bf!important}
+</style>
+<script id="v131-long-pnl-truth-js">
+(function(){
+  'use strict';
+  var TRACK='t212gm93_tracker', HIGHS='t212gm131_long_highs_truth';
+  function $(id){return document.getElementById(id)}
+  function read(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function pct(v){v=Number(v);return Number.isFinite(v)?((v>=0?'+':'')+v.toFixed(1)+'%'):'n/a'}
+  function age(ts){ts=+ts;if(!ts)return 'no live timestamp';var s=Math.max(0,Math.round((Date.now()-ts)/1000));if(s<90)return s+'s ago';var m=Math.round(s/60);if(m<90)return m+'m ago';var h=Math.round(m/60);return h+'h ago'}
+  function getHist(sym){var h=read('t212gm36_us_history',{});var keys=[sym,(sym||'').replace('.', '-'),(sym||'').replace('-', '.')].filter(Boolean);for(var i=0;i<keys.length;i++){var r=h[keys[i]], d=r&&(r.data||r);if(Array.isArray(d)&&d.length)return d.map(function(x){return {c:+(x.c||x.close),date:x.date||x.t}}).filter(function(x){return Number.isFinite(x.c)&&x.c>0})}return []}
+  function sma(a,n){if(a.length<n)return null;var s=0;for(var i=a.length-n;i<a.length;i++)s+=a[i].c;return s/n}
+  function trend(sym,current){var h=getHist(sym);if(h.length<40)return {score:50,label:'thin history',bounce:45,detail:'History not primed for this ticker.'};var last=current||h[h.length-1].c;var s20=sma(h,20),s50=sma(h,50)||sma(h,Math.min(30,h.length));var p5=h.length>6?h[h.length-6].c:h[0].c;var p20=h.length>21?h[h.length-21].c:h[0].c;var high20=Math.max.apply(null,h.slice(-20).map(function(x){return x.c}));var r5=(last/p5-1)*100,r20=(last/p20-1)*100,fromHigh=(last/high20-1)*100;var score=50+(s20&&last>s20?14:-10)+(s50&&last>s50?18:-16)+Math.max(-16,Math.min(16,r20*1.3))+Math.max(-10,Math.min(10,r5*1.4));score=Math.max(0,Math.min(100,Math.round(score)));var bounce=Math.max(0,Math.min(100,Math.round(score+(r5<0&&r20>0?8:0)+(fromHigh>-4?8:-8))));var label=score>=72?'uptrend':score>=55?'constructive':score>=42?'mixed':'weak';return {score:score,label:label,bounce:bounce,detail:'20d '+pct(r20)+', 5d '+pct(r5)+', from 20d high '+pct(fromHigh)}}
+  function rowFor(x, highs){
+    var sym=String(x.sym||'').toUpperCase();
+    var quote=String(x.quoteSymbol||x.liveSymbol||x.sym||'').toUpperCase();
+    var cost=Math.max(0,+x.owned||0);
+    var buy=Number.isFinite(+x.buyPrice)&&+x.buyPrice>0?+x.buyPrice:(Number.isFinite(+x.price)&&+x.price>0?+x.price:null);
+    var cur=Number.isFinite(+x.currentPrice)&&+x.currentPrice>0?+x.currentPrice:null;
+    var hasBasis=cost>0&&buy&&cur;
+    var value=hasBasis?cost*(cur/buy):cost;
+    var pl=hasBasis?value-cost:null;
+    var plPct=hasBasis&&cost?pl/cost*100:null;
+    var fresh=(Date.now()-(+x.currentTs||0))<30*60000;
+    var tr=trend(quote,cur||0);
+    var prev=highs[sym]||{};
+    var priorHigh=+prev.highValue||0;
+    var highVal=hasBasis?Math.max(priorHigh,value,cost):(priorHigh||cost);
+    if(hasBasis)highs[sym]={highValue:highVal,ts:Date.now()};
+    var hasTrackedHigh=hasBasis&&priorHigh>0&&priorHigh>value+0.005;
+    var give=hasTrackedHigh?((value/priorHigh)-1)*100:0;
+    var status='hold', label='HOLD', why=[];
+    if(!hasBasis){status='fix';label='FIX BASIS';why.push('P/L needs owned value, bought price and current price')}
+    else if(!fresh){status='fix';label='FIX DATA';why.push('price is stale or manual')}
+    if(hasBasis&&plPct>1.5&&give<-1.5){status='watch';label='WATCH';why.push('gave back '+pct(give)+' from tracked high after progress')}
+    if(hasBasis&&plPct>2.5&&give<-3&&tr.bounce<58){status='protect';label='PROTECT';why.push('profit give-back and bounce confidence is only '+tr.bounce)}
+    if(hasBasis&&((plPct<-7&&tr.score<45)||(plPct>3.5&&give<-5&&tr.bounce<55))){status='protect';label='SELL REVIEW';why.push('trend is weak enough to review exit, not just normal noise')}
+    if(!why.length)why.push('trend '+tr.label+', bounce confidence '+tr.bounce);
+    return {sym:sym,quote:quote,cost:cost,value:value,pl:pl,plPct:plPct,give:give,hasBasis:hasBasis,hasTrackedHigh:hasTrackedHigh,trend:tr,status:status,label:label,why:why.join('; '),source:x.liveSource||'manual',age:age(x.currentTs),buy:buy,cur:cur,fresh:fresh};
+  }
+  function renderTruthProtection(){
+    var box=$('v129ProtectionBox'), state=$('v129BeastState'); if(!box)return;
+    var t=read(TRACK,[]).filter(function(x){return x&&(+x.owned>0)});
+    var highs=read(HIGHS,{});
+    if(!t.length){box.innerHTML='<b>Protection status</b><div class="tiny">No owned long holdings yet. Build a plan, buy manually, then log bought rows.</div>'; if(state)state.textContent='No holdings'; return;}
+    var rows=t.map(function(x){return rowFor(x,highs)}).sort(function(a,b){var rank={protect:4,watch:3,fix:2,hold:1};return (rank[b.status]||0)-(rank[a.status]||0) || a.give-b.give});
+    write(HIGHS,highs);
+    var urgent=rows.filter(function(r){return r.status==='protect'}).length, watch=rows.filter(function(r){return r.status==='watch'}).length, fix=rows.filter(function(r){return r.status==='fix'}).length;
+    if(state)state.textContent=urgent?urgent+' protect':watch?watch+' watch':fix?fix+' fix':'Healthy';
+    box.innerHTML='<b>Protection status</b><div class="tiny">'+urgent+' protect, '+watch+' watch, '+fix+' fix, '+rows.filter(function(r){return r.status==='hold'}).length+' hold. P/L only shows when the holding has a bought price and current price. Give-back is from the best value seen since this monitor started tracking.</div><div class="v129ProtectionRows">'+rows.map(function(r){
+      var valueHtml=r.hasBasis?gbp(r.value):gbp(r.cost);
+      var plHtml=r.hasBasis?(gbp(r.pl)+' '+pct(r.plPct)):'Add bought price';
+      var giveHtml=r.hasBasis?(r.hasTrackedHigh?pct(r.give):'None yet'):'n/a';
+      var basis=r.hasBasis?('<div class="v131BasisOk">Basis OK. Bought '+esc(r.buy)+', current '+esc(r.cur)+'. Quote '+esc(r.source)+', '+esc(r.age)+'.</div>'):('<div class="v131BasisWarn">P/L is not zero, it is unknown until bought price and current price are both saved. Tap Fix basis and enter the Trading 212 bought price.</div><button class="secondary v131FixBtn" type="button" data-v131-fixbasis="'+esc(r.sym)+'">Fix basis</button>');
+      return '<div class="v129ProtectRow"><div class="v129ProtectTop"><b>'+esc(r.sym)+'</b><span class="v129Action '+esc(r.status)+'">'+esc(r.label)+'</span></div><div class="v129ProtectStats"><div><span>Value</span><b>'+valueHtml+'</b></div><div class="'+(r.hasBasis?(r.pl>=0?'v131Good':'v131Bad'):'v131Unknown')+'"><span>P/L</span><b>'+plHtml+'</b></div><div class="'+(r.hasBasis?'':'v131Unknown')+'"><span>Give-back</span><b>'+giveHtml+'</b></div><div><span>Trend</span><b>'+esc(r.trend.score)+' / '+esc(r.trend.label)+'</b></div></div><div class="v129ProtectWhy"><b>Why:</b> '+esc(r.why)+'. <span class="muted">'+esc(r.trend.detail)+'</span></div>'+basis+'</div>';
+    }).join('')+'</div>';
+  }
+  function openBasis(sym){var card=document.querySelector('[data-lts-card="'+CSS.escape(sym)+'"]'); if(card){var d=card.querySelector('.ltEditPanel'); if(d)d.open=true; card.scrollIntoView({behavior:'smooth',block:'center'}); return;} alert('Open the tracker card for '+sym+' and tap Edit holding. Add the bought price and current price.');}
+  function hook(){
+    document.title='Trading 212 Manual God Mode v131, Long P/L Truth Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b)b.textContent='God Mode v131';
+    var sub=document.querySelector('.v112BrandText span'); if(sub)sub.textContent='Long Beast, add-more, P/L truth';
+    var title=document.querySelector('.mobileTitleText'); if(title)title.textContent='Manual God Mode v131';
+    var badge=document.querySelector('.ltSimpleBadge'); if(badge)badge.textContent='v131 beast mode';
+    renderTruthProtection();
+    setInterval(renderTruthProtection,5000);
+    document.addEventListener('click',function(e){var btn=e.target.closest('[data-v131-fixbasis]'); if(btn){openBasis(btn.getAttribute('data-v131-fixbasis'));return;} if(e.target.closest('#v129CheckProtection,#v129BuildBeast,#v129ShowPortfolio'))setTimeout(renderTruthProtection,150);},true);
+    document.addEventListener('input',function(e){if(e.target&&e.target.closest('.ltEditPanel'))setTimeout(renderTruthProtection,300)},true);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>
+
 </body>
 </html>
