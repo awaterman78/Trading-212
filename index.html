@@ -6801,5 +6801,101 @@ body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
 })();
 </script>
 
+
+<!-- v130 Long Top Up Beast, owned holdings can compete for add-more cash when evidence, trend and portfolio fit are right -->
+<style id="v130-long-topup-css">
+.v130TopUpBox{margin:12px 0;border:1px solid rgba(53,228,155,.22);background:linear-gradient(180deg,rgba(53,228,155,.10),rgba(10,18,32,.92));border-radius:24px;padding:14px;box-shadow:0 18px 48px rgba(0,0,0,.28)}
+.v130TopUpHead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}.v130TopUpHead b{font-size:19px;letter-spacing:-.04em}.v130TopUpHead span{display:inline-flex;border-radius:999px;border:1px solid rgba(53,228,155,.28);background:rgba(53,228,155,.10);color:#98ffd0;padding:5px 9px;font-size:11px;font-weight:1000;white-space:nowrap}.v130TopUpRows{display:flex;flex-direction:column;gap:8px}.v130TopUpRow{background:rgba(255,255,255,.055);border:1px solid rgba(190,211,255,.13);border-radius:16px;padding:10px}.v130TopUpTop{display:flex;justify-content:space-between;align-items:center;gap:10px}.v130TopUpTop b{font-size:17px}.v130TopUpTop strong{color:#98ffd0}.v130TopUpWhy{font-size:12px;color:#a9b7cc;line-height:1.35;margin-top:5px}.v130TopUpBlocked{border-color:rgba(255,209,102,.22);background:rgba(255,209,102,.07)}.v130TopUpBadge{display:inline-flex;border-radius:999px;padding:4px 8px;border:1px solid rgba(190,211,255,.14);font-size:10px;font-weight:1000;color:#c8d6ea}.v130TopUpBadge.good{color:#98ffd0;border-color:rgba(53,228,155,.28);background:rgba(53,228,155,.10)}.v130TopUpBadge.warn{color:#ffe2a0;border-color:rgba(255,209,102,.25);background:rgba(255,209,102,.08)}.ltPlanRow.v130TopUpPlan{border-left:4px solid #35e49b!important;background:linear-gradient(180deg,rgba(53,228,155,.08),rgba(10,18,32,.92))!important}.ltPlanRow.v130TopUpPlan .sym::after{content:' add more';font-size:11px;margin-left:6px;color:#98ffd0;border:1px solid rgba(53,228,155,.28);border-radius:999px;padding:3px 7px;vertical-align:middle}
+@media(max-width:780px){.v130TopUpHead{display:block}.v130TopUpHead span{margin-top:7px}.v130TopUpTop{align-items:flex-start}.v130TopUpBox{padding:12px;border-radius:20px}}
+</style>
+<script id="v130-long-topup-js">
+(function(){
+  'use strict';
+  var PLAN='t212gm93_plan', TRACK='t212gm93_tracker', HIGHS='t212gm129_long_highs', JOURNAL='t212gm93_journal';
+  var originalBuildPlan=window.buildPlan;
+  var enhancing=false;
+  function $(id){return document.getElementById(id)}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function read(k,d){try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(e){return d}}
+  function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function pct(v){v=Number(v);return (Number.isFinite(v)?(v>=0?'+':'')+v.toFixed(1):'0.0')+'%'}
+  function round50(v){v=Number(v)||0;return Math.max(0,Math.round(v*2)/2)}
+  function age(ts){ts=+ts;if(!ts)return 'missing';var s=Math.max(0,Math.round((Date.now()-ts)/1000));if(s<90)return s+'s ago';var m=Math.round(s/60);if(m<90)return m+'m ago';var h=Math.round(m/60);return h+'h ago'}
+  function valNow(x){var cost=+x.owned||0,buy=+x.buyPrice||0,cur=+x.currentPrice||0;if(cost>0&&buy>0&&cur>0)return cost*(cur/buy);return cost}
+  function getTrackerMap(){var m={};read(TRACK,[]).forEach(function(x){var s=String(x&&x.sym||'').toUpperCase().trim();if(s)m[s]=x});return m}
+  function boughtToday(){var out={};var d=new Date().toISOString().slice(0,10);read(JOURNAL,[]).forEach(function(x){var s=String(x&&x.sym||'').toUpperCase().trim();if(s&&x.date===d&&x.action==='Bought')out[s]=(out[s]||0)+(+x.amount||0)});return out}
+  function trendScore(r){var t=Number(r&&r.trend);if(Number.isFinite(t))return Math.max(0,Math.min(100,t));return 50}
+  function evidenceScore(r){var e=r&&r.evidence||{};var c=Number(e.confidence);if(Number.isFinite(c))return c;if(e.gate==='PASS')return 70;if(e.gate==='CHECK')return 45;return 20}
+  function capFor(r,style){var role=r.role||'';var risk=r.risk||'';if(role==='Core ETF'){if(r.sym==='QQQ'||r.sym==='QQQM')return style==='growth'?0.30:0.26;if(r.sym==='SPY'||r.sym==='VOO')return style==='growth'?0.22:0.24;if(r.sym==='IWM')return style==='growth'?0.16:0.18;return 0.14}if(risk==='very high')return style==='growth'?0.08:0.04;if(risk==='high')return style==='growth'?0.14:0.10;if(role==='Quality compounder')return style==='growth'?0.20:0.18;return style==='growth'?0.16:0.14}
+  function topUpCandidates(plan){
+    var report=(plan&&plan.report||[]).slice();
+    var tracker=getTrackerMap(), highs=read(HIGHS,{}), today=boughtToday();
+    var fund=+plan.fund||0, minBuy=Math.max(1,+(($('ltsMinBuy')&&$('ltsMinBuy').value)||5)), style=plan.style||(($('ltsStyle')&&$('ltsStyle').value)||'best');
+    var deployTarget=Number.isFinite(+plan.deployTarget)?+plan.deployTarget:fund*((+plan.deployPct||80)/100);
+    var ownedTotal=+plan.ownedTotal||0, cashAvailable=+plan.cashAvailable||Math.max(0,fund-ownedTotal);
+    var deployRoom=Math.max(0,Math.min(cashAvailable,deployTarget-ownedTotal));
+    var existingBudget=(plan.rows||[]).filter(function(r){return !r.topUp}).reduce(function(a,r){return a+(+r.amount||0)},0);
+    var budget=Math.max(0,deployRoom);
+    var good=[], blocked=[];
+    report.forEach(function(r){
+      var sym=String(r.sym||'').toUpperCase().trim(), x=tracker[sym];
+      if(!sym||!x||!(+x.owned>0))return;
+      var cost=+x.owned||0, value=valNow(x), pl=value-cost, plPct=cost?pl/cost*100:0;
+      var e=r.evidence||{}, fresh=(Date.now()-(+x.currentTs||0))<30*60000;
+      var high=Math.max(+((highs[sym]||{}).highValue)||0,value,cost), give=high?((value/high)-1)*100:0;
+      var cap=fund*capFor(r,style), target=Math.max(+x.target||0, Math.min(cap, cost*2));
+      var room=Math.max(0, Math.min(target-value, cap-value));
+      var tr=trendScore(r), ev=evidenceScore(r), opp=Number(r.opp)||0;
+      var reasons=[];
+      if(e.gate!=='PASS')reasons.push('evidence is '+(e.gate||'not pass'));
+      if(!fresh)reasons.push('live price stale, '+age(x.currentTs));
+      if(room<minBuy)reasons.push('not enough room to target or cap');
+      if(today[sym])reasons.push('already bought today');
+      if(give<-2.5&&plPct>1)reasons.push('recent give-back after profit, wait for stabilisation');
+      if(tr<52&&r.role!=='Core ETF')reasons.push('trend score below add-more line');
+      if(plPct<-8&&tr<55)reasons.push('falling holding needs review, not averaging down');
+      var underweightBoost=target?Math.max(0,Math.min(18,(room/target)*70)):0;
+      var profitQuality=plPct>0?Math.min(10,plPct*1.3):Math.max(-12,plPct*0.8);
+      var score=Math.round((opp*0.42)+(ev*0.28)+(tr*0.22)+underweightBoost+profitQuality+Math.max(-10,give*0.7));
+      var amount=round50(Math.min(room, Math.max(minBuy, fund*0.06), Math.max(minBuy,budget*0.45)));
+      var item={sym:sym,name:r.name,role:'Add more · '+(r.role||x.role||'Holding'),sector:r.sector||x.sector,theme:r.theme||x.theme,score:r.score,pot:r.pot,trend:r.trend,opp:r.opp,evidence:r.evidence,fundSource:r.fundSource,expect:x.expect||r.expect,ownedAlready:cost,currentValue:value,targetValue:target,room:room,pl:pl,plPct:plPct,give:give,rankScore:score,topUp:true,topUpAmount:amount,amount:cost+amount,topUpWhy:'Room '+gbp(room)+' to target/cap, trend '+Math.round(tr)+', evidence '+(e.level||'')+' '+(e.confidence||ev)+'%, P/L '+gbp(pl)+' '+pct(plPct)+', give-back '+pct(give)};
+      if(reasons.length||amount<minBuy){item.blockedWhy=reasons.join('; ')||'below minimum add size';blocked.push(item)}else good.push(item);
+    });
+    good.sort(function(a,b){return b.rankScore-a.rankScore});
+    blocked.sort(function(a,b){return b.rankScore-a.rankScore});
+    return {good:good,blocked:blocked,budget:budget,existingBudget:existingBudget,minBuy:minBuy,deployRoom:deployRoom};
+  }
+  function enhancePlan(){
+    if(enhancing)return; enhancing=true;
+    try{
+      var plan=read(PLAN,null); if(!plan||!Array.isArray(plan.report)){renderTopUpBox(null);return;}
+      var calc=topUpCandidates(plan);
+      var baseRows=(plan.rows||[]).filter(function(r){return !r.topUp});
+      var pool=[];
+      baseRows.forEach(function(r){pool.push(Object.assign({},r,{budgetAmount:+r.amount||0,rankScore:(+r.opp||0)+(+r.score||0)*0.15,topUp:false}))});
+      calc.good.forEach(function(r){pool.push(Object.assign({},r,{budgetAmount:+r.topUpAmount||0}))});
+      var budget=calc.deployRoom;
+      pool.sort(function(a,b){return (b.rankScore||0)-(a.rankScore||0)});
+      var selected=[], used=0;
+      pool.forEach(function(r){var spend=+r.budgetAmount||0;if(spend<calc.minBuy)return;if(used+spend<=budget+0.01){selected.push(r);used+=spend}});
+      plan.rows=selected.map(function(r){var out=Object.assign({},r);delete out.budgetAmount;return out});
+      plan.deploy=used; plan.hold=Math.max(0,(+plan.cashAvailable||0)-used); plan.topUpEngine={version:'v130',good:calc.good.slice(0,8),blocked:calc.blocked.slice(0,8),budget:budget,used:used,enhancedAt:new Date().toISOString()};
+      write(PLAN,plan);
+      renderTopUpBox(plan.topUpEngine);
+      try{if(typeof window.renderAll==='function')window.renderAll(); decorateTopUpRows(plan);}catch(e){}
+    }finally{enhancing=false;}
+  }
+  function ensureBox(){var root=$('longSimpleSection');if(!root)return null;var box=$('v130TopUpBox');if(box)return box;box=document.createElement('div');box.id='v130TopUpBox';box.className='v130TopUpBox';var truth=$('ltsDataTruth');if(truth&&truth.parentNode)truth.parentNode.insertBefore(box, truth.nextSibling);else root.insertBefore(box, root.firstChild);return box}
+  function renderTopUpBox(engine){var box=ensureBox();if(!box)return;if(!engine){box.innerHTML='<div class="v130TopUpHead"><b>Add-more engine</b><span>Waiting</span></div><div class="tiny">Build the Beast plan. Existing holdings will then compete with new ideas for spare deployment cash, instead of being blindly excluded.</div>';return;}var good=engine.good||[], blocked=engine.blocked||[];var rows=good.slice(0,4).map(function(x){return '<div class="v130TopUpRow"><div class="v130TopUpTop"><b>'+esc(x.sym)+'</b><strong>'+gbp(x.topUpAmount)+' add-more candidate</strong></div><div class="v130TopUpWhy">'+esc(x.topUpWhy)+'</div></div>'}).join('');var blocks=blocked.slice(0,3).map(function(x){return '<div class="v130TopUpRow v130TopUpBlocked"><div class="v130TopUpTop"><b>'+esc(x.sym)+'</b><span class="v130TopUpBadge warn">Blocked</span></div><div class="v130TopUpWhy">'+esc(x.blockedWhy||'not clean enough to add more')+'</div></div>'}).join('');if(!rows)rows='<div class="v130TopUpRow"><div class="v130TopUpTop"><b>No clean top-ups</b><span class="v130TopUpBadge warn">Hold</span></div><div class="v130TopUpWhy">Owned holdings were checked, but none beat the evidence, trend, freshness, target room and protection rules.</div></div>';box.innerHTML='<div class="v130TopUpHead"><b>Add-more engine</b><span>'+good.length+' clean, '+blocked.length+' blocked</span></div><div class="tiny">Owned stocks now compete for extra cash. It only says add more when data is fresh, evidence passes, trend is healthy, there is target room, and the holding is not in protection mode.</div><div class="v130TopUpRows">'+rows+blocks+'</div>';}
+  function decorateTopUpRows(plan){plan=plan||read(PLAN,null);if(!plan||!Array.isArray(plan.rows))return;var top=new Set(plan.rows.filter(function(r){return r.topUp}).map(function(r){return String(r.sym||'').toUpperCase()}));setTimeout(function(){document.querySelectorAll('.ltPlanRow').forEach(function(el){var text=(el.textContent||'').toUpperCase();top.forEach(function(s){if(text.indexOf(s)>=0)el.classList.add('v130TopUpPlan')})})},50)}
+  function hook(){renderTopUpBox(read(PLAN,null)&&read(PLAN,null).topUpEngine);decorateTopUpRows();if(typeof originalBuildPlan==='function'&&!window.__v130BuildWrapped){window.__v130BuildWrapped=true;window.buildPlan=async function(){var r=await originalBuildPlan.apply(this,arguments);enhancePlan();return r;};}
+    document.addEventListener('click',function(e){if(e.target.closest('#ltsBuildPlan,#v129BuildBeast'))setTimeout(enhancePlan,3500); if(e.target.closest('[data-v112-route="long"],[data-t212-route="long"]'))setTimeout(function(){renderTopUpBox(read(PLAN,null)&&read(PLAN,null).topUpEngine);decorateTopUpRows()},500);},true);
+    setInterval(function(){renderTopUpBox(read(PLAN,null)&&read(PLAN,null).topUpEngine);decorateTopUpRows()},30000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>
+
 </body>
 </html>
