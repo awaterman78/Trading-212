@@ -7094,5 +7094,132 @@ body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
 })();
 </script>
 
+
+
+<!-- v133 Long Lot Ledger, buy-more at different prices uses weighted average cost and keeps every lot visible -->
+<style id="v133-long-lot-ledger-css">
+.v133LotBox{margin-top:10px;border:1px solid rgba(122,176,255,.22);background:rgba(122,176,255,.07);border-radius:14px;padding:9px;color:#dbeafe;font-size:12px;line-height:1.35}
+.v133LotBox b{color:#f8fbff}.v133LotRows{display:flex;flex-direction:column;gap:5px;margin-top:6px}.v133LotRow{display:grid;grid-template-columns:82px 1fr auto;gap:6px;align-items:center;border-top:1px solid rgba(190,211,255,.10);padding-top:5px;color:#a9b7cc}.v133LotRow strong{color:#f8fbff}.v133LotBadge{display:inline-flex;border-radius:999px;border:1px solid rgba(122,176,255,.26);background:rgba(122,176,255,.10);color:#b9d6ff;padding:3px 7px;font-size:10px;font-weight:1000}.v133LotWarning{border-color:rgba(255,209,102,.30);background:rgba(255,209,102,.08);color:#ffe2a0}.v133AddBuyBtn{background:linear-gradient(135deg,#35e49b,#7af0bd)!important;color:#06101e!important}.v133LotFormula{margin-top:6px;color:#a9b7cc;font-size:11px}.v133InlineHint{font-size:11px;color:#a9b7cc;margin-top:5px}
+@media(max-width:780px){.v133LotRow{grid-template-columns:72px 1fr;gap:4px}.v133LotRow span:last-child{grid-column:1/3}.v133LotBox{font-size:11px}.v133LotFormula{font-size:10px}}
+</style>
+<script id="v133-long-lot-ledger-js">
+(function(){
+  'use strict';
+  var TRACK='t212gm93_tracker', JOURNAL='t212gm93_journal', PLAN='t212gm93_plan';
+  function read(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function fmt(v,d){v=Number(v);return Number.isFinite(v)?v.toFixed(d||2):'n/a'}
+  function pct(v){v=Number(v);return Number.isFinite(v)?((v>=0?'+':'')+v.toFixed(1)+'%'):'n/a'}
+  function today(){return new Date().toISOString().slice(0,10)}
+  function nowText(){return new Date().toLocaleString('en-GB')}
+  function findTracker(sym){var s=String(sym||'').toUpperCase().trim();var t=read(TRACK,[]);return {list:t,item:t.find(function(x){return String(x&&x.sym||'').toUpperCase().trim()===s}),sym:s}}
+  function seedLots(x){
+    if(!x)return [];
+    if(Array.isArray(x.lots)&&x.lots.length)return x.lots.filter(function(l){return +l.amount>0});
+    var owned=+x.owned||0, px=(Number.isFinite(+x.buyPrice)&&+x.buyPrice>0)?+x.buyPrice:((Number.isFinite(+x.price)&&+x.price>0)?+x.price:null);
+    if(owned>0&&px){return [{date:x.created||x.updated||today(),amount:owned,price:px,qty:Number.isFinite(+x.qty)&&+x.qty>0?+x.qty:null,note:'Opening basis from existing tracker'}]}
+    return [];
+  }
+  function recalc(x){
+    var lots=seedLots(x);
+    var total=lots.reduce(function(a,l){return a+(+l.amount||0)},0);
+    var weighted=total?lots.reduce(function(a,l){return a+(+l.price||0)*(+l.amount||0)},0)/total:null;
+    var qtyTotal=lots.reduce(function(a,l){return a+(Number.isFinite(+l.qty)?+l.qty:0)},0);
+    x.lots=lots;
+    if(total>0)x.owned=+total.toFixed(4);
+    if(weighted&&weighted>0){x.buyPrice=+weighted.toFixed(6);x.price=x.buyPrice;}
+    if(qtyTotal>0)x.qty=+qtyTotal.toFixed(6);
+    x.lotCount=lots.length;
+    x.updated=today();
+    return x;
+  }
+  function planAmountFromButton(btn,sym){
+    var row=btn&&btn.closest('.ltPlanRow');
+    if(row){var amt=row.querySelector('.amt');if(amt){var n=parseFloat(String(amt.textContent||'').replace(/[^0-9.]/g,''));if(Number.isFinite(n)&&n>0)return n;}}
+    var plan=read(PLAN,null), rows=(plan&&plan.rows)||[], hit=rows.find(function(r){return String(r&&r.sym||'').toUpperCase().trim()===String(sym).toUpperCase().trim()});
+    if(hit)return +(hit.topUpAmount||hit.amount)||5;
+    return 5;
+  }
+  function addLot(sym, defaultAmount, source){
+    var found=findTracker(sym), t=found.list, x=found.item, s=found.sym;
+    if(!s)return;
+    if(!x){x={sym:s,quoteSymbol:s,owned:0,target:Math.max(+defaultAmount*2||10,10),review:new Date(Date.now()+90*86400000).toISOString().slice(0,10),created:today()};t.push(x)}
+    recalc(x);
+    var amount=parseFloat(prompt('Amount bought in £ for '+s, Number.isFinite(+defaultAmount)&&+defaultAmount>0?String(+defaultAmount):'5'));
+    if(!Number.isFinite(amount)||amount<=0)return;
+    var price=parseFloat(prompt('Actual bought share price for this buy, as shown in Trading 212', Number.isFinite(+x.currentPrice)&&+x.currentPrice>0?String(+x.currentPrice):(Number.isFinite(+x.buyPrice)&&+x.buyPrice>0?String(+x.buyPrice):'')));
+    if(!Number.isFinite(price)||price<=0){alert('Buy cancelled. A valid bought price is needed so the app can calculate the weighted average properly.');return;}
+    var qtyRaw=prompt('Quantity bought, optional. Leave blank if unknown.', '');
+    var qty=parseFloat(qtyRaw);
+    var note=prompt('Note, optional', source==='plan'?'Logged from buy plan':'Manual add-more buy')||'';
+    x.lots=seedLots(x);
+    x.lots.push({date:today(),amount:+amount.toFixed(4),price:+price.toFixed(6),qty:Number.isFinite(qty)&&qty>0?+qty.toFixed(6):null,note:note||'Buy lot'});
+    var hadCurrent=Number.isFinite(+x.currentPrice)&&+x.currentPrice>0;
+    recalc(x);
+    if(!hadCurrent){x.currentPrice=price;x.currentTs=Date.now();x.liveSource='Manual opening price';}
+    write(TRACK,t);
+    var j=read(JOURNAL,[]);
+    j.push({date:today(),sym:s,action:'Bought',amount:+amount.toFixed(4),price:+price.toFixed(6),qty:Number.isFinite(qty)&&qty>0?+qty.toFixed(6):null,note:(source==='plan'?'Plan buy lot. ':'Manual add-more lot. ')+note+' Weighted average now '+fmt(x.buyPrice,4)+'.'});
+    write(JOURNAL,j);
+    try{if(typeof window.renderAll==='function')window.renderAll()}catch(e){}
+    setTimeout(function(){decorate();},350);
+    var toast=window.toast||window.safeToast;
+    if(typeof toast==='function')toast('Buy lot added',s+' now has '+(x.lots||[]).length+' lot(s). Average bought price '+fmt(x.buyPrice,4)+'.','good');
+  }
+  function editLots(sym){
+    var found=findTracker(sym), x=found.item, t=found.list; if(!x)return;
+    recalc(x);
+    var lines=(x.lots||[]).map(function(l,i){return (i+1)+') '+(l.date||today())+' | £'+(+l.amount||0)+' | price '+(+l.price||0)+' | qty '+(l.qty||'')+' | '+(l.note||'')}).join('\n');
+    var msg='Lots for '+found.sym+'\nFormat per line: date | amountGBP | boughtPrice | qty optional | note optional\n\n'+lines;
+    var edited=prompt(msg, lines);
+    if(edited===null)return;
+    var lots=[];
+    edited.split(/\n+/).forEach(function(line){
+      line=line.replace(/^\s*\d+\)\s*/,'').trim(); if(!line)return;
+      var p=line.split('|').map(function(x){return x.trim()});
+      var date=p[0]||today(), amount=parseFloat(p[1]), price=parseFloat(p[2]), qty=parseFloat(p[3]);
+      if(Number.isFinite(amount)&&amount>0&&Number.isFinite(price)&&price>0){lots.push({date:date,amount:amount,price:price,qty:Number.isFinite(qty)&&qty>0?qty:null,note:p.slice(4).join(' | ')})}
+    });
+    if(!lots.length){alert('No valid lots saved. Keep at least one lot with amount and price.');return;}
+    x.lots=lots;recalc(x);write(TRACK,t);try{if(typeof window.renderAll==='function')window.renderAll()}catch(e){}setTimeout(decorate,300);
+  }
+  function lotHTML(x){
+    var lots=seedLots(x), cost=+x.owned||0, avg=+x.buyPrice||0, cur=+x.currentPrice||0;
+    var val=(cost>0&&avg>0&&cur>0)?cost*(cur/avg):null, pl=val==null?null:val-cost, plPct=pl==null?null:pl/cost*100;
+    var rows=lots.slice(-4).map(function(l){return '<div class="v133LotRow"><span>'+esc(l.date||'')+'</span><strong>'+gbp(l.amount)+' @ '+fmt(l.price,2)+'</strong><span>'+esc(l.qty?'qty '+l.qty:(l.note||''))+'</span></div>'}).join('');
+    var warn=lots.length?'':' v133LotWarning';
+    if(!lots.length)rows='<div class="v133InlineHint">No lot ledger yet. Tap Add buy to create the first proper lot.</div>';
+    return '<div class="v133LotBox'+warn+'"><b>Average cost ledger</b> <span class="v133LotBadge">'+lots.length+' lot'+(lots.length===1?'':'s')+'</span><div class="v133LotFormula">Average bought price '+(avg?fmt(avg,4):'n/a')+'. P/L uses total cost '+gbp(cost)+' × current price ÷ average bought price.'+(pl!=null?' Current estimated P/L '+gbp(pl)+' '+pct(plPct)+'.':'')</div><div class="v133LotRows">'+rows+'</div></div>';
+  }
+  function decorate(){
+    document.title='Trading 212 Manual God Mode v133, Long Lot Ledger Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b)b.textContent='God Mode v133';
+    var sub=document.querySelector('.v112BrandText span'); if(sub)sub.textContent='Long Beast, lot ledger, weighted average buys';
+    var m=document.querySelector('.mobileTitleText'); if(m)m.textContent='Manual God Mode v133';
+    var badge=document.querySelector('.ltSimpleBadge'); if(badge)badge.textContent='v133 lot ledger';
+    var cards=document.querySelectorAll('.ltTrackCard[data-lts-card]');
+    cards.forEach(function(card){
+      var sym=card.getAttribute('data-lts-card'); if(!sym)return;
+      var found=findTracker(sym), x=found.item; if(!x)return;
+      var old=card.querySelector('.v133LotBox'); if(old)old.remove();
+      var note=card.querySelector('.ltTrackNote'); if(note)note.insertAdjacentHTML('afterend',lotHTML(x));
+      var acts=card.querySelector('.ltTrackActions');
+      if(acts&&!acts.querySelector('[data-v133-addlot]')){
+        acts.insertAdjacentHTML('afterbegin','<button class="v133AddBuyBtn" data-v133-addlot="'+esc(sym)+'">Add buy</button><button class="secondary" data-v133-editlots="'+esc(sym)+'">Edit lots</button>');
+      }
+    });
+  }
+  document.addEventListener('click',function(e){
+    var add=e.target.closest('[data-v133-addlot]'); if(add){e.preventDefault();e.stopImmediatePropagation();addLot(add.getAttribute('data-v133-addlot'),5,'manual');return;}
+    var edit=e.target.closest('[data-v133-editlots]'); if(edit){e.preventDefault();e.stopImmediatePropagation();editLots(edit.getAttribute('data-v133-editlots'));return;}
+    var log=e.target.closest('[data-lts-log]'); if(log){var sym=log.getAttribute('data-lts-log');e.preventDefault();e.stopImmediatePropagation();addLot(sym,planAmountFromButton(log,sym),'plan');return;}
+  },true);
+  function ready(){decorate();setInterval(decorate,2500);document.addEventListener('click',function(e){if(e.target.closest('#ltsBuildPlan,#v129BuildBeast,#ltsRefreshPrices,[data-v112-route="long"],[data-t212-route="long"]'))setTimeout(decorate,1200)},true)}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
+})();
+</script>
+
 </body>
 </html>
