@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="apple-mobile-web-app-title" content="God Mode"/>
 
-<title>Trading 212 Manual God Mode v125, Opportunity Radar Dark</title>
+<title>Trading 212 Manual God Mode v132, Long Top-up Truth Dark</title>
 <style>
     :root{--bg:#040912;--panel:#0b1628;--panel2:#10233c;--panel3:#07111f;--text:#eef6ff;--muted:#8da2bb;--line:#254262;--blue:#79adff;--good:#2ee589;--warn:#ffd166;--bad:#ff6171;--purple:#bb9cff;--cyan:#5ee7ff}
     *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#174b78 0,#071225 36%,#02050a 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
@@ -6978,6 +6978,118 @@ body.t212-v112-app[data-t212-page="long"] #t212V112AppBar{top:70px!important}
     document.addEventListener('click',function(e){var btn=e.target.closest('[data-v131-fixbasis]'); if(btn){openBasis(btn.getAttribute('data-v131-fixbasis'));return;} if(e.target.closest('#v129CheckProtection,#v129BuildBeast,#v129ShowPortfolio'))setTimeout(renderTruthProtection,150);},true);
     document.addEventListener('input',function(e){if(e.target&&e.target.closest('.ltEditPanel'))setTimeout(renderTruthProtection,300)},true);
   }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+</script>
+
+
+
+<!-- v132 Long Top-up Truth, add-more candidates use live tracker basis and do not show fake 0% -->
+<style id="v132-long-topup-truth-css">
+.v132TopUpTruth{border:1px solid rgba(94,231,255,.24);background:rgba(94,231,255,.08);color:#d9fbff;border-radius:14px;padding:8px;margin-top:8px;font-size:12px;line-height:1.35}
+.v132TopUpFix{border-color:rgba(255,209,102,.28)!important;background:rgba(255,209,102,.08)!important}
+.v132Pill{display:inline-flex;border-radius:999px;border:1px solid rgba(190,211,255,.16);padding:3px 7px;font-size:10px;font-weight:1000;margin-left:5px;color:#c8d6ea;background:rgba(255,255,255,.06)}
+.v132Pill.good{color:#98ffd0;border-color:rgba(53,228,155,.28);background:rgba(53,228,155,.10)}
+.v132Pill.warn{color:#ffe2a0;border-color:rgba(255,209,102,.28);background:rgba(255,209,102,.09)}
+.v132Pill.bad{color:#ffb1bf;border-color:rgba(255,97,120,.28);background:rgba(255,97,120,.10)}
+</style>
+<script id="v132-long-topup-truth-js">
+(function(){
+  'use strict';
+  var PLAN='t212gm93_plan', TRACK='t212gm93_tracker';
+  function $(id){return document.getElementById(id)}
+  function read(k,d){try{var v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}}
+  function write(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function gbp(v){v=Number(v);return '£'+(Number.isFinite(v)?v.toFixed(2):'0.00')}
+  function pct(v){v=Number(v);return Number.isFinite(v)?((v>=0?'+':'')+v.toFixed(1)+'%'):'n/a'}
+  function age(ts){ts=+ts;if(!ts)return 'no timestamp';var s=Math.max(0,Math.round((Date.now()-ts)/1000));if(s<90)return s+'s ago';var m=Math.round(s/60);if(m<90)return m+'m ago';var h=Math.round(m/60);return h+'h ago'}
+  function mapTracker(){var m={};read(TRACK,[]).forEach(function(x){var s=String(x&&x.sym||'').toUpperCase().trim();if(s)m[s]=x});return m}
+  function basisFor(x){
+    if(!x)return {has:false,why:'not in tracker'};
+    var cost=Math.max(0,+x.owned||0);
+    var buy=(Number.isFinite(+x.buyPrice)&&+x.buyPrice>0)?+x.buyPrice:((Number.isFinite(+x.price)&&+x.price>0)?+x.price:null);
+    var cur=(Number.isFinite(+x.currentPrice)&&+x.currentPrice>0)?+x.currentPrice:null;
+    var fresh=(Date.now()-(+x.currentTs||0))<30*60000;
+    var has=cost>0&&buy&&cur;
+    var value=has?cost*(cur/buy):cost;
+    var pl=has?value-cost:null;
+    var plPct=has&&cost?pl/cost*100:null;
+    var why=[];
+    if(!(cost>0))why.push('owned value missing');
+    if(!buy)why.push('bought price missing');
+    if(!cur)why.push('current price missing');
+    if(has&&!fresh)why.push('price is stale, '+age(x.currentTs));
+    return {has:has,cost:cost,buy:buy,cur:cur,value:value,pl:pl,plPct:plPct,fresh:fresh,source:x.liveSource||'manual',age:age(x.currentTs),why:why.join('; ')};
+  }
+  function trackerTruthText(sym, item, b){
+    if(!b.has)return 'Fix basis before adding more. '+(b.why||'Add owned value, bought price and current price.')+' This is not a 0% P/L holding, it is unknown.';
+    var room=Number.isFinite(+item.room)?gbp(item.room):'room unknown';
+    var trend=Number.isFinite(+item.trend)?Math.round(+item.trend):'trend unknown';
+    var ev=item.evidence||{};
+    var evTxt=(ev.level||ev.gate||'evidence')+(Number.isFinite(+ev.confidence)?' '+Math.round(+ev.confidence)+'%':'');
+    return 'Room '+room+' to target/cap, trend '+trend+', '+evTxt+', P/L '+gbp(b.pl)+' '+pct(b.plPct)+', quote '+esc(b.source)+' '+b.age+'.';
+  }
+  function normalisePlan(){
+    var plan=read(PLAN,null); if(!plan)return null;
+    var engine=plan.topUpEngine; if(!engine)return plan;
+    var tracker=mapTracker();
+    var moved=[];
+    var keep=[];
+    (engine.good||[]).forEach(function(item){
+      var sym=String(item&&item.sym||'').toUpperCase().trim();
+      var b=basisFor(tracker[sym]);
+      if(!b.has){
+        var blocked=Object.assign({},item,{blockedWhy:'fix basis first, '+(b.why||'missing bought/current price'),topUpWhy:trackerTruthText(sym,item,b),basisMissing:true});
+        moved.push(blocked);
+      }else{
+        var next=Object.assign({},item,{pl:b.pl,plPct:b.plPct,currentValue:b.value,topUpWhy:trackerTruthText(sym,item,b),basisMissing:false});
+        if(!b.fresh){next.blockedWhy='price stale, refresh live prices before adding more';moved.push(next)}else keep.push(next);
+      }
+    });
+    var blocked=(engine.blocked||[]).map(function(item){var sym=String(item&&item.sym||'').toUpperCase().trim(), b=basisFor(tracker[sym]); if(sym&&tracker[sym]){item=Object.assign({},item,{topUpWhy:trackerTruthText(sym,item,b),basisMissing:!b.has}); if(!b.has&&(!item.blockedWhy||item.blockedWhy.indexOf('fix basis')<0))item.blockedWhy='fix basis first, '+(b.why||'missing bought/current price');} return item;});
+    engine.good=keep;
+    engine.blocked=moved.concat(blocked).slice(0,12);
+    engine.version='v132';
+    engine.truthAt=new Date().toISOString();
+    plan.topUpEngine=engine;
+    if(Array.isArray(plan.rows)){
+      var changed=false;
+      plan.rows=plan.rows.filter(function(r){
+        if(!r||!r.topUp)return true;
+        var sym=String(r.sym||'').toUpperCase().trim();
+        var b=basisFor(tracker[sym]);
+        if(!b.has){changed=true;return false;}
+        if(Number.isFinite(+r.topUpAmount)&&+r.topUpAmount>0&&Math.abs((+r.amount||0)-(+r.topUpAmount))>0.01){r.amount=+r.topUpAmount;changed=true;}
+        return true;
+      });
+      if(changed){
+        var deploy=plan.rows.reduce(function(a,r){return a+(+r.amount||0)},0);
+        plan.deploy=deploy;
+        if(Number.isFinite(+plan.cashAvailable))plan.hold=Math.max(0,+plan.cashAvailable-deploy);
+      }
+    }
+    write(PLAN,plan);
+    return plan;
+  }
+  function ensureBox(){var root=$('longSimpleSection'); if(!root)return null; var box=$('v130TopUpBox'); if(box)return box; box=document.createElement('div'); box.id='v130TopUpBox'; box.className='v130TopUpBox'; var truth=$('ltsDataTruth'); if(truth&&truth.parentNode)truth.parentNode.insertBefore(box,truth.nextSibling); else root.insertBefore(box,root.firstChild); return box;}
+  function renderBox(){
+    var plan=normalisePlan(); var box=ensureBox(); if(!box)return;
+    var engine=plan&&plan.topUpEngine; if(!engine){box.innerHTML='<div class="v130TopUpHead"><b>Add-more engine</b><span>Waiting</span></div><div class="tiny">Build the Beast plan. Existing holdings can then compete for spare cash.</div>';return;}
+    var good=engine.good||[], blocked=engine.blocked||[];
+    var rows=good.slice(0,4).map(function(x){return '<div class="v130TopUpRow"><div class="v130TopUpTop"><b>'+esc(x.sym)+'</b><strong>'+gbp(x.topUpAmount)+' add-more candidate <span class="v132Pill good">basis OK</span></strong></div><div class="v130TopUpWhy">'+esc(x.topUpWhy)+'</div></div>'}).join('');
+    var blocks=blocked.slice(0,4).map(function(x){var fix=x.basisMissing?' <span class="v132Pill warn">fix basis</span>':'';return '<div class="v130TopUpRow v130TopUpBlocked '+(x.basisMissing?'v132TopUpFix':'')+'"><div class="v130TopUpTop"><b>'+esc(x.sym||'Holding')+'</b><span class="v130TopUpBadge warn">Blocked'+fix+'</span></div><div class="v130TopUpWhy">'+esc(x.blockedWhy||x.topUpWhy||'not clean enough to add more')+'</div></div>'}).join('');
+    if(!rows)rows='<div class="v130TopUpRow"><div class="v130TopUpTop"><b>No clean top-ups</b><span class="v130TopUpBadge warn">Hold</span></div><div class="v130TopUpWhy">Owned holdings were checked, but none passed basis, live price, evidence, trend, target room and protection rules.</div></div>';
+    box.innerHTML='<div class="v130TopUpHead"><b>Add-more engine</b><span>'+good.length+' clean, '+blocked.length+' blocked</span></div><div class="tiny">v132 rule: no add-more recommendation can show fake 0%. If bought price or current price is missing, it is blocked as Fix basis first.</div><div class="v130TopUpRows">'+rows+blocks+'</div>';
+  }
+  function stamp(){
+    document.title='Trading 212 Manual God Mode v132, Long Top-up Truth Dark';
+    var b=document.querySelector('.v112BrandText b'); if(b)b.textContent='God Mode v132';
+    var sub=document.querySelector('.v112BrandText span'); if(sub)sub.textContent='Long Beast, top-up truth, no fake 0%';
+    var m=document.querySelector('.mobileTitleText'); if(m)m.textContent='Manual God Mode v132';
+    var badge=document.querySelector('.ltSimpleBadge'); if(badge)badge.textContent='v132 beast mode';
+  }
+  function hook(){stamp();renderBox();setInterval(function(){stamp();renderBox()},3000);document.addEventListener('click',function(e){if(e.target.closest('#ltsBuildPlan,#v129BuildBeast,#ltsRefreshPrices,#v129CheckProtection,[data-v112-route="long"],[data-t212-route="long"]'))setTimeout(function(){stamp();renderBox();try{if(typeof window.renderAll==='function')window.renderAll()}catch(_e){}},1800)},true)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
 })();
 </script>
