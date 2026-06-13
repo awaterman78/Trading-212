@@ -1,1092 +1,320 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-GB">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#07111f" />
-<meta http-equiv="Cache-Control" content="no-store, max-age=0" />
-<meta name="long-term-command-centre-version" content="v1-redesign-from-scratch" />
-<title>Long-Term Stock Command Centre</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="long-trader-version" content="v200-data-autopilot">
+<title>Long Money Engine · Data Autopilot</title>
 <style>
 :root{
-  --bg:#07111f;
-  --bg2:#0b1628;
-  --card:#101b2d;
-  --card2:#14243a;
-  --card3:#0b1321;
-  --text:#f5f8ff;
-  --muted:#9fb0c7;
-  --line:rgba(190,211,255,.16);
-  --blue:#7db2ff;
-  --blue2:#2f6dff;
-  --good:#37e69a;
-  --good2:#0da66f;
-  --warn:#ffd166;
-  --warn2:#c98500;
-  --bad:#ff6178;
-  --bad2:#d63c57;
-  --purple:#c6a6ff;
-  --cyan:#62e6ff;
-  --shadow:0 20px 60px rgba(0,0,0,.32);
-  --radius:24px;
-  --radius2:16px;
+  --bg:#050914;--panel:#0c1525;--panel2:#111f34;--panel3:#172b47;--text:#f4f8ff;--muted:#9caec7;--line:rgba(184,209,255,.16);
+  --blue:#78adff;--good:#35e49b;--warn:#ffd166;--bad:#ff6178;--cyan:#68e7ff;--purple:#c6a6ff;--shadow:0 22px 70px rgba(0,0,0,.34);
 }
 *{box-sizing:border-box}
 html{background:var(--bg);color-scheme:dark;scroll-behavior:smooth}
-body{
-  margin:0;
-  min-height:100svh;
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 0% -6%,rgba(125,178,255,.34),transparent 30%),
-    radial-gradient(circle at 100% 0%,rgba(55,230,154,.18),transparent 28%),
-    radial-gradient(circle at 50% 120%,rgba(198,166,255,.12),transparent 36%),
-    linear-gradient(180deg,#07111f 0%,#09182a 46%,#040812 100%);
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-button,input,select,textarea{font:inherit}
-button{touch-action:manipulation;cursor:pointer;border:0}
-button:active{transform:translateY(1px)}
-button:disabled{opacity:.45;cursor:not-allowed;transform:none}
-a{color:var(--cyan)}
-.app{max-width:1180px;margin:0 auto;padding:0 18px 48px}
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(7,17,31,.82);
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(22px) saturate(1.2);
-  -webkit-backdrop-filter:blur(22px) saturate(1.2);
-  box-shadow:0 18px 50px rgba(0,0,0,.28);
-}
-.headerInner{max-width:1180px;margin:0 auto;padding:14px 18px 12px}
-.topLine{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}
-.logo{width:48px;height:48px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(125,178,255,.28),rgba(55,230,154,.10));border:1px solid rgba(190,211,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
-.brandText{min-width:0}.brandText b{display:block;font-size:22px;line-height:1;letter-spacing:-.055em}.brandText span{display:block;font-size:13px;color:var(--muted);font-weight:750;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.statusPills{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 10px;color:#d9e7fb;font-size:12px;font-weight:850;white-space:nowrap}.pill.good{color:#b7ffd9;border-color:rgba(55,230,154,.28);background:rgba(55,230,154,.11)}.pill.warn{color:#ffe7aa;border-color:rgba(255,209,102,.28);background:rgba(255,209,102,.10)}.dot{width:9px;height:9px;border-radius:50%;background:var(--good);box-shadow:0 0 0 4px rgba(55,230,154,.12)}
-.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.nav button{min-height:48px;border-radius:18px;background:rgba(255,255,255,.06);color:#cfddf2;border:1px solid var(--line);font-weight:1000;box-shadow:none}.nav button.active{background:linear-gradient(135deg,#2e6dff,#80b5ff);color:#061120;border-color:rgba(125,178,255,.54);box-shadow:0 12px 28px rgba(47,109,255,.25)}
-main{padding-top:18px}.page{display:none;animation:fadeIn .18s ease-out}.page.active{display:block}@keyframes fadeIn{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
-.hero{border:1px solid var(--line);border-radius:32px;background:radial-gradient(circle at 0% 0%,rgba(125,178,255,.21),transparent 42%),linear-gradient(150deg,rgba(20,36,58,.98),rgba(9,17,31,.98));box-shadow:var(--shadow);padding:24px;margin-bottom:16px;overflow:hidden;position:relative}.hero:after{content:"";position:absolute;right:-80px;top:-80px;width:210px;height:210px;border-radius:50%;background:rgba(55,230,154,.08);filter:blur(3px)}.hero>*{position:relative;z-index:1}.eyebrow{display:inline-flex;border:1px solid rgba(125,178,255,.25);background:rgba(125,178,255,.11);color:#bdd8ff;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:1000}.hero h1{font-size:clamp(34px,7vw,62px);line-height:.92;letter-spacing:-.085em;margin:16px 0 10px;max-width:860px}.hero p{margin:0;max-width:850px;color:#b7c6da;font-size:16px;line-height:1.5}.heroActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.heroActions button{min-width:160px}
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.span3{grid-column:span 3}.span4{grid-column:span 4}.span5{grid-column:span 5}.span6{grid-column:span 6}.span7{grid-column:span 7}.span8{grid-column:span 8}.span12{grid-column:span 12}
-.card{background:linear-gradient(180deg,rgba(17,30,49,.96),rgba(10,18,32,.96));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.card.soft{background:linear-gradient(180deg,rgba(17,30,49,.78),rgba(10,18,32,.82));box-shadow:none}.card h2,.card h3{margin:0 0 12px;line-height:1.1;letter-spacing:-.045em}.card h2{font-size:24px}.card h3{font-size:19px}.muted{color:var(--muted)}.tiny{font-size:12px;color:var(--muted);line-height:1.45}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.big{font-size:36px;font-weight:1000;letter-spacing:-.07em;line-height:.95}.medium{font-size:24px;font-weight:1000;letter-spacing:-.055em}.goodText{color:var(--good)!important}.badText{color:var(--bad)!important}.warnText{color:var(--warn)!important}.cyanText{color:var(--cyan)!important}.purpleText{color:var(--purple)!important}
-.kpiGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.kpi{background:rgba(255,255,255,.055);border:1px solid rgba(190,211,255,.13);border-radius:18px;padding:13px;min-height:102px}.kpi span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:1000}.kpi b{display:block;font-size:22px;letter-spacing:-.045em;margin-top:8px}.kpi small{display:block;color:var(--muted);font-size:11px;margin-top:4px;line-height:1.25}
-.command{border-radius:28px;padding:22px;border:1px solid rgba(255,209,102,.23);background:radial-gradient(circle at 0% 0%,rgba(255,209,102,.15),transparent 42%),linear-gradient(150deg,rgba(35,29,18,.98),rgba(10,18,32,.97));box-shadow:var(--shadow)}.command.exit{border-color:rgba(255,97,120,.32);background:radial-gradient(circle at 0% 0%,rgba(255,97,120,.16),transparent 42%),linear-gradient(150deg,rgba(38,18,26,.98),rgba(10,18,32,.97))}.command.add{border-color:rgba(55,230,154,.32);background:radial-gradient(circle at 0% 0%,rgba(55,230,154,.16),transparent 42%),linear-gradient(150deg,rgba(17,39,37,.98),rgba(10,18,32,.97))}.command .label{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:1000}.command .action{font-size:clamp(34px,8vw,58px);line-height:.9;letter-spacing:-.08em;font-weight:1000;margin:10px 0}.command .why{color:#c7d6ea;line-height:1.45;max-width:900px}.commandMeta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}.commandMini{background:rgba(255,255,255,.055);border:1px solid rgba(190,211,255,.12);border-radius:16px;padding:10px}.commandMini span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:1000}.commandMini b{display:block;font-size:15px;margin-top:4px}
-.actionList{display:flex;flex-direction:column;gap:9px}.actionItem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;padding:12px;border-radius:18px;border:1px solid rgba(190,211,255,.13);background:rgba(255,255,255,.045)}.actionItem.exit{border-color:rgba(255,97,120,.25);background:rgba(255,97,120,.08)}.actionItem.add{border-color:rgba(55,230,154,.25);background:rgba(55,230,154,.07)}.actionItem.review{border-color:rgba(255,209,102,.25);background:rgba(255,209,102,.07)}.rank{width:34px;height:34px;border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.08);font-weight:1000}.actionItem b{display:block}.actionItem p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.35}.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);padding:5px 9px;font-size:11px;font-weight:1000;white-space:nowrap}.badge.good{color:#b6ffd8;background:rgba(55,230,154,.10);border-color:rgba(55,230,154,.28)}.badge.bad{color:#ffc0ca;background:rgba(255,97,120,.10);border-color:rgba(255,97,120,.28)}.badge.warn{color:#ffe4a3;background:rgba(255,209,102,.10);border-color:rgba(255,209,102,.28)}.badge.blue{color:#cfe2ff;background:rgba(125,178,255,.10);border-color:rgba(125,178,255,.28)}.badge.purple{color:#decfff;background:rgba(198,166,255,.10);border-color:rgba(198,166,255,.28)}
-button.primary,button.good,button.warn,button.bad,button.secondary{border-radius:17px;min-height:48px;padding:12px 15px;font-weight:1000;letter-spacing:-.01em}.primary{background:linear-gradient(135deg,#2f6dff,#8bbaff);color:#061120;box-shadow:0 12px 28px rgba(47,109,255,.22)}.good{background:linear-gradient(135deg,#10b981,#37e69a);color:#02130b;box-shadow:0 12px 28px rgba(55,230,154,.18)}.warn{background:linear-gradient(135deg,#ffb32c,#ffd166);color:#211604}.bad{background:linear-gradient(135deg,#e84662,#ff7e93);color:#fff}.secondary{background:rgba(255,255,255,.065);border:1px solid var(--line);color:#e8f1ff;box-shadow:none}.ghost{background:transparent;color:var(--muted);border:1px dashed rgba(190,211,255,.18);border-radius:16px;min-height:44px;padding:10px 12px;font-weight:900}
-.formGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.formGrid.two{grid-template-columns:repeat(2,1fr)}.formGrid.three{grid-template-columns:repeat(3,1fr)}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;color:#c8d6ea;font-size:12px;font-weight:950;margin:0 0 6px}.hint{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.35}input,select,textarea{width:100%;border-radius:16px;border:1px solid rgba(190,211,255,.17);background:rgba(4,9,18,.72);color:var(--text);padding:12px;min-height:46px;outline:none}input:focus,select:focus,textarea:focus{border-color:rgba(125,178,255,.55);box-shadow:0 0 0 4px rgba(125,178,255,.10)}textarea{min-height:130px;resize:vertical;line-height:1.4}.checkField{display:flex;align-items:center;gap:9px;min-height:46px}.checkField input{width:18px;height:18px;min-height:0}.buttonRow{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.buttonRow button{flex:0 1 auto}.buttonRow.stretch button{flex:1 1 160px}
-.holdingGrid,.radarGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.holdingCard,.radarCard{border:1px solid rgba(190,211,255,.14);background:linear-gradient(180deg,rgba(17,30,49,.92),rgba(8,15,27,.92));border-radius:24px;padding:16px;box-shadow:0 12px 32px rgba(0,0,0,.22)}.holdingCard.exit{border-color:rgba(255,97,120,.32);background:linear-gradient(180deg,rgba(43,21,30,.94),rgba(8,15,27,.94))}.holdingCard.add,.radarCard.buy{border-color:rgba(55,230,154,.30);background:linear-gradient(180deg,rgba(18,42,39,.94),rgba(8,15,27,.94))}.holdingCard.review,.radarCard.watch{border-color:rgba(255,209,102,.25);background:linear-gradient(180deg,rgba(43,35,19,.93),rgba(8,15,27,.94))}.cardHead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.symbol{font-size:30px;font-weight:1000;letter-spacing:-.07em;line-height:.9}.subline{font-size:12px;color:var(--muted);margin-top:5px}.metricGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.mini{background:rgba(255,255,255,.055);border:1px solid rgba(190,211,255,.11);border-radius:15px;padding:9px;min-width:0}.mini span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:1000}.mini b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}.noteBox{border:1px solid rgba(190,211,255,.12);background:rgba(255,255,255,.04);border-radius:16px;padding:10px;color:#c4d2e7;font-size:13px;line-height:1.4}.progress{height:9px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(190,211,255,.10)}.progress div{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--good));transition:width .25s}.cardActions{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.cardActions button{min-height:40px;border-radius:14px;font-size:12px;padding:8px}.scoreRing{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-weight:1000;background:conic-gradient(var(--good) 0deg,rgba(255,255,255,.08) 0deg);border:1px solid rgba(190,211,255,.13)}
-.tableWrap{overflow:auto;border-radius:20px;border:1px solid rgba(190,211,255,.12);background:rgba(4,9,18,.38)}table{width:100%;border-collapse:separate;border-spacing:0;min-width:820px}th,td{padding:12px 10px;text-align:left;border-bottom:1px solid rgba(190,211,255,.09);vertical-align:top;font-size:13px}th{position:sticky;top:0;background:#101b2d;color:#a9b7cc;text-transform:uppercase;font-size:11px;letter-spacing:.06em;z-index:1}tr:last-child td{border-bottom:0}.empty{border:1px dashed rgba(190,211,255,.22);border-radius:22px;padding:20px;color:var(--muted);background:rgba(255,255,255,.035);line-height:1.45}.empty b{color:#f5f8ff}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stickySide{position:sticky;top:132px;align-self:start}.footerNote{color:var(--muted);font-size:12px;line-height:1.55;margin:18px 2px 0}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;width:min(520px,calc(100vw - 24px));border-radius:22px;border:1px solid rgba(190,211,255,.18);border-left:5px solid var(--blue);background:rgba(10,18,32,.95);box-shadow:0 18px 60px rgba(0,0,0,.42);backdrop-filter:blur(18px);padding:14px 16px;display:none}.toast.show{display:block;animation:toastIn .18s ease-out}@keyframes toastIn{from{opacity:.2;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}.toast b{display:block;margin-bottom:3px}.dangerZone{border-color:rgba(255,97,120,.28);background:rgba(255,97,120,.07)}
-@media(max-width:980px){.span3,.span4,.span5,.span6,.span7,.span8{grid-column:span 12}.kpiGrid{grid-template-columns:repeat(3,1fr)}.holdingGrid,.radarGrid,.split{grid-template-columns:1fr}.stickySide{position:static}.formGrid,.formGrid.three,.formGrid.two{grid-template-columns:repeat(2,1fr)}.commandMeta{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:680px){.app{padding:0 10px 112px}.headerInner{padding:10px 10px 8px}.topLine{align-items:flex-start}.logo{width:42px;height:42px;border-radius:16px}.brandText b{font-size:18px}.brandText span{font-size:11px}.statusPills{display:none}.nav{position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;width:min(520px,calc(100vw - 18px));grid-template-columns:repeat(5,1fr);gap:5px;margin:0;padding:7px;border-radius:28px;background:rgba(7,17,31,.88);border:1px solid rgba(190,211,255,.16);backdrop-filter:blur(22px);box-shadow:0 22px 70px rgba(0,0,0,.58)}.nav button{min-height:58px;border-radius:20px;font-size:10px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.nav button .navIcon{font-size:20px}.hero{padding:20px 16px;border-radius:28px}.hero h1{font-size:38px}.heroActions{display:grid;grid-template-columns:1fr}.heroActions button{width:100%}.card{padding:15px;border-radius:22px}.card h2{font-size:22px}.grid{gap:12px}.kpiGrid{grid-template-columns:repeat(2,1fr)}.kpi{min-height:92px}.kpi b{font-size:20px}.command{padding:18px;border-radius:24px}.command .action{font-size:38px}.commandMeta{grid-template-columns:repeat(2,1fr)}.formGrid,.formGrid.three,.formGrid.two{grid-template-columns:1fr}.metricGrid{grid-template-columns:repeat(2,1fr)}.cardActions{grid-template-columns:repeat(2,1fr)}.cardActions button:last-child:nth-child(odd){grid-column:1/-1}.actionItem{grid-template-columns:auto minmax(0,1fr);}.actionItem .badge{grid-column:2}.buttonRow.stretch{display:grid;grid-template-columns:1fr}.buttonRow.stretch button{width:100%}.tableWrap{max-height:420px}.toast{bottom:calc(90px + env(safe-area-inset-bottom,0px))}.footerNote{display:none}}
-@media(max-width:390px){.nav button{font-size:9px}.nav button .navIcon{font-size:18px}.kpiGrid{gap:8px}.kpi{padding:10px}.mini b{font-size:13px}.symbol{font-size:26px}.hero h1{font-size:34px}}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 0% -10%,rgba(120,173,255,.34),transparent 32%),radial-gradient(circle at 100% 0%,rgba(53,228,155,.16),transparent 28%),linear-gradient(180deg,#07111f 0,#081526 46%,#04070f 100%);min-height:100vh}
+button,input,textarea,select{font:inherit}button{touch-action:manipulation}
+header{position:sticky;top:0;z-index:50;background:rgba(5,9,20,.82);backdrop-filter:blur(22px) saturate(1.2);border-bottom:1px solid var(--line);padding:16px clamp(12px,3vw,28px);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.headerWrap{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center}
+h1{margin:0;font-size:clamp(26px,4vw,48px);line-height:.94;letter-spacing:-.07em}.subtitle{margin-top:7px;color:var(--muted);line-height:1.42;max-width:950px;font-size:14px}.heroBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--muted);font-size:12px;font-weight:850}.dot{width:9px;height:9px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 3px rgba(255,209,102,.12)}.dot.good{background:var(--good);box-shadow:0 0 0 3px rgba(53,228,155,.12)}.dot.bad{background:var(--bad);box-shadow:0 0 0 3px rgba(255,97,120,.12)}
+main{max-width:1500px;margin:0 auto;padding:18px clamp(10px,3vw,28px) 54px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.card{grid-column:span 12;background:linear-gradient(180deg,rgba(17,31,52,.94),rgba(9,17,31,.96));border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent)}.span3{grid-column:span 3}.span4{grid-column:span 4}.span5{grid-column:span 5}.span6{grid-column:span 6}.span7{grid-column:span 7}.span8{grid-column:span 8}.span9{grid-column:span 9}.span12{grid-column:span 12}
+@media(max-width:1050px){.span3,.span4,.span5,.span6,.span7,.span8,.span9{grid-column:span 12}.headerWrap{grid-template-columns:1fr}.heroBtns{justify-content:flex-start}}
+@media(max-width:720px){header{position:relative}.grid{gap:10px}.card{border-radius:19px;padding:14px}main{padding-top:12px}.heroBtns button{flex:1}.chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}.chip{white-space:nowrap}}
+h2{margin:0 0 12px;font-size:21px;line-height:1.08;letter-spacing:-.04em}.sectionLead{color:var(--muted);line-height:1.45;margin:-4px 0 14px}.tiny{font-size:12px;color:var(--muted);line-height:1.42}.muted{color:var(--muted)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.goodText{color:var(--good)!important}.badText{color:var(--bad)!important}.warnText{color:var(--warn)!important}.cyanText{color:var(--cyan)!important}.purpleText{color:var(--purple)!important}.big{font-size:34px;line-height:1;font-weight:1000;letter-spacing:-.06em}.miniTitle{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:950;margin-bottom:6px}
+button{border:0;border-radius:15px;padding:11px 14px;background:linear-gradient(135deg,#3a7dff,#8bbaff);color:#06101e;font-weight:1000;cursor:pointer;transition:.15s transform,.15s opacity}.btnWide{width:100%}button:hover{transform:translateY(-1px)}button:active{transform:scale(.985)}button:disabled{opacity:.46;cursor:not-allowed;transform:none}button.secondary{background:rgba(255,255,255,.065);border:1px solid var(--line);color:#eaf2ff;box-shadow:none}button.good{background:linear-gradient(135deg,#18c982,#6cf9b4);color:#03130b}button.warn{background:linear-gradient(135deg,#f0a11a,#ffd36a);color:#271a03}button.bad{background:linear-gradient(135deg,#e34460,#ff8295);color:white}button.ghost{background:transparent;border:1px dashed var(--line);color:var(--muted);box-shadow:none}
+label{display:block;margin:11px 0 6px;color:#c8d6ea;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}input,textarea,select{width:100%;border:1px solid rgba(190,211,255,.18);background:rgba(4,9,18,.78);color:var(--text);border-radius:15px;padding:12px;outline:none}textarea{min-height:126px;resize:vertical}.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.row4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.rowAuto{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.rowAuto>*{flex:0 auto}@media(max-width:720px){.row,.row3,.row4{grid-template-columns:1fr}.rowAuto button{flex:1}}
+.metricGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric{background:rgba(255,255,255,.052);border:1px solid rgba(190,211,255,.12);border-radius:18px;padding:12px}.metric .k{font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:950}.metric .v{font-size:22px;font-weight:1000;letter-spacing:-.035em;margin-top:5px}.metric .s{font-size:11px;color:var(--muted);margin-top:3px}@media(max-width:720px){.metricGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric .v{font-size:19px}}
+.heroPanel{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(290px,.8fr);gap:12px}.commandBox{border-radius:22px;border:1px solid rgba(120,173,255,.25);background:radial-gradient(circle at 0 0,rgba(120,173,255,.22),transparent 36%),rgba(255,255,255,.045);padding:17px}.commandAction{font-size:42px;line-height:.92;font-weight:1000;letter-spacing:-.075em;margin:4px 0 10px}.commandWhy{color:#c5d3e8;line-height:1.45}.progress{height:10px;border-radius:999px;border:1px solid rgba(190,211,255,.12);background:#07111f;overflow:hidden;margin-top:14px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--good));transition:.25s width}.logBox{max-height:160px;overflow:auto;border:1px solid rgba(190,211,255,.12);background:rgba(4,9,18,.45);border-radius:16px;padding:10px;margin-top:10px}.logLine{font-size:12px;color:var(--muted);line-height:1.45;border-bottom:1px solid rgba(190,211,255,.08);padding:5px 0}.logLine:last-child{border-bottom:0}@media(max-width:980px){.heroPanel{grid-template-columns:1fr}.commandAction{font-size:34px}}
+.tableWrap{overflow:auto;border:1px solid rgba(190,211,255,.12);border-radius:18px;background:rgba(4,9,18,.28)}table{width:100%;border-collapse:separate;border-spacing:0;min-width:980px}th,td{text-align:left;vertical-align:top;border-bottom:1px solid rgba(190,211,255,.10);padding:11px 10px}th{position:sticky;top:0;z-index:2;background:#101c2f;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}tr:last-child td{border-bottom:0}.symbol{font-size:19px;font-weight:1000;letter-spacing:-.04em}.subline{font-size:11px;color:var(--muted);margin-top:2px}.pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:999px;padding:5px 8px;font-size:11px;font-weight:950;white-space:nowrap}.pill.good{color:var(--good);border-color:rgba(53,228,155,.30);background:rgba(53,228,155,.10)}.pill.warn{color:var(--warn);border-color:rgba(255,209,102,.30);background:rgba(255,209,102,.10)}.pill.bad{color:var(--bad);border-color:rgba(255,97,120,.30);background:rgba(255,97,120,.10)}.pill.cyan{color:var(--cyan);border-color:rgba(104,231,255,.30);background:rgba(104,231,255,.10)}.pill.purple{color:var(--purple);border-color:rgba(198,166,255,.30);background:rgba(198,166,255,.10)}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{padding:8px 10px;border-radius:11px;font-size:12px}.reason{max-width:460px;color:#c5d3e8;font-size:13px;line-height:1.4}.qtyTag{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#dbe7f8}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.miniCard{background:rgba(255,255,255,.052);border:1px solid rgba(190,211,255,.12);border-radius:18px;padding:13px}.miniCard.good{border-color:rgba(53,228,155,.26);background:linear-gradient(180deg,rgba(53,228,155,.08),rgba(255,255,255,.04))}.miniCard.warn{border-color:rgba(255,209,102,.26);background:linear-gradient(180deg,rgba(255,209,102,.08),rgba(255,255,255,.04))}.miniCard.bad{border-color:rgba(255,97,120,.28);background:linear-gradient(180deg,rgba(255,97,120,.08),rgba(255,255,255,.04))}.miniCard h3{margin:0 0 8px;font-size:19px;letter-spacing:-.04em}.miniCard p{margin:0;color:#c5d3e8;font-size:13px;line-height:1.42}.miniCard .foot{margin-top:10px;color:var(--muted);font-size:11px}.scoreRing{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(190,211,255,.16);background:conic-gradient(var(--good) calc(var(--score)*1%),rgba(255,255,255,.07) 0);font-weight:1000}.scoreRing span{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#0d1829;font-size:13px}@media(max-width:980px){.cards{grid-template-columns:1fr}}
+.dataMap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dataItem{display:flex;justify-content:space-between;gap:10px;border:1px solid rgba(190,211,255,.12);background:rgba(255,255,255,.045);border-radius:15px;padding:10px;color:#c5d3e8}.dataItem b{color:#fff}.empty{border:1px dashed rgba(190,211,255,.22);border-radius:18px;padding:18px;text-align:center;color:var(--muted);background:rgba(255,255,255,.035)}@media(max-width:720px){.dataMap{grid-template-columns:1fr}}
+.modal{position:fixed;inset:0;display:none;place-items:center;padding:18px;z-index:90;background:rgba(0,0,0,.58);backdrop-filter:blur(6px)}.modal.show{display:grid}.modalPanel{width:min(760px,100%);max-height:92vh;overflow:auto;background:#0d1829;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.55)}.modalTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.xBtn{width:40px;height:40px;padding:0;border-radius:14px;background:rgba(255,255,255,.06);color:#fff;border:1px solid var(--line);box-shadow:none}.toast{position:fixed;right:18px;bottom:18px;z-index:100;max-width:480px;background:#0d1829;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:18px;padding:14px 16px;box-shadow:0 20px 60px rgba(0,0,0,.45);display:none}.toast.show{display:block;animation:pop .16s ease-out}@keyframes pop{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}@media(max-width:720px){.toast{left:10px;right:10px;bottom:10px;max-width:none}}
+.footerNote{color:var(--muted);font-size:12px;line-height:1.45;margin:14px 4px 0}.hidden{display:none!important}
 </style>
 </head>
 <body>
 <header>
-  <div class="headerInner">
-    <div class="topLine">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">🧭</div>
-        <div class="brandText">
-          <b>Long-Term Command Centre</b>
-          <span id="headerSubtitle">Find, log, monitor, add, trim and protect owned stocks.</span>
-        </div>
-      </div>
-      <div class="statusPills">
-        <span class="pill good"><span class="dot"></span><span id="saveStatus">Saved locally</span></span>
-        <span class="pill"><span id="headerValue">£0.00</span></span>
-        <span class="pill warn"><span id="reviewStatus">No holdings yet</span></span>
+  <div class="headerWrap">
+    <div>
+      <h1>Long Money Engine</h1>
+      <div class="subtitle">A long-term portfolio command centre with data autopilot: Finnhub for live quotes, streams, fundamentals and earnings; Massive for deep historical OHLC bars, snapshots and ticker discovery. Manual prices should be the fallback, not the job.</div>
+      <div class="chips" id="statusChips">
+        <span class="chip"><span class="dot" id="liveDot"></span><span id="liveText">Idle</span></span>
+        <span class="chip">Data: <b id="dataText">not checked</b></span>
+        <span class="chip">Last run: <b id="lastRunText">never</b></span>
+        <span class="chip">History: <b id="historyText">0 ready</b></span>
       </div>
     </div>
-    <nav class="nav" aria-label="Main navigation">
-      <button type="button" data-page="dashboard" class="active"><span class="navIcon">🏠</span><span>Home</span></button>
-      <button type="button" data-page="portfolio"><span class="navIcon">📈</span><span>Owned</span></button>
-      <button type="button" data-page="radar"><span class="navIcon">🔎</span><span>Find</span></button>
-      <button type="button" data-page="ledger"><span class="navIcon">🧾</span><span>Log</span></button>
-      <button type="button" data-page="settings"><span class="navIcon">⚙️</span><span>Tools</span></button>
-    </nav>
+    <div class="heroBtns">
+      <button class="good" id="runAutopilotTop">Run autopilot</button>
+      <button class="secondary" id="startLiveTop">Start live</button>
+    </div>
   </div>
 </header>
-<div class="app">
 <main>
-  <section class="page active" id="page-dashboard">
-    <div class="hero">
-      <span class="eyebrow">Long-term, owned-stock first</span>
-      <h1>One screen for what to do with your money next.</h1>
-      <p>This rebuild removes the short-term noise. It tracks cash, owned stocks, watchlist candidates, thesis health, allocation, stops, reviews and a ranked action queue. It does not place trades; it gives a clear manual plan to check before using Trading 212.</p>
-      <div class="heroActions">
-        <button class="primary" type="button" data-page-jump="portfolio">Add owned stock</button>
-        <button class="secondary" type="button" data-page-jump="radar">Find candidates</button>
-        <button class="secondary" type="button" data-copy-review>Copy review pack</button>
+  <div class="grid">
+    <section class="card span8" id="autopilotCard">
+      <h2>Autopilot command</h2>
+      <div class="heroPanel">
+        <div class="commandBox">
+          <div class="miniTitle">Next best action</div>
+          <div class="commandAction" id="mainCommand">Connect data</div>
+          <div class="commandWhy" id="mainCommandWhy">Add Finnhub and Massive keys once. After that, this page can refresh prices, fetch history, rescore the portfolio and rebuild the action queue when opened.</div>
+          <div class="rowAuto" style="margin-top:14px">
+            <button class="good" id="runAutopilot">Run autopilot now</button>
+            <button class="secondary" id="startLive">Start live tracking</button>
+            <button class="bad" id="stopLive" disabled>Stop</button>
+          </div>
+          <div class="progress"><div class="bar" id="progressBar"></div></div>
+          <div class="tiny" id="progressText" style="margin-top:7px">Waiting.</div>
+        </div>
+        <div>
+          <div class="metricGrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+            <div class="metric"><div class="k">Portfolio</div><div class="v" id="portfolioValue">£0</div><div class="s" id="portfolioSub">No holdings yet</div></div>
+            <div class="metric"><div class="k">Open P/L</div><div class="v" id="openPL">£0</div><div class="s" id="openPLSub">0.0%</div></div>
+            <div class="metric"><div class="k">Cash</div><div class="v" id="cashMetric">£0</div><div class="s" id="cashSub">Reserve not set</div></div>
+            <div class="metric"><div class="k">Action queue</div><div class="v" id="queueMetric">0</div><div class="s" id="queueSub">Nothing urgent</div></div>
+          </div>
+          <div class="logBox" id="runLog" aria-live="polite"></div>
+        </div>
       </div>
-    </div>
-    <div class="grid">
-      <section class="span12" id="mainCommand"></section>
-      <section class="card span12">
-        <h2>Portfolio pulse</h2>
-        <div class="kpiGrid" id="kpiGrid"></div>
-      </section>
-      <section class="card span7">
-        <h2>Action queue</h2>
-        <div class="actionList" id="actionQueue"></div>
-      </section>
-      <section class="card span5">
-        <h2>Risk and allocation</h2>
-        <div id="riskPanel"></div>
-      </section>
-      <section class="card span12 soft">
-        <h2>Review pack</h2>
-        <p class="tiny">Copy this into ChatGPT when you want a second-pass review of the portfolio. It is generated from your saved holdings, cash, watchlist and transactions.</p>
-        <textarea id="reviewPack" readonly></textarea>
-        <div class="buttonRow"><button class="secondary" type="button" data-copy-review>Copy review pack</button></div>
-      </section>
-    </div>
-  </section>
+    </section>
 
-  <section class="page" id="page-portfolio">
-    <div class="grid">
-      <section class="card span5 stickySide">
-        <h2 id="holdingFormTitle">Add owned stock</h2>
-        <p class="tiny">Use prices in the stock’s listing currency. The app converts to your account currency using FX settings.</p>
-        <form id="holdingForm">
-          <input type="hidden" id="holdingId" />
-          <div class="formGrid two">
-            <div class="field"><label>Symbol</label><input id="holdingSymbol" placeholder="AAPL" autocomplete="off" required /></div>
-            <div class="field"><label>Currency</label><select id="holdingCurrency"><option>USD</option><option>GBP</option><option>EUR</option></select></div>
-            <div class="field full"><label>Name</label><input id="holdingName" placeholder="Apple Inc." /></div>
-            <div class="field"><label>Sector</label><input id="holdingSector" placeholder="Technology" /></div>
-            <div class="field"><label>Shares, max 3 dp</label><input id="holdingShares" type="number" min="0" step="0.001" placeholder="3.000" required /></div>
-            <div class="field"><label>Average cost</label><input id="holdingAvgCost" type="number" min="0" step="0.0001" placeholder="185.00" required /></div>
-            <div class="field"><label>Current price</label><input id="holdingCurrentPrice" type="number" min="0" step="0.0001" placeholder="190.00" required /></div>
-            <div class="field"><label>Stop / invalidation price</label><input id="holdingStop" type="number" min="0" step="0.0001" placeholder="160.00" /></div>
-            <div class="field"><label>Target / fair value</label><input id="holdingTarget" type="number" min="0" step="0.0001" placeholder="230.00" /></div>
-            <div class="field"><label>Conviction, 0-100</label><input id="holdingConviction" type="number" min="0" max="100" step="1" value="70" /></div>
-            <div class="field"><label>Last review</label><input id="holdingLastReview" type="date" /></div>
-            <div class="field"><label>Status</label><select id="holdingStatus"><option value="active">Active</option><option value="thesis-broken">Thesis broken</option><option value="watch-close">Watch closely</option></select></div>
-            <div class="field full"><label>Investment thesis</label><textarea id="holdingThesis" placeholder="Why do I own it? What would prove me wrong?"></textarea></div>
-            <div class="field full"><label>Notes</label><textarea id="holdingNotes" placeholder="Earnings date, debt, risks, catalysts, personal rules..."></textarea></div>
-          </div>
-          <div class="buttonRow stretch">
-            <button class="good" type="submit">Save owned stock</button>
-            <button class="secondary" type="button" id="clearHoldingForm">Clear form</button>
-          </div>
-        </form>
-      </section>
-      <section class="span7">
-        <div class="card">
-          <h2>Owned stocks</h2>
-          <p class="tiny">Exits and risk come first. “Add more” only appears when score, upside, cash reserve and allocation rules agree.</p>
-          <div id="holdingsList" class="holdingGrid"></div>
-        </div>
-      </section>
-    </div>
-  </section>
+    <section class="card span4">
+      <h2>Data health</h2>
+      <div class="dataMap" id="dataHealth"></div>
+      <div class="rowAuto" style="margin-top:12px">
+        <button class="secondary" id="testDataBtn">Test keys</button>
+        <button class="secondary" id="forceHistoryBtn">Force history</button>
+      </div>
+      <p class="tiny" style="margin-bottom:0">API keys are saved in this browser only. The app does not place orders or access your Trading 212 account.</p>
+    </section>
 
-  <section class="page" id="page-radar">
-    <div class="grid">
-      <section class="card span5 stickySide">
-        <h2 id="radarFormTitle">Add watchlist candidate</h2>
-        <p class="tiny">This is the “find” room. Add many stocks, score them, then only promote the strongest candidates.</p>
-        <form id="radarForm">
-          <input type="hidden" id="radarId" />
-          <div class="formGrid two">
-            <div class="field"><label>Symbol</label><input id="radarSymbol" placeholder="MSFT" autocomplete="off" required /></div>
-            <div class="field"><label>Currency</label><select id="radarCurrency"><option>USD</option><option>GBP</option><option>EUR</option></select></div>
-            <div class="field full"><label>Name</label><input id="radarName" placeholder="Microsoft" /></div>
-            <div class="field"><label>Sector</label><input id="radarSector" placeholder="Technology" /></div>
-            <div class="field"><label>Current price</label><input id="radarPrice" type="number" min="0" step="0.0001" placeholder="420.00" /></div>
-            <div class="field"><label>Buy below</label><input id="radarBuyBelow" type="number" min="0" step="0.0001" placeholder="400.00" /></div>
-            <div class="field"><label>Fair value / target</label><input id="radarFairValue" type="number" min="0" step="0.0001" placeholder="500.00" /></div>
-            <div class="field"><label>Quality, 0-100</label><input id="radarQuality" type="number" min="0" max="100" step="1" value="70" /></div>
-            <div class="field"><label>Trend, 0-100</label><input id="radarTrend" type="number" min="0" max="100" step="1" value="60" /></div>
-            <div class="field"><label>Valuation, 0-100</label><input id="radarValuation" type="number" min="0" max="100" step="1" value="60" /></div>
-            <div class="field"><label>Risk, 0 low / 100 high</label><input id="radarRisk" type="number" min="0" max="100" step="1" value="40" /></div>
-            <div class="field"><label>Conviction, 0-100</label><input id="radarConviction" type="number" min="0" max="100" step="1" value="60" /></div>
-            <div class="field full"><label>Research notes</label><textarea id="radarNotes" placeholder="Moat, valuation, earnings quality, debt, risk, why this deserves money..."></textarea></div>
-          </div>
-          <div class="buttonRow stretch">
-            <button class="good" type="submit">Save candidate</button>
-            <button class="secondary" type="button" id="clearRadarForm">Clear form</button>
-          </div>
-        </form>
-      </section>
-      <section class="span7">
-        <div class="card">
-          <h2>Ranked radar</h2>
-          <p class="tiny">Candidates are ranked by quality, valuation, trend, conviction and risk. They do not become a buy unless price and score rules pass.</p>
-          <div class="buttonRow stretch">
-            <button class="secondary" type="button" id="loadStarterRadar">Load starter universe</button>
-            <button class="secondary" type="button" data-page-jump="ledger">Import prices / CSV</button>
-          </div>
-          <div id="radarList" class="radarGrid" style="margin-top:12px"></div>
-        </div>
-      </section>
-    </div>
-  </section>
+    <section class="card span12">
+      <h2>Action queue</h2>
+      <p class="sectionLead">The queue turns data into actions: add more, hold, trim, reduce, sell, or wait for a better entry. Quantities are rounded to 3 decimals for Trading 212-style fractional orders.</p>
+      <div class="cards" id="actionCards"></div>
+    </section>
 
-  <section class="page" id="page-ledger">
-    <div class="grid">
-      <section class="card span5 stickySide">
-        <h2>Log trade or cash</h2>
-        <p class="tiny">This is your source of truth. Buying more of the same stock updates share quantity and average cost automatically.</p>
-        <form id="transactionForm">
-          <div class="formGrid two">
-            <div class="field"><label>Type</label><select id="txType"><option value="BUY">Buy</option><option value="SELL">Sell</option><option value="DIVIDEND">Dividend</option><option value="DEPOSIT">Deposit</option><option value="WITHDRAWAL">Withdrawal</option></select></div>
-            <div class="field"><label>Date</label><input id="txDate" type="date" /></div>
-            <div class="field"><label>Symbol</label><input id="txSymbol" placeholder="AAPL" autocomplete="off" /></div>
-            <div class="field"><label>Currency</label><select id="txCurrency"><option>USD</option><option>GBP</option><option>EUR</option></select></div>
-            <div class="field"><label>Shares, max 3 dp</label><input id="txShares" type="number" min="0" step="0.001" /></div>
-            <div class="field"><label>Price</label><input id="txPrice" type="number" min="0" step="0.0001" /></div>
-            <div class="field"><label>Fees in account currency</label><input id="txFees" type="number" min="0" step="0.01" value="0" /></div>
-            <div class="field"><label>Cash amount</label><input id="txCashAmount" type="number" step="0.01" placeholder="Deposit/dividend amount" /></div>
-            <div class="field full"><label>Notes</label><textarea id="txNotes" placeholder="Reason, source, what I expected..."></textarea></div>
-          </div>
-          <div class="buttonRow stretch"><button class="good" type="submit">Log and update portfolio</button></div>
-        </form>
-      </section>
-      <section class="span7">
-        <div class="card">
-          <h2>Price and data import</h2>
-          <p class="tiny">Paste prices as SYMBOL, PRICE. Example: <span class="mono">AAPL, 190.25</span>. This updates owned stocks and radar candidates.</p>
-          <textarea id="priceImport" placeholder="AAPL, 190.25&#10;MSFT, 430.10&#10;NVDA, 125.44"></textarea>
-          <div class="buttonRow stretch">
-            <button class="primary" type="button" id="applyPrices">Apply pasted prices</button>
-            <button class="secondary" type="button" id="refreshQuotes">Refresh quotes with Finnhub</button>
-          </div>
-        </div>
-        <div class="card" style="margin-top:12px">
-          <h2>CSV import</h2>
-          <p class="tiny">Portfolio CSV headers: symbol,name,sector,currency,shares,avgCost,currentPrice,stop,target,conviction,thesis,notes. Radar CSV headers: symbol,name,sector,currency,price,buyBelow,fairValue,quality,trend,valuation,risk,conviction,notes.</p>
-          <textarea id="csvImport" placeholder="symbol,name,sector,currency,price,buyBelow,fairValue,quality,trend,valuation,risk,conviction,notes"></textarea>
-          <div class="buttonRow stretch">
-            <button class="secondary" type="button" id="importPortfolioCsv">Import portfolio CSV</button>
-            <button class="secondary" type="button" id="importRadarCsv">Import radar CSV</button>
-          </div>
-        </div>
-        <div class="card" style="margin-top:12px">
-          <h2>Ledger</h2>
-          <div class="tableWrap"><table><thead><tr><th>Date</th><th>Type</th><th>Symbol</th><th>Qty</th><th>Price</th><th>Cash impact</th><th>Realised P/L</th><th>Notes</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div>
-        </div>
-      </section>
-    </div>
-  </section>
+    <section class="card span7">
+      <div class="rowAuto" style="justify-content:space-between;margin-bottom:8px">
+        <div><h2 style="margin-bottom:2px">Owned stocks</h2><div class="tiny">Log each holding once. Live prices and monitoring update from data providers.</div></div>
+        <div class="rowAuto"><button class="good" id="addHoldingBtn">Add holding</button><button class="secondary" id="refreshOwnedBtn">Refresh owned</button></div>
+      </div>
+      <div class="tableWrap"><table>
+        <thead><tr><th>Holding</th><th>Value</th><th>P/L</th><th>Weight</th><th>Decision</th><th>Reason</th><th>Actions</th></tr></thead>
+        <tbody id="holdingsBody"></tbody>
+      </table></div>
+    </section>
 
-  <section class="page" id="page-settings">
-    <div class="grid">
-      <section class="card span6">
-        <h2>Rules</h2>
-        <form id="settingsForm">
-          <div class="formGrid two">
-            <div class="field"><label>Account currency</label><select id="setCurrency"><option>GBP</option><option>USD</option><option>EUR</option></select></div>
-            <div class="field"><label>Cash balance</label><input id="setCash" type="number" step="0.01" /></div>
-            <div class="field"><label>USD to account FX</label><input id="setUsdFx" type="number" step="0.0001" /></div>
-            <div class="field"><label>EUR to account FX</label><input id="setEurFx" type="number" step="0.0001" /></div>
-            <div class="field"><label>Target position, %</label><input id="setTargetAllocation" type="number" min="1" max="100" step="0.5" /></div>
-            <div class="field"><label>Max position, %</label><input id="setMaxAllocation" type="number" min="1" max="100" step="0.5" /></div>
-            <div class="field"><label>Cash reserve, %</label><input id="setCashReserve" type="number" min="0" max="90" step="0.5" /></div>
-            <div class="field"><label>Review every, days</label><input id="setReviewDays" type="number" min="1" step="1" /></div>
-            <div class="field"><label>Min score to add owned</label><input id="setMinAddScore" type="number" min="0" max="100" step="1" /></div>
-            <div class="field"><label>Min score to buy radar</label><input id="setMinBuyScore" type="number" min="0" max="100" step="1" /></div>
-            <div class="field"><label>Min upside for adds, %</label><input id="setMinUpside" type="number" min="0" max="200" step="0.5" /></div>
-            <div class="field"><label>Default order cap</label><input id="setOrderCap" type="number" min="0" step="1" /></div>
-            <div class="field full"><label>Finnhub API key, optional</label><input id="setFinnhub" placeholder="Used only in your browser for quote refresh" /></div>
-          </div>
-          <div class="buttonRow stretch"><button class="good" type="submit">Save rules</button></div>
-        </form>
-      </section>
-      <section class="card span6">
-        <h2>Backup and restore</h2>
-        <p class="tiny">Your data is saved in this browser using local storage. Export a backup regularly, especially before clearing browser data or moving device.</p>
-        <div class="buttonRow stretch">
-          <button class="primary" type="button" id="exportData">Export JSON backup</button>
-          <button class="secondary" type="button" id="importDataButton">Import JSON backup</button>
-          <button class="secondary" type="button" id="migrateLegacy">Try import old God Mode positions</button>
-          <button class="warn" type="button" id="loadDemo">Load demo data</button>
-        </div>
-        <input id="importDataFile" type="file" accept="application/json,.json" style="display:none" />
-      </section>
-      <section class="card span12 dangerZone">
-        <h2>Reset</h2>
-        <p class="tiny">This clears the redesigned app data only. Export a backup first if anything matters.</p>
-        <div class="buttonRow"><button class="bad" type="button" id="resetAll">Delete redesigned app data</button></div>
-      </section>
-    </div>
-  </section>
+    <section class="card span5">
+      <h2>Portfolio guardrails</h2>
+      <div class="metricGrid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <div class="metric"><div class="k">Largest holding</div><div class="v" id="largestMetric">—</div><div class="s" id="largestSub">Concentration check</div></div>
+        <div class="metric"><div class="k">Cash reserve</div><div class="v" id="reserveMetric">—</div><div class="s" id="reserveSub">Protects flexibility</div></div>
+        <div class="metric"><div class="k">Data coverage</div><div class="v" id="coverageMetric">0%</div><div class="s" id="coverageSub">Quotes + history</div></div>
+        <div class="metric"><div class="k">Risk state</div><div class="v" id="riskMetric">—</div><div class="s" id="riskSub">Based on trend and concentration</div></div>
+      </div>
+      <div class="empty" id="riskNotes" style="margin-top:12px;text-align:left">Run the autopilot to populate risk notes.</div>
+    </section>
 
-  <p class="footerNote">Manual decision-support only. This tool cannot guarantee profit, does not know your full financial situation, and does not place orders. Treat every recommendation as a checklist to verify before acting. 🧠</p>
+    <section class="card span12">
+      <div class="rowAuto" style="justify-content:space-between;margin-bottom:8px">
+        <div><h2 style="margin-bottom:2px">Find room / radar</h2><div class="tiny">The radar scans a broad watchlist, scores history and fundamentals, then promotes only stronger long-term candidates.</div></div>
+        <div class="rowAuto"><button class="good" id="scanRadarBtn">Scan radar</button><button class="secondary" id="addRadarBtn">Add symbol</button><button class="secondary" id="discoverBtn">Massive discover</button></div>
+      </div>
+      <div class="tableWrap"><table>
+        <thead><tr><th>Symbol</th><th>Score</th><th>Price / trend</th><th>Quality / value</th><th>Decision</th><th>Reason</th><th>Actions</th></tr></thead>
+        <tbody id="radarBody"></tbody>
+      </table></div>
+    </section>
+
+    <section class="card span6">
+      <h2>Data settings</h2>
+      <p class="sectionLead">Set these once. Autopilot can run when the page opens, live tracking can stream while the page is open, and history is cached so it does not keep refetching.</p>
+      <div class="row">
+        <div><label>Finnhub API key</label><input id="finnhubKey" type="password" autocomplete="off" placeholder="Finnhub token"></div>
+        <div><label>Massive API key</label><input id="massiveKey" type="password" autocomplete="off" placeholder="Massive API key"></div>
+      </div>
+      <div class="row4">
+        <div><label>Cash available, £</label><input id="cashAvailable" type="number" min="0" step="0.01"></div>
+        <div><label>GBP/USD</label><input id="gbpUsd" type="number" min="0.1" step="0.01"></div>
+        <div><label>Cash reserve, %</label><input id="reservePct" type="number" min="0" max="100" step="1"></div>
+        <div><label>Max holding, %</label><input id="maxPositionPct" type="number" min="1" max="100" step="1"></div>
+      </div>
+      <div class="row4">
+        <div><label>History years</label><input id="historyYears" type="number" min="1" max="10" step="1"></div>
+        <div><label>Max scan symbols</label><input id="maxSymbols" type="number" min="5" max="500" step="5"></div>
+        <div><label>Live poll seconds</label><input id="pollSeconds" type="number" min="10" max="900" step="5"></div>
+        <div><label>Target positions</label><input id="targetPositions" type="number" min="1" max="80" step="1"></div>
+      </div>
+      <div class="row3">
+        <div><label>Auto on open</label><select id="autoOnOpen"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div><label>Finnhub WebSocket</label><select id="useFinnhubWS"><option value="yes">Yes</option><option value="no">No</option></select></div>
+        <div><label>Massive snapshot fallback</label><select id="useMassiveSnapshot"><option value="yes">Yes</option><option value="no">No</option></select></div>
+      </div>
+      <label>Universe / watchlist symbols</label>
+      <textarea id="universeSymbols" spellcheck="false" placeholder="AAPL, MSFT, NVDA, GOOGL..."></textarea>
+      <div class="rowAuto" style="margin-top:12px"><button id="saveSettingsBtn">Save settings</button><button class="secondary" id="loadDefaultsBtn">Restore default radar</button><button class="secondary" id="clearCacheBtn">Clear stale data cache</button></div>
+    </section>
+
+    <section class="card span6">
+      <h2>History and quote cache</h2>
+      <p class="sectionLead">This shows what the engine has already fetched. Green means usable; amber means stale or partial; red means missing or failed.</p>
+      <div class="dataMap" id="cacheMap"></div>
+      <div class="rowAuto" style="margin-top:12px"><button class="secondary" id="exportBtn">Export backup</button><button class="secondary" id="importBtn">Import backup</button><input id="importFile" type="file" accept="application/json" class="hidden"></div>
+      <p class="tiny">Backups exclude API keys by default. Keep API keys private.</p>
+    </section>
+  </div>
+  <div class="footerNote">Market data can be delayed or limited by your provider plan. This tool supports disciplined decision-making; it cannot guarantee profits and it cannot execute broker orders.</div>
 </main>
+
+<div class="modal" id="holdingModal" role="dialog" aria-modal="true" aria-labelledby="holdingTitle">
+  <div class="modalPanel">
+    <div class="modalTop"><div><h2 id="holdingTitle">Add holding</h2><div class="tiny">Enter the holding once. Average cost is in USD if the stock trades in USD; GBP totals are converted with your GBP/USD setting.</div></div><button class="xBtn" data-close="holdingModal">×</button></div>
+    <input id="holdingId" type="hidden">
+    <div class="row3">
+      <div><label>Symbol</label><input id="holdingSymbol" placeholder="AAPL"></div>
+      <div><label>Live quote symbol</label><input id="holdingQuoteSymbol" placeholder="usually same as symbol"></div>
+      <div><label>Name</label><input id="holdingName" placeholder="Apple"></div>
+    </div>
+    <div class="row4">
+      <div><label>Shares</label><input id="holdingQty" type="number" min="0" step="0.001"></div>
+      <div><label>Average cost, $</label><input id="holdingAvg" type="number" min="0" step="0.0001"></div>
+      <div><label>Target weight, %</label><input id="holdingTarget" type="number" min="0" max="100" step="0.5"></div>
+      <div><label>Conviction 1-10</label><input id="holdingConviction" type="number" min="1" max="10" step="1"></div>
+    </div>
+    <div class="row3">
+      <div><label>Hard stop / invalidation, $</label><input id="holdingStop" type="number" min="0" step="0.0001"></div>
+      <div><label>Fair value / target, $</label><input id="holdingFair" type="number" min="0" step="0.0001"></div>
+      <div><label>Sector / role</label><input id="holdingRole" placeholder="Core, AI, healthcare..."></div>
+    </div>
+    <label>Thesis / why you own it</label><textarea id="holdingThesis" placeholder="What must remain true for this to stay in the portfolio?"></textarea>
+    <div class="rowAuto" style="justify-content:flex-end;margin-top:12px"><button class="secondary" data-close="holdingModal">Cancel</button><button class="good" id="saveHoldingBtn">Save holding</button></div>
+  </div>
 </div>
+
+<div class="modal" id="radarModal" role="dialog" aria-modal="true" aria-labelledby="radarTitle">
+  <div class="modalPanel">
+    <div class="modalTop"><div><h2 id="radarTitle">Add radar symbol</h2><div class="tiny">Use this for stocks you want the engine to monitor automatically.</div></div><button class="xBtn" data-close="radarModal">×</button></div>
+    <div class="row3">
+      <div><label>Symbols</label><input id="radarSymbols" placeholder="AAPL, MSFT, NVDA"></div>
+      <div><label>Theme</label><input id="radarTheme" placeholder="AI, core ETF, healthcare"></div>
+      <div><label>Priority</label><select id="radarPriority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></div>
+    </div>
+    <label>Note</label><textarea id="radarNote" placeholder="Why should the engine watch this?"></textarea>
+    <div class="rowAuto" style="justify-content:flex-end;margin-top:12px"><button class="secondary" data-close="radarModal">Cancel</button><button class="good" id="saveRadarBtn">Add to radar</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <script>
-(() => {
-  'use strict';
-  const KEY = 'ltcc_v1_state';
-  const LEGACY_POSITIONS_KEY = 't212gm36_us_positions';
-  const TODAY = new Date().toISOString().slice(0,10);
-  const $ = id => document.getElementById(id);
-  const qsa = sel => Array.from(document.querySelectorAll(sel));
-
-  const defaults = () => ({
-    version: 1,
-    updatedAt: new Date().toISOString(),
-    settings: {
-      accountCurrency: 'GBP',
-      cash: 0,
-      usdFx: 0.78,
-      eurFx: 0.86,
-      targetAllocationPct: 8,
-      maxAllocationPct: 18,
-      cashReservePct: 5,
-      reviewCadenceDays: 30,
-      minAddScore: 72,
-      minBuyScore: 76,
-      minUpsidePct: 8,
-      defaultOrderCap: 250,
-      finnhubKey: ''
-    },
-    holdings: [],
-    radar: [],
-    transactions: []
-  });
-
-  let state = loadState();
-
-  function loadState(){
-    const base = defaults();
-    try{
-      const raw = localStorage.getItem(KEY);
-      if(!raw) return base;
-      const parsed = JSON.parse(raw);
-      return {
-        ...base,
-        ...parsed,
-        settings: {...base.settings, ...(parsed.settings || {})},
-        holdings: Array.isArray(parsed.holdings) ? parsed.holdings : [],
-        radar: Array.isArray(parsed.radar) ? parsed.radar : [],
-        transactions: Array.isArray(parsed.transactions) ? parsed.transactions : []
-      };
-    }catch(e){
-      console.warn(e);
-      return base;
-    }
-  }
-
-  function saveState(){
-    state.updatedAt = new Date().toISOString();
-    localStorage.setItem(KEY, JSON.stringify(state));
-    setText('saveStatus', 'Saved ' + new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}));
-  }
-
-  function uid(prefix='id'){
-    return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
-  }
-
-  function cleanSymbol(v){ return String(v || '').trim().toUpperCase().replace(/[^A-Z0-9.\-]/g,''); }
-  function num(v, fallback=0){ const n = Number(v); return Number.isFinite(n) ? n : fallback; }
-  function clamp(v,min,max){ return Math.min(max, Math.max(min, num(v))); }
-  function roundShares(v){ return Math.round(num(v) * 1000) / 1000; }
-  function roundMoney(v){ return Math.round(num(v) * 100) / 100; }
-  function fmt(v, d=2){ return Number.isFinite(Number(v)) ? Number(v).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d}) : '0.00'; }
-  function pct(v){ return (Number.isFinite(Number(v)) ? Number(v).toFixed(1) : '0.0') + '%'; }
-  function money(v){
-    const currency = state.settings.accountCurrency || 'GBP';
-    return new Intl.NumberFormat('en-GB',{style:'currency',currency,maximumFractionDigits:2}).format(num(v));
-  }
-  function price(v,currency){ return (currency || 'GBP') + ' ' + fmt(v,2); }
-  function escapeHTML(s){ return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-  function setText(id, text){ const el = $(id); if(el) el.textContent = text; }
-  function daysSince(dateStr){
-    if(!dateStr) return Infinity;
-    const d = new Date(dateStr + 'T00:00:00');
-    if(Number.isNaN(d.getTime())) return Infinity;
-    return Math.floor((new Date() - d) / 86400000);
-  }
-  function fx(currency){
-    const cur = (currency || state.settings.accountCurrency || 'GBP').toUpperCase();
-    const acct = (state.settings.accountCurrency || 'GBP').toUpperCase();
-    if(cur === acct) return 1;
-    if(cur === 'USD') return num(state.settings.usdFx, 1);
-    if(cur === 'EUR') return num(state.settings.eurFx, 1);
-    return 1;
-  }
-  function valueGBP(h){ return num(h.shares) * num(h.currentPrice) * fx(h.currency); }
-  function costGBP(h){ return num(h.shares) * num(h.avgCost) * fx(h.currency); }
-  function totalInvested(){ return state.holdings.reduce((sum,h)=>sum+valueGBP(h),0); }
-  function totalCost(){ return state.holdings.reduce((sum,h)=>sum+costGBP(h),0); }
-  function portfolioTotal(){ return totalInvested() + num(state.settings.cash); }
-  function cashReserveValue(){ return portfolioTotal() * num(state.settings.cashReservePct) / 100; }
-  function availableCash(){ return Math.max(0, num(state.settings.cash) - cashReserveValue()); }
-  function allocationPct(h){ const total = portfolioTotal(); return total > 0 ? valueGBP(h) / total * 100 : 0; }
-  function plGBP(h){ return valueGBP(h) - costGBP(h); }
-  function plPct(h){ const c = costGBP(h); return c > 0 ? plGBP(h) / c * 100 : 0; }
-  function upsidePctFrom(priceNow, target){ return num(priceNow) > 0 && num(target) > 0 ? (num(target) - num(priceNow)) / num(priceNow) * 100 : null; }
-
-  function holdingScore(h){
-    const current = num(h.currentPrice), avg = num(h.avgCost), stop = num(h.stop), target = num(h.target);
-    const gain = avg > 0 ? (current - avg) / avg * 100 : 0;
-    const upside = upsidePctFrom(current, target);
-    let trendScore = 50;
-    if(gain >= 20) trendScore = 85; else if(gain >= 8) trendScore = 75; else if(gain >= 0) trendScore = 62; else if(gain >= -8) trendScore = 45; else trendScore = 28;
-    let valuationScore = 50;
-    if(upside !== null){
-      if(upside >= 35) valuationScore = 88; else if(upside >= 20) valuationScore = 76; else if(upside >= 8) valuationScore = 64; else if(upside >= 0) valuationScore = 48; else valuationScore = 28;
-    }
-    let riskPenalty = 0;
-    if(stop && current <= stop) riskPenalty += 35;
-    if((h.status || '') === 'thesis-broken') riskPenalty += 45;
-    if(allocationPct(h) > num(state.settings.maxAllocationPct)) riskPenalty += 15;
-    const reviewPenalty = daysSince(h.lastReview) > num(state.settings.reviewCadenceDays) ? 7 : 0;
-    const conviction = clamp(h.conviction ?? 65,0,100);
-    return clamp(conviction * .38 + trendScore * .22 + valuationScore * .24 + (100 - riskPenalty) * .16 - reviewPenalty, 0, 100);
-  }
-
-  function radarScore(r){
-    const quality = clamp(r.quality ?? 50,0,100);
-    const trend = clamp(r.trend ?? 50,0,100);
-    const valuation = clamp(r.valuation ?? 50,0,100);
-    const conviction = clamp(r.conviction ?? 50,0,100);
-    const risk = clamp(r.risk ?? 50,0,100);
-    let priceGate = 0;
-    if(num(r.price) && num(r.buyBelow) && num(r.price) <= num(r.buyBelow)) priceGate += 6;
-    if(num(r.price) && num(r.fairValue) && upsidePctFrom(r.price, r.fairValue) >= num(state.settings.minUpsidePct)) priceGate += 4;
-    return clamp(quality*.30 + trend*.18 + valuation*.22 + conviction*.15 + (100-risk)*.15 + priceGate, 0, 100);
-  }
-
-  function evaluateHolding(h){
-    const current = num(h.currentPrice), stop = num(h.stop), target = num(h.target);
-    const score = holdingScore(h);
-    const upside = upsidePctFrom(current, target);
-    const allocation = allocationPct(h);
-    const maxAllocation = num(state.settings.maxAllocationPct);
-    const targetAllocation = num(state.settings.targetAllocationPct);
-    const reviewDue = daysSince(h.lastReview) > num(state.settings.reviewCadenceDays);
-    const cashOk = availableCash() > 0;
-    const hasUpside = upside === null || upside >= num(state.settings.minUpsidePct);
-    let type = 'hold', label = 'HOLD', severity = 80, cls = 'blue', reason = 'No urgent rule is triggered.', orderGBP = 0;
-
-    if((h.status || '') === 'thesis-broken'){
-      type = 'exit'; label = 'SELL / EXIT'; severity = 1; cls = 'bad'; reason = 'The thesis is marked as broken. Long-term holding reason no longer passes.';
-    }else if(stop && current && current <= stop){
-      type = 'exit'; label = 'SELL / EXIT'; severity = 2; cls = 'bad'; reason = 'Current price is at or below the invalidation stop.';
-    }else if(allocation > maxAllocation){
-      type = 'reduce'; label = 'REDUCE'; severity = 12; cls = 'warn'; reason = 'Position is above the max allocation rule.';
-    }else if(target && current && current >= target){
-      type = 'trim'; label = 'TRIM / TAKE PROFIT'; severity = 18; cls = 'warn'; reason = 'Price is at or above your target / fair value.';
-    }else if(score >= num(state.settings.minAddScore) && allocation < targetAllocation && cashOk && hasUpside){
-      type = 'add'; label = 'ADD MORE'; severity = 30; cls = 'good'; reason = 'Score, upside, cash reserve and allocation rules allow a controlled add.';
-      const targetValue = portfolioTotal() * targetAllocation / 100;
-      const gap = Math.max(0, targetValue - valueGBP(h));
-      orderGBP = Math.min(gap, availableCash(), num(state.settings.defaultOrderCap) || gap);
-    }else if(reviewDue){
-      type = 'review'; label = 'REVIEW'; severity = 45; cls = 'warn'; reason = 'Review is overdue. Confirm the thesis before adding or continuing to hold.';
-    }
-    return {type,label,severity,cls,reason,score,upside,allocation,orderGBP};
-  }
-
-  function evaluateRadar(r){
-    const score = radarScore(r);
-    const priceOk = !num(r.buyBelow) || (num(r.price) > 0 && num(r.price) <= num(r.buyBelow));
-    const upside = upsidePctFrom(r.price, r.fairValue);
-    const upsideOk = upside === null || upside >= num(state.settings.minUpsidePct);
-    const cashOk = availableCash() > 0;
-    let type = 'watch', label = 'WATCH', cls='blue', reason = 'Needs stronger score, price or cash before becoming a buy candidate.';
-    if(score >= num(state.settings.minBuyScore) && priceOk && upsideOk && cashOk){
-      type = 'buy'; label = 'BUY CANDIDATE'; cls='good'; reason = 'Radar score, price gate, upside and cash reserve pass.';
-    }else if(!priceOk){
-      type = 'wait'; label = 'WAIT FOR PRICE'; cls='warn'; reason = 'Good enough to watch, but price is above your buy-below level.';
-    }
-    return {type,label,cls,reason,score,upside,priceOk,upsideOk};
-  }
-
-  function buildActions(){
-    const actions = [];
-    state.holdings.forEach(h => {
-      const ev = evaluateHolding(h);
-      if(ev.type !== 'hold'){
-        actions.push({kind:'holding', symbol:h.symbol, name:h.name, ...ev, text: ev.reason, exact: exactMoveForHolding(h, ev)});
-      }
-    });
-    state.radar.forEach(r => {
-      const ev = evaluateRadar(r);
-      if(ev.type === 'buy'){
-        const orderGBP = Math.min(availableCash(), num(state.settings.defaultOrderCap) || availableCash());
-        actions.push({kind:'radar', symbol:r.symbol, name:r.name, type:'buy', label:'BUY CANDIDATE', cls:'good', severity:38, score:ev.score, text:ev.reason, orderGBP, exact: exactMoveForRadar(r, orderGBP)});
-      }
-    });
-    return actions.sort((a,b)=>a.severity-b.severity || (b.score||0)-(a.score||0));
-  }
-
-  function exactMoveForHolding(h, ev){
-    if(ev.type === 'exit') return `Check ${h.symbol} in Trading 212. If the data is correct, plan a full exit and log the sell.`;
-    if(ev.type === 'reduce' || ev.type === 'trim') return `Consider trimming ${h.symbol} back toward ${fmt(state.settings.targetAllocationPct,1)}% allocation, then log the sell.`;
-    if(ev.type === 'add'){
-      const shares = num(h.currentPrice) > 0 ? roundShares((ev.orderGBP / fx(h.currency)) / num(h.currentPrice)) : 0;
-      return `Potential add: ${money(ev.orderGBP)} ≈ ${fmt(shares,3)} shares at ${price(h.currentPrice,h.currency)}. Verify news and spread first.`;
-    }
-    if(ev.type === 'review') return `Open ${h.symbol}, reread the thesis, update price/target/stop, then mark reviewed today.`;
-    return `Hold ${h.symbol}; no forced action.`;
-  }
-
-  function exactMoveForRadar(r, orderGBP){
-    const shares = num(r.price) > 0 ? roundShares((orderGBP / fx(r.currency)) / num(r.price)) : 0;
-    return `Potential starter buy: ${money(orderGBP)} ≈ ${fmt(shares,3)} shares at ${price(r.price,r.currency)}. Only execute after a final manual check.`;
-  }
-
-  function renderAll(){
-    renderHeader();
-    renderDashboard();
-    renderHoldings();
-    renderRadar();
-    renderTransactions();
-    renderSettingsForm();
-    $('reviewPack').value = buildReviewPack();
-  }
-
-  function renderHeader(){
-    setText('headerValue', money(portfolioTotal()));
-    const reviewDue = state.holdings.filter(h => daysSince(h.lastReview) > num(state.settings.reviewCadenceDays)).length;
-    setText('reviewStatus', state.holdings.length ? `${reviewDue} review due` : 'No holdings yet');
-  }
-
-  function renderDashboard(){
-    const invested = totalInvested();
-    const cost = totalCost();
-    const total = portfolioTotal();
-    const cash = num(state.settings.cash);
-    const pl = invested - cost;
-    const plPercent = cost > 0 ? pl / cost * 100 : 0;
-    const actions = buildActions();
-    const exits = actions.filter(a => a.type === 'exit').length;
-    const adds = actions.filter(a => a.type === 'add' || a.type === 'buy').length;
-    const reviews = actions.filter(a => a.type === 'review').length;
-    const maxAllocHolding = state.holdings.slice().sort((a,b)=>allocationPct(b)-allocationPct(a))[0];
-    const cashPct = total > 0 ? cash / total * 100 : 0;
-
-    $('kpiGrid').innerHTML = [
-      kpi('Portfolio', money(total), `${state.holdings.length} owned · ${state.radar.length} radar`),
-      kpi('Cash', money(cash), `${pct(cashPct)} of account`),
-      kpi('Invested', money(invested), `${pct(total ? invested/total*100 : 0)} deployed`),
-      kpi('Unrealised P/L', money(pl), `${pct(plPercent)} vs cost`, pl >= 0 ? 'goodText' : 'badText'),
-      kpi('Action alerts', String(actions.length), `${exits} exit · ${adds} add/buy · ${reviews} review`),
-      kpi('Largest position', maxAllocHolding ? maxAllocHolding.symbol : 'None', maxAllocHolding ? pct(allocationPct(maxAllocHolding)) : 'No allocation')
-    ].join('');
-
-    renderMainCommand(actions[0]);
-    renderActionQueue(actions);
-    renderRiskPanel();
-  }
-
-  function kpi(label,value,sub,cls=''){
-    return `<div class="kpi"><span>${escapeHTML(label)}</span><b class="${cls}">${escapeHTML(value)}</b><small>${escapeHTML(sub)}</small></div>`;
-  }
-
-  function renderMainCommand(action){
-    if(!action){
-      $('mainCommand').innerHTML = `<div class="command add"><div class="label">Today’s command</div><div class="action">Build evidence</div><div class="why">No urgent exits, adds or reviews are triggered. Add owned positions, update prices, or fill the radar so the engine has enough evidence to work.</div><div class="commandMeta"><div class="commandMini"><span>Cash available</span><b>${money(availableCash())}</b></div><div class="commandMini"><span>Owned</span><b>${state.holdings.length}</b></div><div class="commandMini"><span>Radar</span><b>${state.radar.length}</b></div><div class="commandMini"><span>Rule</span><b>Protect capital</b></div></div></div>`;
-      return;
-    }
-    const cls = action.type === 'exit' ? 'exit' : (action.type === 'add' || action.type === 'buy' ? 'add' : '');
-    $('mainCommand').innerHTML = `<div class="command ${cls}"><div class="label">Today’s command</div><div class="action">${escapeHTML(action.label)} ${escapeHTML(action.symbol)}</div><div class="why"><b>${escapeHTML(action.name || action.symbol)}</b> — ${escapeHTML(action.text)}<br>${escapeHTML(action.exact || '')}</div><div class="commandMeta"><div class="commandMini"><span>Score</span><b>${fmt(action.score || 0,0)}/100</b></div><div class="commandMini"><span>Order idea</span><b>${action.orderGBP ? money(action.orderGBP) : 'Manual'}</b></div><div class="commandMini"><span>Type</span><b>${escapeHTML(action.kind)}</b></div><div class="commandMini"><span>Priority</span><b>${action.severity <= 2 ? 'Urgent' : 'Normal'}</b></div></div></div>`;
-  }
-
-  function renderActionQueue(actions){
-    if(!actions.length){
-      $('actionQueue').innerHTML = `<div class="empty"><b>No forced action.</b><br>Add or update holdings and radar candidates. The queue will fill when an exit, add, trim or review rule is triggered.</div>`;
-      return;
-    }
-    $('actionQueue').innerHTML = actions.slice(0,12).map((a,i)=>`<div class="actionItem ${a.type}"><div class="rank">${i+1}</div><div><b>${escapeHTML(a.label)} ${escapeHTML(a.symbol)}</b><p>${escapeHTML(a.exact || a.text)}</p></div><span class="badge ${a.cls}">${fmt(a.score||0,0)}/100</span></div>`).join('');
-  }
-
-  function renderRiskPanel(){
-    if(!state.holdings.length){
-      $('riskPanel').innerHTML = `<div class="empty"><b>Nothing owned yet.</b><br>Once you add stocks, this panel will show concentration, losers, stop breaches and review problems.</div>`;
-      return;
-    }
-    const total = portfolioTotal();
-    const rows = state.holdings.slice().sort((a,b)=>allocationPct(b)-allocationPct(a)).map(h => {
-      const alloc = allocationPct(h);
-      const ev = evaluateHolding(h);
-      const width = Math.min(100, alloc / Math.max(num(state.settings.maxAllocationPct),1) * 100);
-      return `<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;gap:10px"><b>${escapeHTML(h.symbol)}</b><span class="${alloc>state.settings.maxAllocationPct?'badText':'muted'}">${pct(alloc)}</span></div><div class="progress"><div style="width:${width}%"></div></div><div class="tiny">${escapeHTML(ev.label)} · ${escapeHTML(ev.reason)}</div></div>`;
-    }).join('');
-    const cash = num(state.settings.cash);
-    const reserve = cashReserveValue();
-    $('riskPanel').innerHTML = `<div class="metricGrid" style="grid-template-columns:repeat(2,1fr);margin-top:0"><div class="mini"><span>Total value</span><b>${money(total)}</b></div><div class="mini"><span>Cash reserve rule</span><b>${money(reserve)}</b></div><div class="mini"><span>Available cash</span><b>${money(availableCash())}</b></div><div class="mini"><span>Max position rule</span><b>${pct(state.settings.maxAllocationPct)}</b></div></div>${rows}`;
-  }
-
-  function renderHoldings(){
-    const container = $('holdingsList');
-    if(!state.holdings.length){
-      container.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>No owned stocks logged.</b><br>Start by adding what you own. The app will then calculate P/L, allocation, review status and what to do next.</div>`;
-      return;
-    }
-    container.innerHTML = state.holdings.slice().sort((a,b)=>evaluateHolding(a).severity-evaluateHolding(b).severity).map(h => holdingCardHTML(h)).join('');
-  }
-
-  function holdingCardHTML(h){
-    const ev = evaluateHolding(h);
-    const cls = ev.type === 'exit' ? 'exit' : ev.type === 'add' ? 'add' : ev.type === 'review' ? 'review' : '';
-    const value = valueGBP(h), cost = costGBP(h), pl = value - cost, pPct = plPct(h);
-    const current = num(h.currentPrice), stop = num(h.stop), target = num(h.target);
-    const sharesForAdd = ev.orderGBP && current ? roundShares((ev.orderGBP / fx(h.currency)) / current) : 0;
-    const score = Math.round(ev.score);
-    const ringDeg = Math.max(0, Math.min(360, score * 3.6));
-    return `<article class="holdingCard ${cls}">
-      <div class="cardHead"><div><div class="symbol">${escapeHTML(h.symbol)}</div><div class="subline">${escapeHTML(h.name || 'Owned stock')} · ${escapeHTML(h.sector || 'No sector')}</div></div><div class="scoreRing" style="background:conic-gradient(${score>=72?'var(--good)':score>=55?'var(--warn)':'var(--bad)'} ${ringDeg}deg,rgba(255,255,255,.08) 0deg)">${score}</div></div>
-      <div class="buttonRow" style="margin:10px 0 0"><span class="badge ${ev.cls}">${escapeHTML(ev.label)}</span><span class="badge blue">${pct(ev.allocation)} allocation</span></div>
-      <div class="metricGrid"><div class="mini"><span>Shares</span><b>${fmt(h.shares,3)}</b></div><div class="mini"><span>Current</span><b>${escapeHTML(price(current,h.currency))}</b></div><div class="mini"><span>Value</span><b>${money(value)}</b></div><div class="mini"><span>P/L</span><b class="${pl>=0?'goodText':'badText'}">${money(pl)} ${pct(pPct)}</b></div><div class="mini"><span>Avg cost</span><b>${escapeHTML(price(h.avgCost,h.currency))}</b></div><div class="mini"><span>Stop</span><b>${stop?escapeHTML(price(stop,h.currency)):'Unset'}</b></div><div class="mini"><span>Target</span><b>${target?escapeHTML(price(target,h.currency)):'Unset'}</b></div><div class="mini"><span>Review</span><b>${daysSince(h.lastReview)===Infinity?'Never':daysSince(h.lastReview)+'d ago'}</b></div></div>
-      <div class="noteBox"><b>Decision:</b> ${escapeHTML(ev.reason)}<br>${escapeHTML(exactMoveForHolding(h,ev))}${ev.orderGBP ? `<br><b>Suggested add:</b> ${money(ev.orderGBP)} ≈ ${fmt(sharesForAdd,3)} shares.` : ''}</div>
-      ${h.thesis ? `<div class="noteBox" style="margin-top:8px"><b>Thesis:</b> ${escapeHTML(h.thesis)}</div>` : ''}
-      <div class="cardActions"><button class="secondary" type="button" data-holding-edit="${h.id}">Edit</button><button class="secondary" type="button" data-holding-price="${h.id}">Price</button><button class="secondary" type="button" data-holding-reviewed="${h.id}">Reviewed</button><button class="warn" type="button" data-holding-thesis="${h.id}">${h.status==='thesis-broken'?'Fix thesis':'Thesis broken'}</button><button class="good" type="button" data-holding-planbuy="${h.id}">Plan add</button><button class="bad" type="button" data-holding-remove="${h.id}">Remove</button></div>
-    </article>`;
-  }
-
-  function renderRadar(){
-    const container = $('radarList');
-    if(!state.radar.length){
-      container.innerHTML = `<div class="empty" style="grid-column:1/-1"><b>No candidates yet.</b><br>Add stocks manually, load the starter universe, or import a CSV. No candidate becomes “buy” without score, price and cash rules.</div>`;
-      return;
-    }
-    container.innerHTML = state.radar.slice().sort((a,b)=>radarScore(b)-radarScore(a)).map(r => radarCardHTML(r)).join('');
-  }
-
-  function radarCardHTML(r){
-    const ev = evaluateRadar(r);
-    const score = Math.round(ev.score);
-    const ringDeg = Math.max(0, Math.min(360, score * 3.6));
-    const upside = ev.upside;
-    return `<article class="radarCard ${ev.type==='buy'?'buy':ev.type==='wait'?'watch':''}">
-      <div class="cardHead"><div><div class="symbol">${escapeHTML(r.symbol)}</div><div class="subline">${escapeHTML(r.name || 'Watchlist')} · ${escapeHTML(r.sector || 'No sector')}</div></div><div class="scoreRing" style="background:conic-gradient(${score>=76?'var(--good)':score>=60?'var(--warn)':'var(--bad)'} ${ringDeg}deg,rgba(255,255,255,.08) 0deg)">${score}</div></div>
-      <div class="buttonRow" style="margin:10px 0 0"><span class="badge ${ev.cls}">${escapeHTML(ev.label)}</span><span class="badge blue">${upside===null?'Upside n/a':pct(upside)+' upside'}</span></div>
-      <div class="metricGrid"><div class="mini"><span>Price</span><b>${num(r.price)?escapeHTML(price(r.price,r.currency)):'Unset'}</b></div><div class="mini"><span>Buy below</span><b>${num(r.buyBelow)?escapeHTML(price(r.buyBelow,r.currency)):'Unset'}</b></div><div class="mini"><span>Fair value</span><b>${num(r.fairValue)?escapeHTML(price(r.fairValue,r.currency)):'Unset'}</b></div><div class="mini"><span>Risk</span><b>${fmt(r.risk||0,0)}/100</b></div><div class="mini"><span>Quality</span><b>${fmt(r.quality||0,0)}</b></div><div class="mini"><span>Trend</span><b>${fmt(r.trend||0,0)}</b></div><div class="mini"><span>Valuation</span><b>${fmt(r.valuation||0,0)}</b></div><div class="mini"><span>Conviction</span><b>${fmt(r.conviction||0,0)}</b></div></div>
-      <div class="noteBox"><b>Decision:</b> ${escapeHTML(ev.reason)}${r.notes ? '<br><b>Notes:</b> ' + escapeHTML(r.notes) : ''}</div>
-      <div class="cardActions"><button class="secondary" type="button" data-radar-edit="${r.id}">Edit</button><button class="secondary" type="button" data-radar-price="${r.id}">Price</button><button class="good" type="button" data-radar-promote="${r.id}">To owned</button><button class="bad" type="button" data-radar-remove="${r.id}">Remove</button></div>
-    </article>`;
-  }
-
-  function renderTransactions(){
-    const tbody = $('transactionRows');
-    if(!state.transactions.length){
-      tbody.innerHTML = `<tr><td colspan="9" class="muted">No transactions logged yet.</td></tr>`;
-      return;
-    }
-    tbody.innerHTML = state.transactions.slice().sort((a,b)=>String(b.date).localeCompare(String(a.date))).map(tx => `<tr><td>${escapeHTML(tx.date || '')}</td><td><span class="badge ${tx.type==='SELL'?'warn':tx.type==='BUY'?'good':'blue'}">${escapeHTML(tx.type)}</span></td><td>${escapeHTML(tx.symbol || '')}</td><td>${tx.shares ? fmt(tx.shares,3) : ''}</td><td>${tx.price ? escapeHTML(price(tx.price,tx.currency)) : ''}</td><td class="${num(tx.cashImpact)>=0?'goodText':'badText'}">${money(tx.cashImpact || 0)}</td><td class="${num(tx.realisedPL)>=0?'goodText':'badText'}">${tx.realisedPL === null || tx.realisedPL === undefined ? '' : money(tx.realisedPL)}</td><td>${escapeHTML(tx.notes || '')}</td><td><button class="ghost" type="button" data-tx-remove="${tx.id}">Delete</button></td></tr>`).join('');
-  }
-
-  function renderSettingsForm(){
-    const s = state.settings;
-    $('setCurrency').value = s.accountCurrency || 'GBP';
-    $('setCash').value = num(s.cash).toFixed(2);
-    $('setUsdFx').value = s.usdFx;
-    $('setEurFx').value = s.eurFx;
-    $('setTargetAllocation').value = s.targetAllocationPct;
-    $('setMaxAllocation').value = s.maxAllocationPct;
-    $('setCashReserve').value = s.cashReservePct;
-    $('setReviewDays').value = s.reviewCadenceDays;
-    $('setMinAddScore').value = s.minAddScore;
-    $('setMinBuyScore').value = s.minBuyScore;
-    $('setMinUpside').value = s.minUpsidePct;
-    $('setOrderCap').value = s.defaultOrderCap;
-    $('setFinnhub').value = s.finnhubKey || '';
-  }
-
-  function saveHoldingFromForm(e){
-    e.preventDefault();
-    const id = $('holdingId').value || uid('hold');
-    const symbol = cleanSymbol($('holdingSymbol').value);
-    if(!symbol) return toast('Missing symbol','Enter the stock ticker first.','warn');
-    const h = {
-      id,
-      symbol,
-      name: $('holdingName').value.trim(),
-      sector: $('holdingSector').value.trim(),
-      currency: $('holdingCurrency').value,
-      shares: roundShares($('holdingShares').value),
-      avgCost: num($('holdingAvgCost').value),
-      currentPrice: num($('holdingCurrentPrice').value),
-      stop: num($('holdingStop').value, 0),
-      target: num($('holdingTarget').value, 0),
-      conviction: clamp($('holdingConviction').value,0,100),
-      lastReview: $('holdingLastReview').value || TODAY,
-      status: $('holdingStatus').value,
-      thesis: $('holdingThesis').value.trim(),
-      notes: $('holdingNotes').value.trim(),
-      updatedAt: new Date().toISOString()
-    };
-    if(h.shares <= 0 || h.avgCost <= 0 || h.currentPrice <= 0) return toast('Check numbers','Shares, average cost and current price must be above zero.','warn');
-    const idx = state.holdings.findIndex(x => x.id === id || x.symbol === symbol);
-    if(idx >= 0) state.holdings[idx] = {...state.holdings[idx], ...h}; else state.holdings.push(h);
-    saveState(); clearHoldingForm(); renderAll(); toast('Owned stock saved', `${symbol} is now monitored.`, 'good');
-  }
-
-  function clearHoldingForm(){
-    $('holdingForm').reset(); $('holdingId').value=''; $('holdingCurrency').value='USD'; $('holdingConviction').value=70; $('holdingLastReview').value=TODAY; $('holdingStatus').value='active'; $('holdingFormTitle').textContent='Add owned stock';
-  }
-
-  function fillHoldingForm(h){
-    showPage('portfolio');
-    $('holdingFormTitle').textContent = 'Edit ' + h.symbol;
-    $('holdingId').value = h.id; $('holdingSymbol').value = h.symbol; $('holdingName').value = h.name || ''; $('holdingSector').value = h.sector || ''; $('holdingCurrency').value = h.currency || 'USD'; $('holdingShares').value = fmt(h.shares,3).replace(/,/g,''); $('holdingAvgCost').value = h.avgCost || ''; $('holdingCurrentPrice').value = h.currentPrice || ''; $('holdingStop').value = h.stop || ''; $('holdingTarget').value = h.target || ''; $('holdingConviction').value = h.conviction ?? 70; $('holdingLastReview').value = h.lastReview || TODAY; $('holdingStatus').value = h.status || 'active'; $('holdingThesis').value = h.thesis || ''; $('holdingNotes').value = h.notes || '';
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function saveRadarFromForm(e){
-    e.preventDefault();
-    const id = $('radarId').value || uid('radar');
-    const symbol = cleanSymbol($('radarSymbol').value);
-    if(!symbol) return toast('Missing symbol','Enter the stock ticker first.','warn');
-    const r = {id, symbol, name:$('radarName').value.trim(), sector:$('radarSector').value.trim(), currency:$('radarCurrency').value, price:num($('radarPrice').value,0), buyBelow:num($('radarBuyBelow').value,0), fairValue:num($('radarFairValue').value,0), quality:clamp($('radarQuality').value,0,100), trend:clamp($('radarTrend').value,0,100), valuation:clamp($('radarValuation').value,0,100), risk:clamp($('radarRisk').value,0,100), conviction:clamp($('radarConviction').value,0,100), notes:$('radarNotes').value.trim(), updatedAt:new Date().toISOString()};
-    const idx = state.radar.findIndex(x => x.id === id || x.symbol === symbol);
-    if(idx >= 0) state.radar[idx] = {...state.radar[idx], ...r}; else state.radar.push(r);
-    saveState(); clearRadarForm(); renderAll(); toast('Candidate saved', `${symbol} added to radar.`, 'good');
-  }
-
-  function clearRadarForm(){
-    $('radarForm').reset(); $('radarId').value=''; $('radarCurrency').value='USD'; $('radarQuality').value=70; $('radarTrend').value=60; $('radarValuation').value=60; $('radarRisk').value=40; $('radarConviction').value=60; $('radarFormTitle').textContent='Add watchlist candidate';
-  }
-
-  function fillRadarForm(r){
-    showPage('radar'); $('radarFormTitle').textContent = 'Edit ' + r.symbol;
-    $('radarId').value = r.id; $('radarSymbol').value = r.symbol; $('radarName').value = r.name || ''; $('radarSector').value = r.sector || ''; $('radarCurrency').value = r.currency || 'USD'; $('radarPrice').value = r.price || ''; $('radarBuyBelow').value = r.buyBelow || ''; $('radarFairValue').value = r.fairValue || ''; $('radarQuality').value = r.quality ?? 70; $('radarTrend').value = r.trend ?? 60; $('radarValuation').value = r.valuation ?? 60; $('radarRisk').value = r.risk ?? 40; $('radarConviction').value = r.conviction ?? 60; $('radarNotes').value = r.notes || '';
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function logTransaction(e){
-    e.preventDefault();
-    const type = $('txType').value;
-    const symbol = cleanSymbol($('txSymbol').value);
-    const currency = $('txCurrency').value;
-    const shares = roundShares($('txShares').value);
-    const txPrice = num($('txPrice').value,0);
-    const fees = num($('txFees').value,0);
-    const cashAmount = num($('txCashAmount').value,0);
-    const date = $('txDate').value || TODAY;
-    const notes = $('txNotes').value.trim();
-    let cashImpact = 0, realisedPL = null;
-
-    if(type === 'DEPOSIT' || type === 'WITHDRAWAL'){
-      if(cashAmount <= 0) return toast('Cash amount needed','Enter the deposit or withdrawal amount.','warn');
-      cashImpact = type === 'DEPOSIT' ? cashAmount : -cashAmount;
-      state.settings.cash = roundMoney(num(state.settings.cash) + cashImpact);
-    }else if(type === 'DIVIDEND'){
-      if(!symbol || cashAmount <= 0) return toast('Dividend details needed','Enter symbol and dividend cash amount.','warn');
-      cashImpact = cashAmount;
-      state.settings.cash = roundMoney(num(state.settings.cash) + cashImpact);
-    }else if(type === 'BUY'){
-      if(!symbol || shares <= 0 || txPrice <= 0) return toast('Buy details needed','Enter symbol, shares and price.','warn');
-      const cost = shares * txPrice * fx(currency) + fees;
-      cashImpact = -cost;
-      state.settings.cash = roundMoney(num(state.settings.cash) + cashImpact);
-      applyBuyToHolding(symbol, shares, txPrice, currency, notes);
-    }else if(type === 'SELL'){
-      if(!symbol || shares <= 0 || txPrice <= 0) return toast('Sell details needed','Enter symbol, shares and price.','warn');
-      const proceeds = shares * txPrice * fx(currency) - fees;
-      cashImpact = proceeds;
-      realisedPL = applySellToHolding(symbol, shares, txPrice, currency, fees);
-      state.settings.cash = roundMoney(num(state.settings.cash) + cashImpact);
-    }
-
-    state.transactions.unshift({id:uid('tx'), type, date, symbol, currency, shares, price:txPrice, fees, cashImpact:roundMoney(cashImpact), realisedPL: realisedPL === null ? null : roundMoney(realisedPL), notes, createdAt:new Date().toISOString()});
-    saveState(); $('transactionForm').reset(); $('txDate').value = TODAY; $('txFees').value = 0; renderAll(); toast('Ledger updated', `${type} logged. Cash impact ${money(cashImpact)}.`, 'good');
-  }
-
-  function applyBuyToHolding(symbol, shares, buyPrice, currency, notes){
-    const idx = state.holdings.findIndex(h => h.symbol === symbol);
-    if(idx >= 0){
-      const h = state.holdings[idx];
-      const oldShares = num(h.shares);
-      const oldAvg = num(h.avgCost);
-      const newShares = roundShares(oldShares + shares);
-      const newAvg = newShares > 0 ? ((oldShares * oldAvg) + (shares * buyPrice)) / newShares : buyPrice;
-      state.holdings[idx] = {...h, shares:newShares, avgCost:newAvg, currentPrice:buyPrice, currency: h.currency || currency, notes: [h.notes, notes].filter(Boolean).join('\n'), updatedAt:new Date().toISOString()};
-    }else{
-      state.holdings.push({id:uid('hold'), symbol, name:'', sector:'', currency, shares, avgCost:buyPrice, currentPrice:buyPrice, stop:0, target:0, conviction:60, lastReview:TODAY, status:'active', thesis:'', notes: notes || 'Added from buy ledger.', updatedAt:new Date().toISOString()});
-    }
-  }
-
-  function applySellToHolding(symbol, shares, sellPrice, currency, fees){
-    const idx = state.holdings.findIndex(h => h.symbol === symbol);
-    if(idx < 0) return null;
-    const h = state.holdings[idx];
-    const sellShares = Math.min(shares, num(h.shares));
-    const realised = (sellPrice - num(h.avgCost)) * sellShares * fx(currency || h.currency) - num(fees);
-    const remaining = roundShares(num(h.shares) - sellShares);
-    if(remaining <= 0.0005){ state.holdings.splice(idx,1); }
-    else { state.holdings[idx] = {...h, shares:remaining, currentPrice:sellPrice, updatedAt:new Date().toISOString()}; }
-    return realised;
-  }
-
-  function applyPastedPrices(){
-    const lines = $('priceImport').value.split(/\n+/).map(x=>x.trim()).filter(Boolean);
-    let count = 0;
-    lines.forEach(line => {
-      const parts = line.split(/[,:=\t ]+/).map(x=>x.trim()).filter(Boolean);
-      if(parts.length < 2) return;
-      const symbol = cleanSymbol(parts[0]);
-      const p = num(parts[1], NaN);
-      if(!symbol || !Number.isFinite(p) || p <= 0) return;
-      state.holdings.forEach(h => { if(h.symbol === symbol){ h.currentPrice = p; h.updatedAt = new Date().toISOString(); count++; } });
-      state.radar.forEach(r => { if(r.symbol === symbol){ r.price = p; r.updatedAt = new Date().toISOString(); count++; } });
-    });
-    saveState(); renderAll(); toast('Prices applied', `${count} matching records updated.`, count ? 'good':'warn');
-  }
-
-  async function refreshQuotes(){
-    const key = (state.settings.finnhubKey || '').trim();
-    if(!key) return toast('Finnhub key needed','Add your Finnhub API key in Tools, then refresh quotes.','warn');
-    const symbols = [...new Set([...state.holdings.map(h=>h.symbol), ...state.radar.map(r=>r.symbol)].filter(Boolean))];
-    if(!symbols.length) return toast('No symbols','Add holdings or radar candidates first.','warn');
-    let updated = 0, failed = 0;
-    for(const symbol of symbols){
-      try{
-        const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(symbol)}&token=${encodeURIComponent(key)}`;
-        const res = await fetch(url);
-        if(!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        const p = num(data.c,0);
-        if(p <= 0) throw new Error('No quote');
-        state.holdings.forEach(h => { if(h.symbol === symbol){ h.currentPrice = p; h.updatedAt = new Date().toISOString(); updated++; } });
-        state.radar.forEach(r => { if(r.symbol === symbol){ r.price = p; r.updatedAt = new Date().toISOString(); updated++; } });
-        await new Promise(resolve => setTimeout(resolve, 140));
-      }catch(err){ failed++; console.warn(symbol, err); }
-    }
-    saveState(); renderAll(); toast('Quote refresh complete', `${updated} records updated. ${failed ? failed + ' symbols failed.' : 'No failures.'}`, failed ? 'warn':'good');
-  }
-
-  function importCsv(kind){
-    const text = $('csvImport').value.trim();
-    if(!text) return toast('CSV missing','Paste CSV text first.','warn');
-    const rows = parseCsv(text);
-    if(rows.length < 2) return toast('CSV too short','Include a header row and at least one data row.','warn');
-    const headers = rows[0].map(h => h.trim().toLowerCase());
-    let count = 0;
-    rows.slice(1).forEach(row => {
-      const obj = {};
-      headers.forEach((h,i)=>obj[h]=row[i] ?? '');
-      const symbol = cleanSymbol(obj.symbol);
-      if(!symbol) return;
-      if(kind === 'portfolio'){
-        const h = {id:uid('hold'), symbol, name:obj.name||'', sector:obj.sector||'', currency:(obj.currency||'USD').toUpperCase(), shares:roundShares(obj.shares), avgCost:num(obj.avgcost), currentPrice:num(obj.currentprice), stop:num(obj.stop), target:num(obj.target), conviction:clamp(obj.conviction||65,0,100), lastReview:TODAY, status:'active', thesis:obj.thesis||'', notes:obj.notes||'', updatedAt:new Date().toISOString()};
-        if(h.shares > 0 && h.avgCost > 0 && h.currentPrice > 0){ upsertBySymbol(state.holdings,h); count++; }
-      }else{
-        const r = {id:uid('radar'), symbol, name:obj.name||'', sector:obj.sector||'', currency:(obj.currency||'USD').toUpperCase(), price:num(obj.price), buyBelow:num(obj.buybelow), fairValue:num(obj.fairvalue), quality:clamp(obj.quality||50,0,100), trend:clamp(obj.trend||50,0,100), valuation:clamp(obj.valuation||50,0,100), risk:clamp(obj.risk||50,0,100), conviction:clamp(obj.conviction||50,0,100), notes:obj.notes||'', updatedAt:new Date().toISOString()};
-        upsertBySymbol(state.radar,r); count++;
-      }
-    });
-    saveState(); renderAll(); toast('CSV imported', `${count} ${kind} rows imported.`, count?'good':'warn');
-  }
-
-  function parseCsv(text){
-    const rows = []; let row = [], cell = '', inQuotes = false;
-    for(let i=0;i<text.length;i++){
-      const c = text[i], next = text[i+1];
-      if(c === '"' && inQuotes && next === '"'){ cell += '"'; i++; }
-      else if(c === '"'){ inQuotes = !inQuotes; }
-      else if(c === ',' && !inQuotes){ row.push(cell); cell=''; }
-      else if((c === '\n' || c === '\r') && !inQuotes){ if(c === '\r' && next === '\n') i++; row.push(cell); if(row.some(x=>String(x).trim()!=='')) rows.push(row); row=[]; cell=''; }
-      else cell += c;
-    }
-    row.push(cell); if(row.some(x=>String(x).trim()!=='')) rows.push(row);
-    return rows;
-  }
-
-  function upsertBySymbol(arr, item){
-    const idx = arr.findIndex(x => x.symbol === item.symbol);
-    if(idx >= 0) arr[idx] = {...arr[idx], ...item, id: arr[idx].id}; else arr.push(item);
-  }
-
-  function loadStarterRadar(){
-    const starter = [
-      ['AAPL','Apple','Technology'],['MSFT','Microsoft','Technology'],['NVDA','Nvidia','Semiconductors'],['GOOGL','Alphabet','Communication'],['AMZN','Amazon','Consumer/Cloud'],['META','Meta Platforms','Communication'],['BRK.B','Berkshire Hathaway','Financials'],['LLY','Eli Lilly','Healthcare'],['AVGO','Broadcom','Semiconductors'],['JPM','JPMorgan Chase','Financials'],['V','Visa','Payments'],['MA','Mastercard','Payments'],['COST','Costco','Consumer Defensive'],['ASML','ASML','Semiconductor Equipment'],['TSM','Taiwan Semiconductor','Semiconductors'],['UNH','UnitedHealth','Healthcare'],['PG','Procter & Gamble','Consumer Defensive'],['KO','Coca-Cola','Consumer Defensive'],['PEP','PepsiCo','Consumer Defensive'],['HD','Home Depot','Consumer'],['ADBE','Adobe','Software'],['CRM','Salesforce','Software'],['ORCL','Oracle','Software'],['AMD','Advanced Micro Devices','Semiconductors'],['NFLX','Netflix','Communication'],['DIS','Disney','Communication'],['NKE','Nike','Consumer'],['MCD','McDonald\'s','Consumer'],['SBUX','Starbucks','Consumer'],['SHOP','Shopify','Software']
-    ];
-    let count = 0;
-    starter.forEach(([symbol,name,sector]) => {
-      if(state.radar.some(r=>r.symbol===symbol) || state.holdings.some(h=>h.symbol===symbol)) return;
-      state.radar.push({id:uid('radar'), symbol, name, sector, currency:'USD', price:0, buyBelow:0, fairValue:0, quality:55, trend:50, valuation:50, risk:45, conviction:50, notes:'Starter universe placeholder. Add your own research, price, fair value and buy-below level before trusting the score.', updatedAt:new Date().toISOString()});
-      count++;
-    });
-    saveState(); renderAll(); toast('Starter universe loaded', `${count} candidates added. Score them before buying.`, 'good');
-  }
-
-  function migrateLegacyPositions(){
-    let legacy;
-    try{ legacy = JSON.parse(localStorage.getItem(LEGACY_POSITIONS_KEY) || '[]'); }catch(e){ legacy = []; }
-    if(!Array.isArray(legacy) || !legacy.length) return toast('No old positions found','I could not find old God Mode positions in this browser storage.','warn');
-    let count = 0;
-    legacy.forEach(p => {
-      const symbol = cleanSymbol(p.symbol);
-      if(!symbol) return;
-      const h = {id:uid('hold'), symbol, name:p.name||'', sector:p.sector||'', currency:'USD', shares:roundShares(p.qty || p.shares || 0), avgCost:num(p.entry || p.avgCost || 0), currentPrice:num(p.last || p.currentPrice || p.entry || 0), stop:num(p.stop || 0), target:num(p.target || 0), conviction:60, lastReview:TODAY, status:'active', thesis:'Imported from old God Mode storage. Re-check thesis, FX, stop and target.', notes:p.notes||'', updatedAt:new Date().toISOString()};
-      if(h.shares > 0 && h.avgCost > 0 && h.currentPrice > 0){ upsertBySymbol(state.holdings,h); count++; }
-    });
-    saveState(); renderAll(); toast('Legacy import complete', `${count} old positions imported. Please check every number.`, count?'good':'warn');
-  }
-
-  function buildReviewPack(){
-    const lines = [];
-    lines.push('LONG-TERM PORTFOLIO REVIEW PACK');
-    lines.push('Generated: ' + new Date().toLocaleString('en-GB'));
-    lines.push('Account currency: ' + state.settings.accountCurrency);
-    lines.push('Portfolio value: ' + money(portfolioTotal()) + ', cash: ' + money(state.settings.cash) + ', invested: ' + money(totalInvested()) + ', unrealised P/L: ' + money(totalInvested() - totalCost()));
-    lines.push('Rules: target allocation ' + pct(state.settings.targetAllocationPct) + ', max allocation ' + pct(state.settings.maxAllocationPct) + ', cash reserve ' + pct(state.settings.cashReservePct) + ', review every ' + state.settings.reviewCadenceDays + ' days.');
-    lines.push('');
-    lines.push('OWNED STOCKS');
-    if(!state.holdings.length) lines.push('None logged.');
-    state.holdings.forEach(h => {
-      const ev = evaluateHolding(h);
-      lines.push(`${h.symbol} | ${h.name || ''} | value ${money(valueGBP(h))} | shares ${fmt(h.shares,3)} | avg ${price(h.avgCost,h.currency)} | current ${price(h.currentPrice,h.currency)} | P/L ${money(plGBP(h))} (${pct(plPct(h))}) | allocation ${pct(allocationPct(h))} | score ${fmt(ev.score,0)} | action ${ev.label} | reason ${ev.reason} | thesis ${h.thesis || 'not set'} | notes ${h.notes || ''}`);
-    });
-    lines.push('');
-    lines.push('RADAR CANDIDATES');
-    if(!state.radar.length) lines.push('None logged.');
-    state.radar.slice().sort((a,b)=>radarScore(b)-radarScore(a)).forEach(r => {
-      const ev = evaluateRadar(r);
-      lines.push(`${r.symbol} | ${r.name || ''} | price ${r.price ? price(r.price,r.currency) : 'unset'} | buy below ${r.buyBelow ? price(r.buyBelow,r.currency) : 'unset'} | fair value ${r.fairValue ? price(r.fairValue,r.currency) : 'unset'} | score ${fmt(ev.score,0)} | action ${ev.label} | reason ${ev.reason} | notes ${r.notes || ''}`);
-    });
-    lines.push('');
-    lines.push('RECENT TRANSACTIONS');
-    state.transactions.slice(0,20).forEach(tx => lines.push(`${tx.date} | ${tx.type} | ${tx.symbol || ''} | shares ${tx.shares || ''} | price ${tx.price || ''} | cash impact ${money(tx.cashImpact || 0)} | realised ${tx.realisedPL === null || tx.realisedPL === undefined ? '' : money(tx.realisedPL)} | ${tx.notes || ''}`));
-    lines.push('');
-    lines.push('Please review: what should I sell, trim, hold, add to, or research next? Challenge my thesis and risk management.');
-    return lines.join('\n');
-  }
-
-  async function copyReviewPack(){
-    const text = buildReviewPack();
-    $('reviewPack').value = text;
-    try{ await navigator.clipboard.writeText(text); toast('Review pack copied','Paste it into ChatGPT for a portfolio review.', 'good'); }
-    catch(e){ toast('Copy blocked','The review pack is visible in the Home page text box. Select and copy it manually.', 'warn'); }
-  }
-
-  function exportData(){
-    const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'long-term-command-centre-backup-' + TODAY + '.json';
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
-    toast('Backup exported','Keep this JSON somewhere safe.', 'good');
-  }
-
-  function importDataFile(file){
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try{
-        const imported = JSON.parse(reader.result);
-        const base = defaults();
-        state = {...base, ...imported, settings:{...base.settings, ...(imported.settings || {})}, holdings:Array.isArray(imported.holdings)?imported.holdings:[], radar:Array.isArray(imported.radar)?imported.radar:[], transactions:Array.isArray(imported.transactions)?imported.transactions:[]};
-        saveState(); renderAll(); toast('Backup imported','Data restored into this browser.', 'good');
-      }catch(e){ toast('Import failed','That file was not valid JSON for this app.', 'bad'); }
-    };
-    reader.readAsText(file);
-  }
-
-  function loadDemo(){
-    if(!confirm('Load demo data? This will add example holdings and radar candidates to your current data.')) return;
-    state.settings.cash = state.settings.cash || 1500;
-    [
-      {symbol:'AAPL',name:'Apple',sector:'Technology',currency:'USD',shares:3,avgCost:180,currentPrice:193,stop:158,target:230,conviction:78,thesis:'High-quality cash generator. Hold while services growth and margins remain intact.',notes:'Demo data only.'},
-      {symbol:'MSFT',name:'Microsoft',sector:'Technology',currency:'USD',shares:2,avgCost:390,currentPrice:430,stop:340,target:510,conviction:82,thesis:'Cloud and AI compounder. Watch valuation and Azure growth.',notes:'Demo data only.'},
-      {symbol:'TSLA',name:'Tesla',sector:'Consumer/Auto',currency:'USD',shares:4,avgCost:230,currentPrice:190,stop:185,target:280,conviction:48,thesis:'Volatile growth. Needs proof margins and demand are stabilising.',notes:'Demo data only.'}
-    ].forEach(x => upsertBySymbol(state.holdings,{id:uid('hold'),lastReview:TODAY,status:'active',updatedAt:new Date().toISOString(),...x}));
-    [
-      {symbol:'NVDA',name:'Nvidia',sector:'Semiconductors',currency:'USD',price:125,buyBelow:118,fairValue:150,quality:86,trend:82,valuation:62,risk:45,conviction:78,notes:'Demo candidate. Check valuation and earnings.'},
-      {symbol:'COST',name:'Costco',sector:'Consumer Defensive',currency:'USD',price:880,buyBelow:820,fairValue:930,quality:90,trend:68,valuation:45,risk:25,conviction:72,notes:'Demo candidate. Quality high, price discipline needed.'}
-    ].forEach(x => upsertBySymbol(state.radar,{id:uid('radar'),updatedAt:new Date().toISOString(),...x}));
-    saveState(); renderAll(); toast('Demo loaded','Example data added. Replace with your real numbers before using it.', 'good');
-  }
-
-  function saveSettings(e){
-    e.preventDefault();
-    state.settings.accountCurrency = $('setCurrency').value;
-    state.settings.cash = roundMoney($('setCash').value);
-    state.settings.usdFx = num($('setUsdFx').value, 1);
-    state.settings.eurFx = num($('setEurFx').value, 1);
-    state.settings.targetAllocationPct = num($('setTargetAllocation').value, 8);
-    state.settings.maxAllocationPct = num($('setMaxAllocation').value, 18);
-    state.settings.cashReservePct = num($('setCashReserve').value, 5);
-    state.settings.reviewCadenceDays = num($('setReviewDays').value, 30);
-    state.settings.minAddScore = num($('setMinAddScore').value, 72);
-    state.settings.minBuyScore = num($('setMinBuyScore').value, 76);
-    state.settings.minUpsidePct = num($('setMinUpside').value, 8);
-    state.settings.defaultOrderCap = num($('setOrderCap').value, 250);
-    state.settings.finnhubKey = $('setFinnhub').value.trim();
-    saveState(); renderAll(); toast('Rules saved','The decision engine has been recalculated.', 'good');
-  }
-
-  function showPage(page){
-    qsa('.page').forEach(el => el.classList.toggle('active', el.id === 'page-' + page));
-    qsa('.nav button').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
-    document.body.dataset.page = page;
-    if(page === 'dashboard') $('reviewPack').value = buildReviewPack();
-  }
-
-  function toast(title,msg,type='blue'){
-    const el = $('toast');
-    el.style.borderLeftColor = type === 'good' ? 'var(--good)' : type === 'warn' ? 'var(--warn)' : type === 'bad' ? 'var(--bad)' : 'var(--blue)';
-    el.innerHTML = `<b>${escapeHTML(title)}</b><div class="tiny">${escapeHTML(msg)}</div>`;
-    el.classList.add('show');
-    clearTimeout(toast._timer);
-    toast._timer = setTimeout(()=>el.classList.remove('show'), 3600);
-  }
-
-  function planAdd(h){
-    const ev = evaluateHolding(h);
-    const text = exactMoveForHolding(h, ev);
-    navigator.clipboard?.writeText(text).catch(()=>{});
-    toast('Add plan', text, ev.orderGBP ? 'good':'warn');
-  }
-
-  function promoteRadar(r){
-    fillHoldingForm({id:'', symbol:r.symbol, name:r.name||'', sector:r.sector||'', currency:r.currency||'USD', shares:0, avgCost:r.price||'', currentPrice:r.price||'', stop:0, target:r.fairValue||'', conviction:r.conviction||60, lastReview:TODAY, status:'active', thesis:'Promoted from radar. Add the final thesis before buying.', notes:r.notes||''});
-    toast('Candidate moved to owned form','Enter the actual shares after you buy, or use the ledger to log the trade.', 'good');
-  }
-
-  function setupEvents(){
-    qsa('.nav button').forEach(btn => btn.addEventListener('click', () => showPage(btn.dataset.page)));
-    document.body.addEventListener('click', e => {
-      const btn = e.target.closest('button'); if(!btn) return;
-      if(btn.dataset.pageJump) showPage(btn.dataset.pageJump);
-      if(btn.hasAttribute('data-copy-review')) copyReviewPack();
-      if(btn.dataset.holdingEdit){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingEdit); if(h) fillHoldingForm(h); }
-      if(btn.dataset.holdingPrice){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingPrice); if(h){ const p = prompt('New current price for ' + h.symbol + ' in ' + (h.currency||'USD'), h.currentPrice || ''); if(num(p)>0){ h.currentPrice = num(p); h.updatedAt = new Date().toISOString(); saveState(); renderAll(); } } }
-      if(btn.dataset.holdingReviewed){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingReviewed); if(h){ h.lastReview = TODAY; h.status = h.status === 'thesis-broken' ? 'watch-close' : h.status; saveState(); renderAll(); toast('Review updated', `${h.symbol} marked reviewed today.`, 'good'); } }
-      if(btn.dataset.holdingThesis){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingThesis); if(h){ h.status = h.status === 'thesis-broken' ? 'active' : 'thesis-broken'; saveState(); renderAll(); toast('Thesis status changed', `${h.symbol}: ${h.status}.`, h.status==='thesis-broken'?'bad':'good'); } }
-      if(btn.dataset.holdingPlanbuy){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingPlanbuy); if(h) planAdd(h); }
-      if(btn.dataset.holdingRemove){ const h = state.holdings.find(x=>x.id===btn.dataset.holdingRemove); if(h && confirm('Remove ' + h.symbol + ' from owned stocks? This does not change the transaction ledger.')){ state.holdings = state.holdings.filter(x=>x.id!==h.id); saveState(); renderAll(); toast('Removed', h.symbol + ' removed from owned stocks.', 'warn'); } }
-      if(btn.dataset.radarEdit){ const r = state.radar.find(x=>x.id===btn.dataset.radarEdit); if(r) fillRadarForm(r); }
-      if(btn.dataset.radarPrice){ const r = state.radar.find(x=>x.id===btn.dataset.radarPrice); if(r){ const p = prompt('New current price for ' + r.symbol + ' in ' + (r.currency||'USD'), r.price || ''); if(num(p)>0){ r.price = num(p); r.updatedAt = new Date().toISOString(); saveState(); renderAll(); } } }
-      if(btn.dataset.radarPromote){ const r = state.radar.find(x=>x.id===btn.dataset.radarPromote); if(r) promoteRadar(r); }
-      if(btn.dataset.radarRemove){ const r = state.radar.find(x=>x.id===btn.dataset.radarRemove); if(r && confirm('Remove ' + r.symbol + ' from radar?')){ state.radar = state.radar.filter(x=>x.id!==r.id); saveState(); renderAll(); toast('Removed', r.symbol + ' removed from radar.', 'warn'); } }
-      if(btn.dataset.txRemove){ const tx = state.transactions.find(x=>x.id===btn.dataset.txRemove); if(tx && confirm('Delete this transaction row? This will not reverse portfolio changes.')){ state.transactions = state.transactions.filter(x=>x.id!==tx.id); saveState(); renderAll(); toast('Transaction deleted','Portfolio totals were not reversed. Adjust manually if needed.', 'warn'); } }
-    });
-    $('holdingForm').addEventListener('submit', saveHoldingFromForm);
-    $('clearHoldingForm').addEventListener('click', clearHoldingForm);
-    $('radarForm').addEventListener('submit', saveRadarFromForm);
-    $('clearRadarForm').addEventListener('click', clearRadarForm);
-    $('transactionForm').addEventListener('submit', logTransaction);
-    $('settingsForm').addEventListener('submit', saveSettings);
-    $('applyPrices').addEventListener('click', applyPastedPrices);
-    $('refreshQuotes').addEventListener('click', refreshQuotes);
-    $('importPortfolioCsv').addEventListener('click', () => importCsv('portfolio'));
-    $('importRadarCsv').addEventListener('click', () => importCsv('radar'));
-    $('loadStarterRadar').addEventListener('click', loadStarterRadar);
-    $('exportData').addEventListener('click', exportData);
-    $('importDataButton').addEventListener('click', () => $('importDataFile').click());
-    $('importDataFile').addEventListener('change', e => importDataFile(e.target.files[0]));
-    $('migrateLegacy').addEventListener('click', migrateLegacyPositions);
-    $('loadDemo').addEventListener('click', loadDemo);
-    $('resetAll').addEventListener('click', () => { if(confirm('Delete all redesigned app data?')){ state = defaults(); saveState(); renderAll(); toast('Reset complete','The redesigned app is empty again.', 'warn'); } });
-    $('txDate').value = TODAY;
-    $('holdingLastReview').value = TODAY;
-  }
-
-  setupEvents();
-  clearHoldingForm();
-  clearRadarForm();
-  renderAll();
+(function(){
+'use strict';
+const LS='long-money-engine-v200';
+const now=()=>Date.now();
+const $=id=>document.getElementById(id);
+const $$=sel=>Array.from(document.querySelectorAll(sel));
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const safeNum=(v,d=0)=>Number.isFinite(+v)?+v:d;
+const cleanSym=s=>String(s||'').toUpperCase().trim().replace(/\s+/g,'');
+const uniq=arr=>[...new Set(arr.map(cleanSym).filter(Boolean))];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isoDate=(d=new Date())=>d.toISOString().slice(0,10);
+const daysAgo=(days)=>{const d=new Date();d.setDate(d.getDate()-days);return d.toISOString().slice(0,10)};
+const epoch=(dateStr)=>Math.floor(new Date(dateStr+'T00:00:00Z').getTime()/1000);
+const DEFAULT_RADAR=['SPY','QQQ','VOO','SCHD','AAPL','MSFT','NVDA','GOOGL','AMZN','META','AVGO','TSM','ASML','AMD','CRM','ADBE','NOW','PANW','CRWD','PLTR','NFLX','COST','V','MA','JPM','BRK.B','UNH','LLY','NVO','LIN','XOM','CAT','GE','RTX','SHOP','UBER','INTU','ORCL','TXN','QCOM','MU','SNOW','DDOG','NET'];
+const DEFAULT_STATE={
+  keys:{finnhub:'',massive:''},
+  settings:{autoOnOpen:'yes',useFinnhubWS:'yes',useMassiveSnapshot:'yes',cashAvailable:0,gbpUsd:1.27,reservePct:8,maxPositionPct:18,historyYears:3,maxSymbols:60,pollSeconds:60,targetPositions:14,universe:DEFAULT_RADAR.join(', ')},
+  holdings:[],radar:DEFAULT_RADAR.map(sym=>({symbol:sym,theme:'starter universe',priority:'normal',note:''})),quotes:{},history:{},fundamentals:{},analysis:{},events:[],transactions:[],lastRun:0,forceHistory:false
+};
+let state=load();
+let busy=false,live=false,pollTimer=null,wsFinnhub=null,renderThrottle=null;
+function load(){try{const raw=JSON.parse(localStorage.getItem(LS)||'null');return merge(DEFAULT_STATE,raw||{});}catch(e){return JSON.parse(JSON.stringify(DEFAULT_STATE));}}
+function merge(base,patch){if(Array.isArray(base))return Array.isArray(patch)?patch:base;const out=Object.assign({},base);Object.keys(patch||{}).forEach(k=>{out[k]=(base&&typeof base[k]==='object'&&!Array.isArray(base[k])&&typeof patch[k]==='object'&&!Array.isArray(patch[k]))?merge(base[k],patch[k]):patch[k]});return out;}
+function save(){localStorage.setItem(LS,JSON.stringify(state));}
+function toast(title,msg,type='info'){const el=$('toast');el.className='toast show';el.style.borderLeftColor=type==='bad'?'var(--bad)':type==='warn'?'var(--warn)':type==='good'?'var(--good)':'var(--blue)';el.innerHTML='<b>'+esc(title)+'</b><div class="tiny">'+esc(msg||'')+'</div>';clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),4600);}
+function log(msg,type=''){state.events.unshift({t:now(),msg,type});state.events=state.events.slice(0,80);save();renderLog();}
+function renderLog(){const box=$('runLog');if(!box)return;box.innerHTML=(state.events||[]).slice(0,25).map(e=>'<div class="logLine"><span class="mono">'+new Date(e.t).toLocaleTimeString()+'</span> · '+esc(e.msg)+'</div>').join('')||'<div class="logLine">No activity yet.</div>';}
+function moneyGBP(v){v=safeNum(v,0);return new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:Math.abs(v)>=1000?0:2}).format(v)}
+function moneyUSD(v){v=safeNum(v,0);return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:Math.abs(v)>=1000?0:2}).format(v)}
+function pct(v,d=1){return Number.isFinite(+v)?((+v)>=0?'+':'')+(+v).toFixed(d)+'%':'—'}
+function priceAge(ts){if(!ts)return 'not refreshed';const s=Math.round((now()-ts)/1000);if(s<75)return s+'s ago';const m=Math.round(s/60);if(m<90)return m+'m ago';const h=Math.round(m/60);if(h<48)return h+'h ago';return Math.round(h/24)+'d ago';}
+function quoteSymbol(x){return cleanSym((x&&x.quoteSymbol)||x.symbol||x.sym)}
+function settingsFromUI(){const s=state.settings;['autoOnOpen','useFinnhubWS','useMassiveSnapshot'].forEach(id=>{if($(id))s[id]=$(id).value});['cashAvailable','gbpUsd','reservePct','maxPositionPct','historyYears','maxSymbols','pollSeconds','targetPositions'].forEach(id=>{if($(id))s[id]=safeNum($(id).value,s[id])});if($('universeSymbols'))s.universe=$('universeSymbols').value;state.keys.finnhub=$('finnhubKey').value.trim();state.keys.massive=$('massiveKey').value.trim();save();}
+function syncUI(){const s=state.settings,k=state.keys;$('finnhubKey').value=k.finnhub||'';$('massiveKey').value=k.massive||'';['cashAvailable','gbpUsd','reservePct','maxPositionPct','historyYears','maxSymbols','pollSeconds','targetPositions','autoOnOpen','useFinnhubWS','useMassiveSnapshot','universeSymbols'].forEach(id=>{if($(id))$(id).value=id==='universeSymbols'?(s.universe||''):(s[id]??'')});}
+function universeSymbols(){const held=state.holdings.map(quoteSymbol);const radar=(state.radar||[]).map(x=>x.symbol);const manual=parseSymbols(state.settings.universe);return uniq([...held,...radar,...manual,'SPY','QQQ']).slice(0,Math.max(5,safeNum(state.settings.maxSymbols,60)));}
+function parseSymbols(text){return String(text||'').split(/[\s,;\n]+/).map(cleanSym).filter(Boolean)}
+function holdingValueUSD(h){const q=state.quotes[quoteSymbol(h)]||{};const p=safeNum(q.price, safeNum(h.avgCost,0));return safeNum(h.qty,0)*p}
+function holdingCostUSD(h){return safeNum(h.qty,0)*safeNum(h.avgCost,0)}
+function totalValueUSD(){return state.holdings.reduce((a,h)=>a+holdingValueUSD(h),0)+safeNum(state.settings.cashAvailable,0)*safeNum(state.settings.gbpUsd,1.27)}
+function portfolioInvestedUSD(){return state.holdings.reduce((a,h)=>a+holdingValueUSD(h),0)}
+async function fetchJSON(url,timeout=30000){const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeout);try{const r=await fetch(url,{cache:'no-store',signal:ac.signal});let data=null;const txt=await r.text();try{data=txt?JSON.parse(txt):null}catch(e){data=txt}if(!r.ok){const msg=(data&&(data.error||data.message||data['Error Message']))||('HTTP '+r.status);throw new Error(msg)}if(data&&typeof data==='object'&&!Array.isArray(data)&&(data.error||data['Error Message']))throw new Error(data.error||data['Error Message']);return data;}finally{clearTimeout(t)}}
+async function fetchFinnhubQuote(sym){const token=state.keys.finnhub;if(!token)throw new Error('Finnhub key missing');const d=await fetchJSON('https://finnhub.io/api/v1/quote?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(token),18000);const price=safeNum(d.c,NaN);if(!Number.isFinite(price)||price<=0)throw new Error('Finnhub returned no current price');return {symbol:sym,price,change:safeNum(d.d,0),changePct:safeNum(d.dp,0),open:safeNum(d.o,price),high:safeNum(d.h,price),low:safeNum(d.l,price),prev:safeNum(d.pc,price),provider:'Finnhub quote',ts:now()};}
+async function fetchMassiveSnapshot(sym){if(state.settings.useMassiveSnapshot!=='yes')throw new Error('Massive snapshot fallback disabled');const key=state.keys.massive;if(!key)throw new Error('Massive key missing');const d=await fetchJSON('https://api.massive.com/v2/snapshot/locale/us/markets/stocks/tickers/'+encodeURIComponent(sym)+'?apiKey='+encodeURIComponent(key),22000);const t=d.ticker||d.results||{};const price=safeNum(t.lastTrade&&t.lastTrade.p, safeNum(t.min&&t.min.c, safeNum(t.day&&t.day.c, safeNum(t.prevDay&&t.prevDay.c,NaN))));if(!Number.isFinite(price)||price<=0)throw new Error('Massive snapshot returned no price');const prev=safeNum(t.prevDay&&t.prevDay.c, price);return {symbol:sym,price,change:price-prev,changePct:prev?((price-prev)/prev*100):0,open:safeNum(t.day&&t.day.o,price),high:safeNum(t.day&&t.day.h,price),low:safeNum(t.day&&t.day.l,price),prev,provider:'Massive snapshot',ts:now()};}
+async function fetchQuote(sym){const attempts=[sym];if(sym.endsWith('.L'))attempts.push(sym.replace(/\.L$/,''));let errs=[];for(const s of attempts){if(state.keys.finnhub){try{return await fetchFinnhubQuote(s)}catch(e){errs.push('Finnhub '+s+': '+e.message)}}if(state.keys.massive&&state.settings.useMassiveSnapshot==='yes'){try{return await fetchMassiveSnapshot(s)}catch(e){errs.push('Massive '+s+': '+e.message)}}}throw new Error(errs.join(' | ')||'No quote provider available');}
+async function fetchMassiveHistory(sym){const key=state.keys.massive;if(!key)throw new Error('Massive key missing');const years=clamp(safeNum(state.settings.historyYears,3),1,10);const from=daysAgo(Math.round(years*365.25)),to=isoDate();const url='https://api.massive.com/v2/aggs/ticker/'+encodeURIComponent(sym)+'/range/1/day/'+from+'/'+to+'?adjusted=true&sort=asc&limit=50000&apiKey='+encodeURIComponent(key);const d=await fetchJSON(url,32000);if(d.status&&String(d.status).toUpperCase()==='ERROR')throw new Error(d.error||d.message||'Massive error');const vals=d.results||[];if(!Array.isArray(vals)||!vals.length)throw new Error('No daily bars returned');return vals.map(v=>({date:new Date(+v.t).toISOString().slice(0,10),o:+v.o,h:+v.h,l:+v.l,c:+v.c,v:+(v.v||0)})).filter(b=>b.date&&isFinite(b.c)&&isFinite(b.o)&&isFinite(b.h)&&isFinite(b.l)).sort((a,b)=>a.date.localeCompare(b.date));}
+async function fetchFinnhubHistory(sym){const token=state.keys.finnhub;if(!token)throw new Error('Finnhub key missing');const years=clamp(safeNum(state.settings.historyYears,3),1,10);const from=epoch(daysAgo(Math.round(years*365.25))),to=Math.floor(Date.now()/1000);const d=await fetchJSON('https://finnhub.io/api/v1/stock/candle?symbol='+encodeURIComponent(sym)+'&resolution=D&from='+from+'&to='+to+'&token='+encodeURIComponent(token),32000);if(d.s!=='ok'||!Array.isArray(d.t)||!d.t.length)throw new Error(d.s==='no_data'?'No candle data':'No daily candles returned');return d.t.map((t,i)=>({date:new Date(t*1000).toISOString().slice(0,10),o:+d.o[i],h:+d.h[i],l:+d.l[i],c:+d.c[i],v:+(d.v?d.v[i]:0)})).filter(b=>b.date&&isFinite(b.c)&&isFinite(b.o)&&isFinite(b.h)&&isFinite(b.l)).sort((a,b)=>a.date.localeCompare(b.date));}
+function historyFresh(sym){const h=state.history[sym];if(!h||!Array.isArray(h.bars)||h.bars.length<80)return false;if(state.forceHistory)return false;return now()-safeNum(h.fetchedAt,0)<18*60*60*1000;}
+async function fetchHistory(sym,force=false){if(!force&&historyFresh(sym))return state.history[sym];let errs=[];if(state.keys.massive){try{const bars=await fetchMassiveHistory(sym);state.history[sym]={symbol:sym,bars,provider:'Massive daily OHLC',fetchedAt:now()};save();return state.history[sym];}catch(e){errs.push('Massive: '+e.message)}}if(state.keys.finnhub){try{const bars=await fetchFinnhubHistory(sym);state.history[sym]={symbol:sym,bars,provider:'Finnhub candles',fetchedAt:now()};save();return state.history[sym];}catch(e){errs.push('Finnhub candles: '+e.message)}}throw new Error(errs.join(' | ')||'No history provider available');}
+async function fetchFinnhubFundamentals(sym,force=false){const token=state.keys.finnhub;if(!token)throw new Error('Finnhub key missing');const old=state.fundamentals[sym];if(!force&&old&&now()-safeNum(old.fetchedAt,0)<7*24*60*60*1000)return old;const base='https://finnhub.io/api/v1/';const urls={profile:base+'stock/profile2?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(token),metric:base+'stock/metric?symbol='+encodeURIComponent(sym)+'&metric=all&token='+encodeURIComponent(token),recommendation:base+'stock/recommendation?symbol='+encodeURIComponent(sym)+'&token='+encodeURIComponent(token)};const out={symbol:sym,fetchedAt:now(),provider:'Finnhub fundamentals'};const res=await Promise.allSettled(Object.keys(urls).map(k=>fetchJSON(urls[k],22000).then(v=>[k,v])));res.forEach(r=>{if(r.status==='fulfilled')out[r.value[0]]=r.value[1]});state.fundamentals[sym]=out;save();return out;}
+async function fetchEarningsCalendar(){const token=state.keys.finnhub;if(!token)return {};try{const to=daysAgo(-45);const d=await fetchJSON('https://finnhub.io/api/v1/calendar/earnings?from='+isoDate()+'&to='+to+'&token='+encodeURIComponent(token),22000);const map={};(d.earningsCalendar||[]).forEach(e=>{if(e.symbol)map[cleanSym(e.symbol)]={date:e.date,hour:e.hour||''}});return map;}catch(e){log('Earnings calendar unavailable: '+e.message,'warn');return {};}}
+function sma(arr,n){if(!arr||arr.length<n)return null;return arr.slice(-n).reduce((a,b)=>a+b,0)/n}
+function changeSince(arr,n,price){if(!arr||arr.length<n+1||!price)return null;const old=arr[arr.length-1-n];return old?((price/old)-1)*100:null}
+function stdev(values){if(!values.length)return null;const m=values.reduce((a,b)=>a+b,0)/values.length;const v=values.reduce((a,b)=>a+(b-m)*(b-m),0)/values.length;return Math.sqrt(v)}
+function maxDrawdown(closes){let peak=-Infinity,mdd=0;for(const c of closes){if(c>peak)peak=c;if(peak>0)mdd=Math.min(mdd,(c/peak-1)*100)}return mdd}
+function rsi(closes,n=14){if(!closes||closes.length<n+1)return null;let gains=0,losses=0;const a=closes.slice(-n-1);for(let i=1;i<a.length;i++){const d=a[i]-a[i-1];if(d>=0)gains+=d;else losses-=d}if(losses===0)return 100;const rs=gains/losses;return 100-(100/(1+rs))}
+function pickMetric(m,names){for(const n of names){const v=m&&m[n];if(Number.isFinite(+v))return +v}return null}
+function scoreFromRange(v,low,good,high,invert=false){if(v==null||!Number.isFinite(+v))return 50;v=+v;let s;if(!invert){if(v<=low)s=20;else if(v>=good&&v<=high)s=100;else if(v>high)s=Math.max(15,100-(v-high)*2);else s=20+(v-low)/(good-low)*80;}else{if(v<=low)s=100;else if(v>=high)s=15;else s=100-(v-low)/(high-low)*85;}return clamp(s,0,100)}
+function analyseSymbol(sym){sym=cleanSym(sym);const h=state.history[sym];const bars=h&&Array.isArray(h.bars)?h.bars:[];const q=state.quotes[sym]||{};const f=state.fundamentals[sym]||{};if(bars.length<80&&!q.price){return {symbol:sym,score:0,ready:false,decision:'NEEDS DATA',class:'warn',reasons:['No usable quote or history yet.'],metrics:{}}}
+const closes=bars.map(b=>+b.c).filter(Number.isFinite);const lastClose=closes[closes.length-1]||0;const price=safeNum(q.price,lastClose);const sma20=sma(closes,20),sma50=sma(closes,50),sma200=sma(closes,200);const high52=Math.max(...closes.slice(-252),price);const low52=Math.min(...closes.slice(-252),price);const dd=high52?((price/high52)-1)*100:0;const ret1=changeSince(closes,21,price),ret3=changeSince(closes,63,price),ret6=changeSince(closes,126,price),ret12=changeSince(closes,252,price);const daily=[];for(let i=Math.max(1,closes.length-126);i<closes.length;i++){if(closes[i-1])daily.push((closes[i]/closes[i-1])-1)}const vol=(stdev(daily)||0)*Math.sqrt(252)*100;const mdd=maxDrawdown(closes.slice(-252));const rv=rsi(closes,14);
+const metric=(f.metric&&f.metric.metric)||f.metric||{};const pe=pickMetric(metric,['peTTM','peNormalizedAnnual','peBasicExclExtraTTM','forwardPE']);const ps=pickMetric(metric,['psTTM','psAnnual']);const gross=pickMetric(metric,['grossMarginTTM','grossMarginAnnual']);const op=pickMetric(metric,['operatingMarginTTM','operatingMarginAnnual']);const net=pickMetric(metric,['netProfitMarginTTM','netProfitMarginAnnual']);const roe=pickMetric(metric,['roeTTM','roeAnnual']);const revGrowth=pickMetric(metric,['revenueGrowthTTMYoy','revenueGrowth5Y','revenueGrowth3Y']);const epsGrowth=pickMetric(metric,['epsGrowthTTMYoy','epsGrowth5Y','epsGrowth3Y']);const beta=pickMetric(metric,['beta']);
+let trend=0;const reasons=[];if(price&&sma200){trend+=price>sma200?24:3;reasons.push(price>sma200?'above 200-day trend':'below 200-day trend')}else trend+=12;if(sma50&&sma200){trend+=sma50>sma200?18:4;if(sma50>sma200)reasons.push('50-day trend above 200-day')}else trend+=8;if(ret3!=null){trend+=ret3>0?16:4;if(ret3>0)reasons.push('positive 3-month momentum')}else trend+=8;if(ret6!=null){trend+=ret6>0?16:4;if(ret6>0)reasons.push('positive 6-month momentum')}else trend+=8;if(ret12!=null){trend+=ret12>0?12:4}else trend+=6;if(dd>-12)trend+=14;else if(dd>-25)trend+=8;else trend+=2;trend=clamp(trend,0,100);
+let quality=50;if(gross!=null)quality+=gross>50?12:gross>30?6:-4;if(op!=null)quality+=op>20?12:op>10?6:-6;if(net!=null)quality+=net>15?10:net>5?4:-5;if(roe!=null)quality+=roe>20?10:roe>10?5:-4;if(revGrowth!=null)quality+=revGrowth>15?8:revGrowth>5?4:revGrowth<0?-6:0;if(epsGrowth!=null)quality+=epsGrowth>15?8:epsGrowth>5?4:epsGrowth<0?-6:0;quality=clamp(quality,0,100);if(quality>=65)reasons.push('fundamental quality looks supportive');
+let value=50;if(pe!=null)value=scoreFromRange(pe,5,18,35,true);if(ps!=null&&pe==null)value=scoreFromRange(ps,1,4,12,true);if(value>=65)reasons.push('valuation not stretched on available metrics');if(value<35)reasons.push('valuation looks stretched');
+let risk=100-scoreFromRange(vol,15,25,60,false);risk+=dd>-15?15:dd<-35?-15:0;if(beta!=null)risk+=beta<1.2?8:beta>1.8?-8:0;risk=clamp(risk,0,100);if(risk<45)reasons.push('higher volatility/drawdown risk');
+let analyst=50;const rec=Array.isArray(f.recommendation)&&f.recommendation.length?f.recommendation[0]:null;if(rec){const buy=safeNum(rec.buy,0)+safeNum(rec.strongBuy,0),sell=safeNum(rec.sell,0)+safeNum(rec.strongSell,0),hold=safeNum(rec.hold,0);const total=buy+sell+hold;if(total>0)analyst=clamp(50+(buy-sell)/total*45,5,95)}
+const score=clamp(Math.round(trend*.38+quality*.27+value*.15+risk*.14+analyst*.06),0,100);const overextended=sma50&&price/sma50>1.16;const belowLong=sma200&&price<sma200;let decision='WATCH',cls='cyan';if(!bars.length||bars.length<80){decision='QUOTE ONLY';cls='warn'}else if(score>=78&&trend>=68&&!overextended){decision='BUY / ADD CANDIDATE';cls='good'}else if(score>=70&&overextended){decision='GOOD, WAIT PULLBACK';cls='warn'}else if(score>=62){decision='HOLD / WATCH';cls='cyan'}else if(score>=45){decision='REVIEW';cls='warn'}else{decision='AVOID / REDUCE';cls='bad'}
+return {symbol:sym,ready:true,score,decision,class:cls,reasons:reasons.slice(0,5),price,sma20,sma50,sma200,high52,low52,dd,ret1,ret3,ret6,ret12,vol,mdd,rsi:rv,trend,quality,value,risk,analyst,pe,ps,gross,op,net,roe,revGrowth,epsGrowth,beta,provider:{quote:q.provider,history:h&&h.provider,fundamentals:f&&f.provider},quoteTs:q.ts,historyTs:h&&h.fetchedAt};}
+function buildRecommendations(){const total=totalValueUSD();const invested=portfolioInvestedUSD();const cashUSD=safeNum(state.settings.cashAvailable,0)*safeNum(state.settings.gbpUsd,1.27);const reserveUSD=total*safeNum(state.settings.reservePct,8)/100;const usableCash=Math.max(0,cashUSD-reserveUSD);const targetPositions=Math.max(1,safeNum(state.settings.targetPositions,14));const defaultTarget=100/targetPositions;const recs=[];const heldSyms=new Set(state.holdings.map(h=>quoteSymbol(h)));
+state.holdings.forEach(h=>{const sym=quoteSymbol(h);const a=state.analysis[sym]||analyseSymbol(sym);const val=holdingValueUSD(h);const cost=holdingCostUSD(h);const weight=total?val/total*100:0;const target=safeNum(h.targetWeight,0)||defaultTarget;let action='HOLD',cls='cyan',priority=40,amountUSD=0,reason=[];const stop=safeNum(h.stop,0);if(stop&&a.price&&a.price<=stop){action='SELL / EXIT';cls='bad';priority=98;amountUSD=val;reason.push('Price is through your invalidation/stop.');}else if(a.score<40&&a.trend<45&&a.sma200&&a.price<a.sma200){action='SELL / EXIT';cls='bad';priority=94;amountUSD=val;reason.push('Weak score and below long-term trend.');}else if(weight>safeNum(state.settings.maxPositionPct,18)){action='TRIM';cls='warn';priority=88;amountUSD=Math.max(0,val-total*safeNum(state.settings.maxPositionPct,18)/100);reason.push('Position is above max holding limit.');}else if(a.score<52||a.trend<48){action='REDUCE / REVIEW';cls='warn';priority=76;amountUSD=val*.25;reason.push('Evidence has weakened; do not add until it improves.');}else if(a.score>=75&&a.trend>=65&&usableCash>0&&weight<target*.88&&!(a.sma50&&a.price/a.sma50>1.16)){action='ADD MORE';cls='good';priority=82;amountUSD=Math.min(usableCash,Math.max(0,total*target/100-val));reason.push('Strong evidence and below target allocation.');}else if(a.score>=68){action='HOLD';cls='cyan';priority=48;reason.push('Evidence is acceptable; no urgent change.');}else{action='REVIEW';cls='warn';priority=55;reason.push('Mixed evidence. Check thesis before adding.');}
+if(cost>0&&a.price)reason.push('Open P/L '+pct((val/cost-1)*100)+'.');if(a.reasons&&a.reasons.length)reason.push(...a.reasons.slice(0,2));recs.push({type:'owned',symbol:sym,name:h.name||sym,action,cls,priority,amountUSD,qty:a.price?amountUSD/a.price:0,reason,score:a.score,price:a.price,weight,target,holding:h});});
+const radar=(state.radar||[]).map(x=>cleanSym(x.symbol)).filter(sym=>!heldSyms.has(sym));radar.forEach(sym=>{const a=state.analysis[sym]||analyseSymbol(sym);if(!a.ready)return;let action='WAIT',cls='cyan',priority=25,amountUSD=0,reason=[];if(a.score>=80&&a.trend>=70&&!(a.sma50&&a.price/a.sma50>1.16)&&usableCash>0){action='BUY CANDIDATE';cls='good';priority=72;amountUSD=Math.min(usableCash/(Math.max(1,Math.min(3,radar.length))),total*defaultTarget/100);reason.push('High long-term score and trend is not obviously overextended.');}else if(a.score>=72){action='WATCH ENTRY';cls='warn';priority=45;reason.push(a.sma50&&a.price/a.sma50>1.16?'Good stock, price is stretched above 50-day trend.':'Good enough to monitor, not a clean buy yet.');}else if(a.score<45){action='IGNORE';cls='bad';priority=12;reason.push('Weak evidence compared with alternatives.');}else{reason.push('Needs better trend, value or quality evidence.');}
+if(a.reasons&&a.reasons.length)reason.push(...a.reasons.slice(0,2));recs.push({type:'radar',symbol:sym,name:sym,action,cls,priority,amountUSD,qty:a.price?amountUSD/a.price:0,reason,score:a.score,price:a.price,weight:0,target:defaultTarget});});
+return recs.sort((a,b)=>b.priority-a.priority||b.score-a.score);}
+function renderAll(){state.analysis={};universeSymbols().forEach(sym=>state.analysis[sym]=analyseSymbol(sym));save();renderHeader();renderMetrics();renderActions();renderHoldings();renderRadar();renderDataHealth();renderCacheMap();renderLog();}
+function renderHeader(){const qReady=Object.values(state.quotes||{}).filter(q=>q&&q.price).length;const hReady=Object.values(state.history||{}).filter(h=>h&&h.bars&&h.bars.length>=80).length;$('dataText').textContent=(state.keys.finnhub?'Finnhub ':'')+(state.keys.massive?'Massive ':'')||'missing';$('lastRunText').textContent=state.lastRun?new Date(state.lastRun).toLocaleString():'never';$('historyText').textContent=hReady+' ready';$('liveText').textContent=live?'Live tracking':'Idle';$('liveDot').className='dot '+(live?'good':(state.keys.finnhub||state.keys.massive?'':'bad'));}
+function renderMetrics(){const totalUSD=totalValueUSD(),invUSD=portfolioInvestedUSD(),cashUSD=safeNum(state.settings.cashAvailable,0)*safeNum(state.settings.gbpUsd,1.27);const costUSD=state.holdings.reduce((a,h)=>a+holdingCostUSD(h),0);const pl=invUSD-costUSD;const plPct=costUSD?pl/costUSD*100:0;const fx=safeNum(state.settings.gbpUsd,1.27);$('portfolioValue').textContent=moneyGBP(totalUSD/fx);$('portfolioSub').textContent=state.holdings.length+' holding(s), '+moneyGBP(invUSD/fx)+' invested';$('openPL').textContent=moneyGBP(pl/fx);$('openPL').className='v '+(pl>=0?'goodText':'badText');$('openPLSub').textContent=pct(plPct);$('cashMetric').textContent=moneyGBP(cashUSD/fx);$('cashSub').textContent='Reserve target '+state.settings.reservePct+'%';const recs=buildRecommendations();const urgent=recs.filter(r=>['SELL / EXIT','TRIM','REDUCE / REVIEW','ADD MORE','BUY CANDIDATE'].includes(r.action));$('queueMetric').textContent=urgent.length;$('queueSub').textContent=urgent.length?urgent[0].action+' · '+urgent[0].symbol:'Nothing urgent';const largest=state.holdings.map(h=>({h,val:holdingValueUSD(h)})).sort((a,b)=>b.val-a.val)[0];$('largestMetric').textContent=largest?largest.h.symbol:'—';$('largestSub').textContent=largest&&totalUSD?pct(largest.val/totalUSD*100)+' of portfolio':'No holdings';const reserveUSD=totalUSD*safeNum(state.settings.reservePct,8)/100;$('reserveMetric').textContent=moneyGBP(reserveUSD/fx);$('reserveSub').textContent=cashUSD>=reserveUSD?'Reserve met':'Below reserve';const symbols=universeSymbols();const full=symbols.filter(s=>state.quotes[s]&&state.history[s]&&state.history[s].bars&&state.history[s].bars.length>=80).length;const cover=symbols.length?Math.round(full/symbols.length*100):0;$('coverageMetric').textContent=cover+'%';$('coverageSub').textContent=full+'/'+symbols.length+' with quote + history';let risk='OK',notes=[];if(largest&&totalUSD&&largest.val/totalUSD*100>safeNum(state.settings.maxPositionPct,18)){risk='Concentrated';notes.push(largest.h.symbol+' is above your max holding limit.');}if(cashUSD<reserveUSD){risk=risk==='OK'?'Low cash':risk+' + low cash';notes.push('Cash is below reserve, so new buys should be selective.');}const weak=state.holdings.filter(h=>{const a=state.analysis[quoteSymbol(h)]||{};return a.score&&a.score<52});if(weak.length)notes.push('Weak owned evidence: '+weak.map(h=>h.symbol).join(', ')+'.');$('riskMetric').textContent=risk;$('riskMetric').className='v '+(risk==='OK'?'goodText':'warnText');$('riskSub').textContent=notes.length?notes[0]:'No major guardrail breach';$('riskNotes').innerHTML=notes.length?notes.map(n=>'<div>• '+esc(n)+'</div>').join(''):'No major concentration, cash or weak-evidence alert after the latest run.';const main=recs[0];if(!state.keys.finnhub&&!state.keys.massive){$('mainCommand').textContent='Connect data';$('mainCommandWhy').textContent='Add your Finnhub and Massive keys once. Then the system can do the price/history work for you.';}else if(!state.holdings.length){$('mainCommand').textContent='Add holdings';$('mainCommandWhy').textContent='Data is ready, but there are no owned stocks logged yet. Add each holding once, then monitoring becomes automatic.';}else if(main){$('mainCommand').textContent=main.action+' · '+main.symbol;$('mainCommandWhy').textContent=main.reason.slice(0,3).join(' ');}else{$('mainCommand').textContent='Hold course';$('mainCommandWhy').textContent='No high-priority action after the latest data run.';}}
+function renderActions(){const recs=buildRecommendations().filter(r=>r.priority>=40).slice(0,9);const fx=safeNum(state.settings.gbpUsd,1.27);$('actionCards').innerHTML=recs.length?recs.map(r=>'<div class="miniCard '+r.cls+'"><div class="rowAuto" style="justify-content:space-between"><h3>'+esc(r.action)+' · '+esc(r.symbol)+'</h3><div class="scoreRing" style="--score:'+r.score+'"><span>'+r.score+'</span></div></div><p>'+esc(r.reason.slice(0,3).join(' '))+'</p><div class="foot">'+(r.amountUSD>0?('Approx '+moneyGBP(r.amountUSD/fx)+' / '+(r.qty||0).toFixed(3)+' shares at '+moneyUSD(r.price)):'No trade size suggested')+'</div><div class="actions" style="margin-top:10px"><button class="secondary" data-refresh-symbol="'+esc(r.symbol)+'">Refresh</button>'+(r.type==='radar'?'<button class="good" data-promote="'+esc(r.symbol)+'">Add as holding</button>':'<button class="secondary" data-edit-holding="'+esc(r.holding.id)+'">Edit</button>')+'</div></div>').join(''):'<div class="empty">No action queue yet. Run autopilot after adding data keys.</div>';}
+function decisionPill(text,cls){return '<span class="pill '+(cls||'cyan')+'">'+esc(text)+'</span>'}
+function renderHoldings(){const total=totalValueUSD(),fx=safeNum(state.settings.gbpUsd,1.27);const body=$('holdingsBody');if(!state.holdings.length){body.innerHTML='<tr><td colspan="7"><div class="empty">No holdings logged yet. Add your owned stocks once; prices and monitoring will update automatically after that.</div></td></tr>';return}const recs=buildRecommendations().filter(r=>r.type==='owned');body.innerHTML=state.holdings.map(h=>{const sym=quoteSymbol(h);const a=state.analysis[sym]||analyseSymbol(sym);const q=state.quotes[sym]||{};const rec=recs.find(r=>r.symbol===sym)||{};const val=holdingValueUSD(h),cost=holdingCostUSD(h),pl=val-cost,plPct=cost?pl/cost*100:0,weight=total?val/total*100:0;return '<tr><td><div class="symbol">'+esc(h.symbol)+'</div><div class="subline">'+esc(h.name||h.role||'')+'</div><div class="subline">Quote '+esc(sym)+' · '+esc(q.provider||'no quote')+' · '+priceAge(q.ts)+'</div></td><td><b>'+moneyGBP(val/fx)+'</b><div class="subline">'+safeNum(h.qty,0).toFixed(3)+' shares @ '+moneyUSD(a.price||q.price||h.avgCost)+'</div></td><td><b class="'+(pl>=0?'goodText':'badText')+'">'+moneyGBP(pl/fx)+'</b><div class="subline '+(plPct>=0?'goodText':'badText')+'">'+pct(plPct)+'</div></td><td><b>'+pct(weight,1)+'</b><div class="subline">Target '+(safeNum(h.targetWeight,0)||Math.round(100/safeNum(state.settings.targetPositions,14)))+'%</div></td><td>'+decisionPill(rec.action||a.decision,rec.cls||a.class)+'<div class="subline">Score '+(a.score||0)+'</div></td><td class="reason">'+esc((rec.reason||a.reasons||[]).slice(0,3).join(' '))+'</td><td><div class="actions"><button class="secondary" data-refresh-symbol="'+esc(sym)+'">Refresh</button><button class="secondary" data-edit-holding="'+esc(h.id)+'">Edit</button><button class="bad" data-delete-holding="'+esc(h.id)+'">Delete</button></div></td></tr>'}).join('');}
+function renderRadar(){const held=new Set(state.holdings.map(h=>quoteSymbol(h)));const rows=(state.radar||[]).map(r=>cleanSym(r.symbol)).filter(sym=>!held.has(sym)).map(sym=>state.analysis[sym]||analyseSymbol(sym)).sort((a,b)=>b.score-a.score).slice(0,80);const body=$('radarBody');if(!rows.length){body.innerHTML='<tr><td colspan="7"><div class="empty">Radar is empty or all radar symbols are owned.</div></td></tr>';return}body.innerHTML=rows.map(a=>{const q=state.quotes[a.symbol]||{};return '<tr><td><div class="symbol">'+esc(a.symbol)+'</div><div class="subline">'+esc(q.provider||a.provider.quote||'no quote')+' · '+priceAge(q.ts||a.quoteTs)+'</div></td><td><div class="scoreRing" style="--score:'+a.score+'"><span>'+a.score+'</span></div></td><td><b>'+moneyUSD(a.price)+'</b><div class="subline">3m '+pct(a.ret3)+' · 6m '+pct(a.ret6)+' · DD '+pct(a.dd)+'</div></td><td><b>Q '+Math.round(a.quality||0)+' / V '+Math.round(a.value||0)+'</b><div class="subline">PE '+(a.pe?Number(a.pe).toFixed(1):'—')+' · Risk '+Math.round(a.risk||0)+'</div></td><td>'+decisionPill(a.decision,a.class)+'</td><td class="reason">'+esc((a.reasons||[]).slice(0,3).join(' '))+'</td><td><div class="actions"><button class="secondary" data-refresh-symbol="'+esc(a.symbol)+'">Refresh</button><button class="good" data-promote="'+esc(a.symbol)+'">Add holding</button><button class="secondary" data-remove-radar="'+esc(a.symbol)+'">Remove</button></div></td></tr>'}).join('');}
+function renderDataHealth(){const k=state.keys;const items=[['Finnhub',k.finnhub?'key saved':'missing',k.finnhub?'good':'bad'],['Massive',k.massive?'key saved':'missing',k.massive?'good':'bad'],['Live tracking',live?'running':'stopped',live?'good':'warn'],['Auto on open',state.settings.autoOnOpen==='yes'?'enabled':'off',state.settings.autoOnOpen==='yes'?'good':'warn']];$('dataHealth').innerHTML=items.map(i=>'<div class="dataItem"><span>'+esc(i[0])+'</span><b class="'+(i[2]==='good'?'goodText':i[2]==='bad'?'badText':'warnText')+'">'+esc(i[1])+'</b></div>').join('');}
+function renderCacheMap(){const syms=universeSymbols();$('cacheMap').innerHTML=syms.slice(0,80).map(sym=>{const q=state.quotes[sym],h=state.history[sym],a=state.analysis[sym]||{};const good=q&&q.price&&h&&h.bars&&h.bars.length>=80;const mid=q||h;return '<div class="dataItem"><span><b>'+esc(sym)+'</b><br><span class="tiny">'+(q?'quote '+priceAge(q.ts):'no quote')+' · '+(h?'history '+priceAge(h.fetchedAt):'no history')+'</span></span><b class="'+(good?'goodText':mid?'warnText':'badText')+'">'+(a.score?('Score '+a.score):(good?'ready':mid?'partial':'missing'))+'</b></div>'}).join('')||'<div class="empty">No symbols.</div>';}
+function setProgress(done,total,msg){const pctv=total?Math.round(done/total*100):0;$('progressBar').style.width=pctv+'%';$('progressText').textContent=msg||('Progress '+pctv+'%');}
+async function mapLimit(items,limit,fn,progressLabel){const res=[];let idx=0,done=0;async function worker(){while(idx<items.length){const i=idx++,item=items[i];try{res[i]=await fn(item,i)}catch(e){res[i]={error:e.message,item};}done++;if(progressLabel)setProgress(done,items.length,progressLabel+' '+done+'/'+items.length+' · '+item)}}const workers=Array.from({length:Math.max(1,Math.min(limit,items.length))},worker);await Promise.all(workers);return res;}
+async function runAutopilot(force=false){if(busy){toast('Already running','Autopilot is already fetching data.','warn');return}settingsFromUI();if(!state.keys.finnhub&&!state.keys.massive){toast('Data keys needed','Add Finnhub and/or Massive keys first.','warn');renderAll();return}busy=true;state.forceHistory=force;setProgress(0,1,'Starting autopilot.');log('Autopilot started.');try{const symbols=universeSymbols();if(!symbols.length)throw new Error('No symbols to scan');setProgress(0,symbols.length,'Refreshing live quotes');await mapLimit(symbols,4,async sym=>{try{const q=await fetchQuote(sym);state.quotes[sym]=q;return q;}catch(e){log(sym+' quote failed: '+e.message,'warn');return null}},'Quotes');save();renderAll();setProgress(0,symbols.length,'Fetching daily history');await mapLimit(symbols,2,async sym=>{try{return await fetchHistory(sym,force)}catch(e){log(sym+' history failed: '+e.message,'warn');return null}},'History');save();renderAll();if(state.keys.finnhub){const fundSymbols=symbols.slice(0,Math.min(symbols.length,80));setProgress(0,fundSymbols.length,'Fetching fundamentals');await mapLimit(fundSymbols,3,async sym=>{try{return await fetchFinnhubFundamentals(sym,force)}catch(e){log(sym+' fundamentals skipped: '+e.message,'warn');return null}},'Fundamentals');}
+state.forceHistory=false;state.lastRun=now();save();renderAll();setProgress(1,1,'Autopilot complete: quotes, history, fundamentals and recommendations refreshed.');log('Autopilot complete for '+symbols.length+' symbol(s).','good');toast('Autopilot complete','The portfolio and radar have been rescored.','good');}catch(e){state.forceHistory=false;log('Autopilot failed: '+e.message,'bad');toast('Autopilot failed',e.message,'bad');}finally{busy=false;}}
+async function refreshSymbol(sym,force=false){sym=cleanSym(sym);if(!sym)return;try{setProgress(0,3,'Refreshing '+sym);const q=await fetchQuote(sym);state.quotes[sym]=q;setProgress(1,3,'Quote updated for '+sym);try{await fetchHistory(sym,force)}catch(e){log(sym+' history refresh issue: '+e.message,'warn')}setProgress(2,3,'History checked for '+sym);try{if(state.keys.finnhub)await fetchFinnhubFundamentals(sym,force)}catch(e){log(sym+' fundamentals issue: '+e.message,'warn')}setProgress(3,3,'Refreshed '+sym);save();renderAll();toast(sym+' refreshed','Quote/history/fundamentals checked.','good');}catch(e){toast(sym+' refresh failed',e.message,'bad')}}
+async function refreshOwned(){const syms=uniq(state.holdings.map(quoteSymbol));if(!syms.length)return toast('No holdings','Add owned stocks first.','warn');await mapLimit(syms,3,async sym=>{try{state.quotes[sym]=await fetchQuote(sym)}catch(e){log(sym+' quote failed: '+e.message,'warn')}},'Owned quotes');save();renderAll();toast('Owned prices checked',syms.length+' holding quote(s) refreshed.','good')}
+function startLive(){settingsFromUI();if(live)return;live=true;renderHeader();$('startLive').disabled=true;$('startLiveTop').disabled=true;$('stopLive').disabled=false;log('Live tracking started.');toast('Live tracking started','Quotes will refresh while this page stays open.','good');connectFinnhubWS();pollTimer=setInterval(refreshOwned,Math.max(10,safeNum(state.settings.pollSeconds,60))*1000);refreshOwned();}
+function stopLive(){live=false;if(pollTimer)clearInterval(pollTimer);pollTimer=null;if(wsFinnhub){try{wsFinnhub.close()}catch(e){}wsFinnhub=null}$('startLive').disabled=false;$('startLiveTop').disabled=false;$('stopLive').disabled=true;renderHeader();log('Live tracking stopped.');}
+function connectFinnhubWS(){if(state.settings.useFinnhubWS!=='yes'||!state.keys.finnhub||!window.WebSocket)return;try{if(wsFinnhub)try{wsFinnhub.close()}catch(e){}const syms=uniq([...state.holdings.map(quoteSymbol),...buildRecommendations().slice(0,20).map(r=>r.symbol)]).slice(0,40);if(!syms.length)return;const ws=new WebSocket('wss://ws.finnhub.io?token='+encodeURIComponent(state.keys.finnhub));wsFinnhub=ws;ws.onopen=()=>{syms.forEach(sym=>ws.send(JSON.stringify({type:'subscribe',symbol:sym})));log('Finnhub WebSocket subscribed to '+syms.length+' symbol(s).','good')};ws.onmessage=ev=>{try{const msg=JSON.parse(ev.data);if(msg.type==='trade'&&Array.isArray(msg.data)){msg.data.forEach(t=>{const sym=cleanSym(t.s),p=safeNum(t.p,0);if(sym&&p>0){const prev=(state.quotes[sym]&&state.quotes[sym].prev)||p;state.quotes[sym]=Object.assign({},state.quotes[sym]||{},{symbol:sym,price:p,change:p-prev,changePct:prev?((p-prev)/prev*100):0,provider:'Finnhub stream',ts:now()});}});scheduleRender();}}catch(e){}};ws.onerror=()=>log('Finnhub stream issue, polling remains active.','warn');ws.onclose=()=>{if(wsFinnhub===ws)wsFinnhub=null};}catch(e){log('Finnhub stream unavailable: '+e.message,'warn')}}
+function scheduleRender(){clearTimeout(renderThrottle);renderThrottle=setTimeout(()=>{save();renderAll()},1200)}
+function openHoldingModal(id){const h=id?state.holdings.find(x=>x.id===id):null;$('holdingTitle').textContent=h?'Edit holding':'Add holding';$('holdingId').value=h?h.id:'';$('holdingSymbol').value=h?h.symbol:'';$('holdingQuoteSymbol').value=h?(h.quoteSymbol||h.symbol):'';$('holdingName').value=h?(h.name||''):'';$('holdingQty').value=h?safeNum(h.qty,0):'';$('holdingAvg').value=h?safeNum(h.avgCost,0):'';$('holdingTarget').value=h?safeNum(h.targetWeight,0):'';$('holdingConviction').value=h?safeNum(h.conviction,6):6;$('holdingStop').value=h?safeNum(h.stop,0):'';$('holdingFair').value=h?safeNum(h.fairValue,0):'';$('holdingRole').value=h?(h.role||''):'';$('holdingThesis').value=h?(h.thesis||''):'';$('holdingModal').classList.add('show');setTimeout(()=>$('holdingSymbol').focus(),50)}
+function saveHolding(){const id=$('holdingId').value||('h_'+now().toString(36));const symbol=cleanSym($('holdingSymbol').value);if(!symbol)return toast('Symbol needed','Enter a ticker symbol.','warn');const obj={id,symbol,quoteSymbol:cleanSym($('holdingQuoteSymbol').value)||symbol,name:$('holdingName').value.trim(),qty:safeNum($('holdingQty').value,0),avgCost:safeNum($('holdingAvg').value,0),targetWeight:safeNum($('holdingTarget').value,0),conviction:clamp(safeNum($('holdingConviction').value,6),1,10),stop:safeNum($('holdingStop').value,0),fairValue:safeNum($('holdingFair').value,0),role:$('holdingRole').value.trim(),thesis:$('holdingThesis').value.trim(),updatedAt:now()};const i=state.holdings.findIndex(h=>h.id===id);if(i>=0)state.holdings[i]=Object.assign({},state.holdings[i],obj);else state.holdings.push(Object.assign({createdAt:now()},obj));if(!state.radar.some(r=>cleanSym(r.symbol)===symbol))state.radar.push({symbol,theme:obj.role||'owned',priority:'high',note:'Owned holding'});save();$('holdingModal').classList.remove('show');renderAll();refreshSymbol(obj.quoteSymbol||obj.symbol,false);toast('Holding saved',symbol+' is now monitored.','good')}
+function deleteHolding(id){const h=state.holdings.find(x=>x.id===id);if(!h)return;if(!confirm('Delete '+h.symbol+' from owned holdings?'))return;state.holdings=state.holdings.filter(x=>x.id!==id);save();renderAll();toast('Holding deleted',h.symbol+' removed from owned stocks.','warn')}
+function promote(sym){sym=cleanSym(sym);openHoldingModal();$('holdingSymbol').value=sym;$('holdingQuoteSymbol').value=sym;const f=state.fundamentals[sym]||{};$('holdingName').value=(f.profile&&f.profile.name)||sym;$('holdingTarget').value=Math.round(100/safeNum(state.settings.targetPositions,14));}
+function addRadar(){const syms=parseSymbols($('radarSymbols').value);if(!syms.length)return toast('Symbols needed','Enter at least one ticker.','warn');syms.forEach(sym=>{if(!state.radar.some(r=>cleanSym(r.symbol)===sym))state.radar.push({symbol:sym,theme:$('radarTheme').value.trim(),priority:$('radarPriority').value,note:$('radarNote').value.trim()})});save();$('radarModal').classList.remove('show');renderAll();toast('Radar updated',syms.join(', ')+' added.','good')}
+function removeRadar(sym){sym=cleanSym(sym);state.radar=state.radar.filter(r=>cleanSym(r.symbol)!==sym);save();renderAll();}
+async function discoverMassive(){settingsFromUI();if(!state.keys.massive)return toast('Massive key needed','Add Massive API key first.','warn');try{setProgress(0,1,'Discovering active US tickers from Massive');const d=await fetchJSON('https://api.massive.com/v3/reference/tickers?market=stocks&active=true&limit=1000&apiKey='+encodeURIComponent(state.keys.massive),30000);const rows=Array.isArray(d.results)?d.results:[];const picks=rows.filter(x=>String(x.type||'').toUpperCase()==='CS'||!x.type).map(x=>cleanSym(x.ticker)).filter(Boolean).slice(0,200);const before=state.radar.length;picks.forEach(sym=>{if(!state.radar.some(r=>cleanSym(r.symbol)===sym))state.radar.push({symbol:sym,theme:'Massive discovery',priority:'low',note:'Discovered from Massive active ticker list'})});state.settings.universe=uniq([...parseSymbols(state.settings.universe),...picks.slice(0,120)]).join(', ');save();syncUI();renderAll();toast('Discovery complete',(state.radar.length-before)+' symbols added to radar.','good');setProgress(1,1,'Massive discovery complete.');}catch(e){toast('Massive discovery failed',e.message,'bad');}}
+function exportBackup(){const out=JSON.parse(JSON.stringify(state));out.keys={finnhub:'',massive:''};const blob=new Blob([JSON.stringify(out,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='long-money-engine-backup-'+isoDate()+'.json';a.click();URL.revokeObjectURL(a.href);}
+function importBackup(file){const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);const keepKeys=state.keys;state=merge(DEFAULT_STATE,data);state.keys=keepKeys;save();syncUI();renderAll();toast('Backup imported','API keys were kept from this browser.','good')}catch(e){toast('Import failed',e.message,'bad')}};r.readAsText(file)}
+function clearCache(){if(!confirm('Clear cached quotes, history and fundamentals? Holdings and radar stay.'))return;state.quotes={};state.history={};state.fundamentals={};state.analysis={};save();renderAll();toast('Cache cleared','Next autopilot run will fetch fresh data.','warn')}
+function restoreDefaults(){state.radar=DEFAULT_RADAR.map(sym=>({symbol:sym,theme:'starter universe',priority:'normal',note:''}));state.settings.universe=DEFAULT_RADAR.join(', ');save();syncUI();renderAll();toast('Default radar restored','Starter universe loaded.','good')}
+function wire(){syncUI();renderAll();$('runAutopilot').onclick=()=>runAutopilot(false);$('runAutopilotTop').onclick=()=>runAutopilot(false);$('forceHistoryBtn').onclick=()=>runAutopilot(true);$('scanRadarBtn').onclick=()=>runAutopilot(false);$('startLive').onclick=startLive;$('startLiveTop').onclick=startLive;$('stopLive').onclick=stopLive;$('refreshOwnedBtn').onclick=refreshOwned;$('testDataBtn').onclick=async()=>{settingsFromUI();const tests=[];if(state.keys.finnhub)tests.push(fetchFinnhubQuote('AAPL').then(()=>['Finnhub','OK']).catch(e=>['Finnhub',e.message]));if(state.keys.massive)tests.push(fetchMassiveHistory('AAPL').then(b=>['Massive','OK '+b.length+' bars']).catch(e=>['Massive',e.message]));if(!tests.length)return toast('Keys missing','Add Finnhub and/or Massive keys first.','warn');const res=await Promise.all(tests);res.forEach(r=>log(r[0]+' test: '+r[1]));toast('Data test complete',res.map(r=>r[0]+': '+r[1]).join(' · '),res.every(r=>String(r[1]).startsWith('OK'))?'good':'warn');renderDataHealth();};$('addHoldingBtn').onclick=()=>openHoldingModal();$('saveHoldingBtn').onclick=saveHolding;$('addRadarBtn').onclick=()=>$('radarModal').classList.add('show');$('saveRadarBtn').onclick=addRadar;$('discoverBtn').onclick=discoverMassive;$('saveSettingsBtn').onclick=()=>{settingsFromUI();renderAll();toast('Settings saved','Data autopilot settings updated.','good')};$('loadDefaultsBtn').onclick=restoreDefaults;$('clearCacheBtn').onclick=clearCache;$('exportBtn').onclick=exportBackup;$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=e=>{if(e.target.files&&e.target.files[0])importBackup(e.target.files[0])};$$('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).classList.remove('show'));document.body.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;if(t.dataset.refreshSymbol)refreshSymbol(t.dataset.refreshSymbol,true);if(t.dataset.editHolding)openHoldingModal(t.dataset.editHolding);if(t.dataset.deleteHolding)deleteHolding(t.dataset.deleteHolding);if(t.dataset.promote)promote(t.dataset.promote);if(t.dataset.removeRadar)removeRadar(t.dataset.removeRadar);});['holdingModal','radarModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)$(id).classList.remove('show')}));window.addEventListener('beforeunload',()=>{if(wsFinnhub)try{wsFinnhub.close()}catch(e){}});if(state.settings.autoOnOpen==='yes'&&(state.keys.finnhub||state.keys.massive)){setTimeout(()=>runAutopilot(false),900);}else{log('Ready. Add keys or run autopilot manually.');}}
+wire();
 })();
 </script>
 </body>
